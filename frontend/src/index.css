@@ -1,6 +1,121 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+@font-face {
+  font-family: 'Cyberpunk';
+  src: url('./assets/fonts/Cyberpunk-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@theme {
+  --color-cyber-black: #050505;
+  --color-cyber-dark: #121213;
+  --color-cyber-cyan: #00fbff;
+  --color-cyber-magenta: #ff003c;
+  --color-cyber-yellow: #fcee0a;
+  --color-cyber-red: #ff003c;
+  --color-cyber-blue: #0062ff;
+
+  --font-cyber: "Cyberpunk", "Outfit", sans-serif;
+  --font-tech: "JetBrains Mono", monospace;
+
+  --shadow-neon-cyan: 0 0 5px #00fbff, 0 0 10px #00fbff;
+  --shadow-neon-magenta: 0 0 5px #ff003c, 0 0 10px #ff003c;
+  --shadow-neon-yellow: 0 0 5px #fcee0a, 0 0 10px #fcee0a;
+
+  --animate-neon-pulse: neon-pulse 2s infinite;
+  --animate-glitch: glitch 0.2s infinite;
+  --animate-scanline: scanline 8s linear infinite;
+}
+
+/* Cyberpunk Animations Outside @theme */
+@keyframes neon-pulse {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 2px currentColor); }
+  50% { opacity: 0.8; filter: drop-shadow(0 0 10px currentColor); }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-3px, 3px); }
+  40% { transform: translate(-3px, -3px); }
+  60% { transform: translate(3px, 3px); }
+  80% { transform: translate(3px, -3px); }
+  100% { transform: translate(0); }
+}
+
+.cyber-glitch-text {
+  position: relative;
+  display: inline-block;
+}
+
+.cyber-glitch-text::before,
+.cyber-glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.cyber-glitch-text::before {
+  left: 2px;
+  text-shadow: -2px 0 #ff003c;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.cyber-glitch-text::after {
+  left: -2px;
+  text-shadow: -2px 0 #00fbff;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(31px, 9999px, 94px, 0); }
+  20% { clip: rect(62px, 9999px, 42px, 0); }
+  40% { clip: rect(16px, 9999px, 78px, 0); }
+  60% { clip: rect(81px, 9999px, 13px, 0); }
+  80% { clip: rect(2px, 9999px, 86px, 0); }
+  100% { clip: rect(54px, 9999px, 47px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(65px, 9999px, 100px, 0); }
+  20% { clip: rect(12px, 9999px, 4px, 0); }
+  40% { clip: rect(98px, 9999px, 66px, 0); }
+  60% { clip: rect(15px, 9999px, 92px, 0); }
+  80% { clip: rect(40px, 9999px, 81px, 0); }
+  100% { clip: rect(82px, 9999px, 2px, 0); }
+}
+
+@keyframes scanline {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100%); }
+}
+
+.quest-nav-item {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+  background: rgba(255, 0, 60, 0.05);
+  border-left: 3px solid rgba(255, 0, 60, 0.5);
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.quest-nav-item:hover {
+  background: rgba(255, 0, 60, 0.15);
+  border-left-color: #ff003c;
+  transform: translateX(5px);
+}
+
+.quest-nav-item.active {
+  background: rgba(255, 0, 60, 0.25);
+  border-left: 5px solid #ff003c;
+  box-shadow: -10px 0 20px -10px #ff003c;
+}
 
 :root {
   font-family: 'Outfit', 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -9,7 +124,7 @@
 
   color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #0d0d0d;
+  background-color: #050505;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -22,7 +137,7 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #0d0d0d;
+  background-color: #050505;
   background-image: 
     linear-gradient(rgba(0, 251, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 251, 255, 0.03) 1px, transparent 1px);
@@ -42,7 +157,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0d0d0d;
+  background: #050505;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -52,14 +167,4 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #ff003c;
-}
-
-/* Neon Glow Animation */
-@keyframes neon-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-.animate-neon-pulse {
-  animation: neon-pulse 2s infinite ease-in-out;
 }

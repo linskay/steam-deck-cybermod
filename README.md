@@ -1,4 +1,10 @@
-# CyberMod — Standalone Plugin Manager for Steam Deck
+## Интерфейс (Preview)
+
+| Главный дашборд | Сайдбар (Quest Log Style) |
+| :--- | :--- |
+| ![Dashboard](screenshots/dashboard.png) | ![Sidebar](screenshots/sidebar.png) |
+
+---
 
 CyberMod — это мощное автономное приложение для Steam Deck, выполненное в эстетике Cyberpunk 2077. Оно позволяет управлять кастомными модификациями и оригинальными плагинами Decky Loader через единый футуристичный интерфейс.
 

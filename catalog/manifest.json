@@ -17,6 +17,51 @@
       "version": "2.1.5",
       "image": "https://raw.githubusercontent.com/SteamGridDB/steam-grid-db/master/assets/icon.png",
       "github": "SteamGridDB/steam-grid-db"
+    },
+    {
+      "id": "css-loader",
+      "name": "CSS Loader",
+      "author": "ManyHats",
+      "description": "Позволяет кастомизировать интерфейс Steam Deck с помощью пользовательских тем.",
+      "version": "1.8.2",
+      "image": "https://raw.githubusercontent.com/ManyHats/Decky-CSS-Loader/main/icon.png",
+      "github": "ManyHats/Decky-CSS-Loader"
+    },
+    {
+      "id": "animation-changer",
+      "name": "Animation Changer",
+      "author": "Colton-Potter",
+      "description": "Меняйте загрузочные анимации и саспенд-видео вашего устройства.",
+      "version": "1.4.0",
+      "image": "https://raw.githubusercontent.com/Colton-Potter/Decky-Animation-Changer/main/icon.png",
+      "github": "Colton-Potter/Decky-Animation-Changer"
+    },
+    {
+      "id": "powertools",
+      "name": "PowerTools",
+      "author": "NGS-SteamDeck",
+      "description": "Тонкая настройка процессора, ядер, частот и других параметров производительности.",
+      "version": "2.2.0",
+      "image": "https://raw.githubusercontent.com/NGS-SteamDeck/PowerTools/main/assets/icon.png",
+      "github": "NGS-SteamDeck/PowerTools"
+    },
+    {
+      "id": "bluetooth",
+      "name": "Bluetooth",
+      "author": "Yue-Zheng",
+      "description": "Упрощенное управление Bluetooth устройствами и быстрое сопряжение.",
+      "version": "1.1.0",
+      "image": "https://raw.githubusercontent.com/Yue-Zheng/decky-bluetooth/main/icon.png",
+      "github": "Yue-Zheng/decky-bluetooth"
+    },
+    {
+      "id": "audio-loader",
+      "name": "Audio Loader",
+      "author": "ManyHats",
+      "description": "Кастомизация системных звуков и музыкального сопровождения интерфейса.",
+      "version": "1.0.5",
+      "image": "https://raw.githubusercontent.com/ManyHats/Decky-Audio-Loader/main/icon.png",
+      "github": "ManyHats/Decky-Audio-Loader"
     }
   ]
 }

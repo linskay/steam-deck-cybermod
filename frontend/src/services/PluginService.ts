@@ -1,4 +1,4 @@
-import { Plugin } from '../components/PluginCard';
+import { type Plugin } from '../components/PluginCard';
 
 const API_BASE = 'http://localhost:7070/api';
 
