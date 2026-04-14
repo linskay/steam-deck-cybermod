@@ -32,9 +32,23 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, subLabel, isActive
         {isActive && <ChevronRight size={12} className="ml-auto text-cyber-magenta animate-pulse" />}
       </div>
       
-      {/* Red corner accent from the photo */}
+      {/* Red corner accent */}
       <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-cyber-magenta/40" />
     </motion.div>
+  </div>
+);
+
+const ControllerHint: React.FC = () => (
+  <div className="flex items-center justify-center gap-3 py-2 bg-white/5 border-y border-white/5">
+    <div className="controller-hint text-cyber-cyan">
+       <div className="dpad-icon" />
+       <span>NAV</span>
+    </div>
+    <div className="w-px h-3 bg-white/10" />
+    <div className="controller-hint text-cyber-magenta">
+       <div className="w-4 h-4 rounded-full border border-current flex items-center justify-center text-[6px] font-bold">A</div>
+       <span>SELECT</span>
+    </div>
   </div>
 );
 
@@ -54,12 +68,17 @@ export const SideBar: React.FC<{ activeTab: string; onTabChange: (id: string) =>
       
       <div className="p-10 relative">
         <div className="absolute top-10 left-8 w-1 h-12 bg-cyber-magenta opacity-50" />
+        <div className="absolute top-10 right-10 w-8 h-8 opacity-10">
+          <svg viewBox="0 0 100 100" className="fill-cyber-cyan">
+            <path d="M0 0h100v20H0zM0 40h100v20H0zM0 80h100v20H0z" />
+          </svg>
+        </div>
         <h1 className="text-3xl font-cyber text-white tracking-widest leading-none select-none uppercase">
           <span className="cyber-glitch-text" data-text="CYBERMOD">CYBERMOD</span>
         </h1>
         <div className="text-[8px] font-tech mt-4 flex items-center gap-2">
           <span className="w-1.5 h-1.5 bg-cyber-cyan rounded-full animate-pulse" />
-          <span className="opacity-50 uppercase tracking-widest">STATION: NIGHT_CITY_v1.0.0_STABLE</span>
+          <span className="opacity-50 uppercase tracking-widest text-cyber-cyan/70">STATION: NIGHT_CITY_v1.0.0</span>
         </div>
       </div>
 
@@ -77,30 +96,35 @@ export const SideBar: React.FC<{ activeTab: string; onTabChange: (id: string) =>
         ))}
       </nav>
 
-      {/* Footer Buttons for Steam Deck */}
-      <div className="p-6 space-y-3 bg-cyber-magenta/5 border-t border-cyber-magenta/20">
-        <div className="grid grid-cols-2 gap-3">
-          <motion.button 
-             whileHover={{ scale: 1.02, backgroundColor: 'rgba(0, 251, 255, 0.1)' }}
-             className="flex items-center justify-center gap-2 py-3 border border-cyber-cyan/30 text-[9px] font-cyber tracking-widest text-cyber-cyan uppercase italic"
-             style={{ clipPath: 'polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%)' }}
-          >
-            <Minimize2 size={12} />
-            СВЕРНУТЬ
-          </motion.button>
-          <motion.button 
-             whileHover={{ scale: 1.02, backgroundColor: 'rgba(255, 0, 60, 0.1)' }}
-             className="flex items-center justify-center gap-2 py-3 border border-cyber-magenta/30 text-[9px] font-cyber tracking-widest text-cyber-magenta uppercase italic"
-             style={{ clipPath: 'polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%)' }}
-          >
-            <Power size={12} />
-            ЗАКРЫТЬ
-          </motion.button>
-        </div>
-        
-        <div className="flex items-center justify-between font-tech text-[7px] opacity-30 uppercase">
-          <span>S_NET_DECK</span>
-          <span className="flex items-center gap-1"><span className="w-1 h-1 bg-green-500 rounded-full" /> ONLINE</span>
+      {/* Footer Area with Controller Hints & System Buttons */}
+      <div className="bg-cyber-black/80 backdrop-blur-lg">
+        <ControllerHint />
+        <div className="p-6 space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <motion.button 
+               whileHover={{ scale: 1.05, backgroundColor: 'rgba(0, 251, 255, 0.15)' }}
+               className="flex items-center justify-center gap-2 py-3 border border-cyber-cyan/40 text-[9px] font-cyber tracking-widest text-cyber-cyan uppercase italic group relative overflow-hidden"
+               style={{ clipPath: 'polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%)' }}
+            >
+              <div className="absolute inset-0 bg-cyber-cyan/5 group-hover:bg-cyber-cyan/20 transition-colors" />
+              <Minimize2 size={12} className="relative z-10" />
+              <span className="relative z-10">СВЕРНУТЬ</span>
+            </motion.button>
+            <motion.button 
+               whileHover={{ scale: 1.05, backgroundColor: 'rgba(255, 0, 60, 0.15)' }}
+               className="flex items-center justify-center gap-2 py-3 border border-cyber-magenta/40 text-[9px] font-cyber tracking-widest text-cyber-magenta uppercase italic group relative overflow-hidden"
+               style={{ clipPath: 'polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%)' }}
+            >
+              <div className="absolute inset-0 bg-cyber-magenta/5 group-hover:bg-cyber-magenta/20 transition-colors" />
+              <Power size={12} className="relative z-10" />
+              <span className="relative z-10">ЗАКРЫТЬ</span>
+            </motion.button>
+          </div>
+          
+          <div className="flex items-center justify-between font-tech text-[7px] opacity-20 uppercase tracking-[0.2em]">
+            <span>S_NET_DECK_LINK</span>
+            <span className="flex items-center gap-1"><span className="w-1 h-1 bg-green-500 rounded-full animate-pulse" /> LIVE</span>
+          </div>
         </div>
       </div>
     </div>

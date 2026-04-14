@@ -117,6 +117,66 @@
   box-shadow: -10px 0 20px -10px #ff003c;
 }
 
+.cyber-chip-slot {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background: rgba(18, 18, 19, 0.8);
+  border: 1px solid rgba(0, 251, 255, 0.3);
+  clip-path: polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+  transition: all 0.3s ease;
+}
+
+.cyber-chip-slot.red {
+  border-color: rgba(255, 0, 60, 0.3);
+}
+
+.cyber-chip-slot:hover {
+  border-color: currentColor;
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.chip-tab {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 8px;
+  background: currentColor;
+  clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+  opacity: 0.5;
+}
+
+.controller-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-tech);
+  font-size: 8px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.dpad-icon {
+  width: 16px;
+  height: 16px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  position: relative;
+}
+
+.dpad-icon::before, .dpad-icon::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+}
+
+.dpad-icon::before { width: 2px; height: 10px; left: 7px; top: 3px; }
+.dpad-icon::after { width: 10px; height: 2px; left: 3px; top: 7px; }
+
 :root {
   font-family: 'Outfit', 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
