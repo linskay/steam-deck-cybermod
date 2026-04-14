@@ -1,0 +1,22 @@
+{
+  "plugins": [
+    {
+      "id": "vibrant-deck",
+      "name": "VibrantDeck",
+      "author": "Artia",
+      "description": "Улучшает цветопередачу экрана Steam Deck через насыщенность и контраст.",
+      "version": "1.2.0",
+      "image": "https://raw.githubusercontent.com/Artia-71/vibrantDeck/main/icon.png",
+      "github": "Artia-71/vibrantDeck"
+    },
+    {
+      "id": "steam-grid-db",
+      "name": "SteamGridDB",
+      "author": "SGDB Team",
+      "description": "Автоматическая загрузка обложек для ваших игр из базы SteamGridDB.",
+      "version": "2.1.5",
+      "image": "https://raw.githubusercontent.com/SteamGridDB/steam-grid-db/master/assets/icon.png",
+      "github": "SteamGridDB/steam-grid-db"
+    }
+  ]
+}
