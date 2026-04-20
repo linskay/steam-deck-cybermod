@@ -60,25 +60,28 @@ interface SideBarProps {
 
 export const SideBar: React.FC<SideBarProps> = ({ activeTab, onTabChange, activeTheme = 'cyberpunk' }) => {
   const menuItems = [
-    { id: 'plugins', label: activeTheme === 'stalker' ? 'ЗАДАНИЯ' : 'LOCAL', sub: activeTheme === 'stalker' ? 'СПИСОК' : 'PLUGINS', icon: Layers },
-    { id: 'decky', label: activeTheme === 'stalker' ? 'ТОРГОВЦЫ' : 'ONLINE', sub: activeTheme === 'stalker' ? 'СЕТЬ' : 'REPO', icon: Package },
-    { id: 'zip', label: activeTheme === 'stalker' ? 'АРХИВ' : 'MANUAL', sub: activeTheme === 'stalker' ? 'ШИФР' : 'INSTALL', icon: Download },
-    { id: 'settings', label: activeTheme === 'stalker' ? 'ПРИБОР' : 'SYSTEM', sub: activeTheme === 'stalker' ? 'ПДА' : 'CONFIG', icon: Settings },
+    { id: 'plugins', label: activeTheme === 'stalker' ? 'ЗАДАНИЯ' : activeTheme === 'doom' ? 'ARMORY' : activeTheme === 'portal' ? 'CHAMBERS' : activeTheme === 'deadspace' ? 'KINETICS' : 'LOCAL', sub: activeTheme === 'stalker' ? 'СПИСОК' : activeTheme === 'doom' ? 'MODULES' : activeTheme === 'portal' ? 'TEST_READY' : activeTheme === 'deadspace' ? 'MODULES' : 'PLUGINS', icon: Layers },
+    { id: 'decky', label: activeTheme === 'stalker' ? 'ТОРГОВЦЫ' : activeTheme === 'doom' ? 'NETWORK' : activeTheme === 'portal' ? 'DATABASE' : activeTheme === 'deadspace' ? 'EXTERNAL' : 'ONLINE', sub: activeTheme === 'stalker' ? 'СЕТЬ' : activeTheme === 'doom' ? 'UAC_NET' : activeTheme === 'portal' ? 'ACCESS' : activeTheme === 'deadspace' ? 'NET_NODES' : 'REPO', icon: Package },
+    { id: 'zip', label: activeTheme === 'stalker' ? 'АРХИВ' : activeTheme === 'doom' ? 'LOADING' : activeTheme === 'portal' ? 'UPLOADS' : activeTheme === 'deadspace' ? 'IMPORT' : 'MANUAL', sub: activeTheme === 'stalker' ? 'ШИФР' : activeTheme === 'doom' ? 'IMPORT' : activeTheme === 'portal' ? 'PROCESS' : activeTheme === 'deadspace' ? 'CHIP_SET' : 'INSTALL', icon: Download },
+    { id: 'settings', label: activeTheme === 'stalker' ? 'ПРИБОР' : activeTheme === 'doom' ? 'HUD' : activeTheme === 'portal' ? 'SETTINGS' : activeTheme === 'deadspace' ? 'RIG_CAL' : 'SYSTEM', sub: activeTheme === 'stalker' ? 'ПДА' : activeTheme === 'doom' ? 'CONFIG' : activeTheme === 'portal' ? 'PARAMS' : activeTheme === 'deadspace' ? 'BIOMETRIC' : 'CONFIG', icon: Settings },
   ];
 
   return (
-    <aside className="w-72 h-full bg-cp-black/95 border-r border-white/5 flex flex-col relative z-20">
+    <aside className={`w-72 h-full ${activeTheme === 'portal' ? 'bg-white border-blue-50' : activeTheme === 'deadspace' ? 'bg-black/80 border-cyan-500/20' : 'bg-cp-black/95 border-white/5'} border-r flex flex-col relative z-20 transition-all duration-700`}>
       {/* Decorative Top Logo Area */}
       <div className="p-8 pt-12">
         <div className="flex items-center gap-4 mb-8">
-          <div className="w-10 h-10 border-2 border-cp-yellow transform rotate-45 flex items-center justify-center">
-            <div className="w-6 h-6 bg-cp-yellow transform -rotate-45" />
+          <div className={`w-10 h-10 border-2 ${activeTheme === 'doom' ? 'border-red-600' : activeTheme === 'portal' ? 'border-blue-400 rounded-full' : activeTheme === 'deadspace' ? 'border-cyan-400 rounded-sm scale-90' : 'border-cp-yellow'} transform rotate-45 flex items-center justify-center transition-all`}>
+            <div className={`w-6 h-6 ${activeTheme === 'doom' ? 'bg-red-600' : activeTheme === 'portal' ? 'bg-blue-400 rounded-full' : activeTheme === 'deadspace' ? 'bg-cyan-400' : 'bg-cp-yellow'} transform -rotate-45`} />
           </div>
           <div>
-            <h1 className="text-2xl font-cyber tracking-tighter text-white">
-              {activeTheme === 'stalker' ? 'ПДА-3' : 'CYBER_MOD'}
+            <h1 className={`text-2xl ${activeTheme === 'portal' ? 'font-sans font-light text-slate-800' : activeTheme === 'deadspace' ? 'font-tech text-cyan-400' : 'font-cyber text-white'} tracking-tighter`}>
+              {activeTheme === 'stalker' ? 'ПДА-3' :
+                activeTheme === 'doom' ? 'DOOM // HUD' :
+                  activeTheme === 'portal' ? 'APERTURE // OS' :
+                    activeTheme === 'deadspace' ? 'RIG // HOLO' : 'CYBER_MOD'}
             </h1>
-            <div className="h-[2px] w-full bg-cp-yellow mt-1" />
+            <div className={`h-[2px] w-full ${activeTheme === 'doom' ? 'bg-red-600' : activeTheme === 'portal' ? 'bg-blue-400 opacity-20' : activeTheme === 'deadspace' ? 'bg-cyan-500/40' : 'bg-cp-yellow'} mt-1`} />
           </div>
         </div>
         <div className="text-[8px] font-cp-mono mt-4 flex items-center gap-2">
@@ -89,11 +92,13 @@ export const SideBar: React.FC<SideBarProps> = ({ activeTab, onTabChange, active
 
       <nav className="flex-1 mt-2 overflow-y-auto">
         <div className="px-10 mb-6 flex items-center justify-between">
-          <span className="text-[8px] font-cp-mono text-cp-yellow/40 uppercase tracking-[0.3em]">Навигация</span>
+          <span className={`text-[8px] font-cp-mono ${activeTheme === 'portal' ? 'text-slate-400' : activeTheme === 'deadspace' ? 'text-cyan-400/40' : 'text-cp-yellow/40'} uppercase tracking-[0.3em]`}>
+            {activeTheme === 'portal' ? 'Navigation' : activeTheme === 'deadspace' ? 'RIG_INTERFACES' : 'Навигация'}
+          </span>
           <div className="flex gap-1">
-            <div className="w-1 h-1 bg-cp-yellow/20" />
-            <div className="w-1 h-1 bg-cp-yellow/40" />
-            <div className="w-1 h-1 bg-cp-yellow/60" />
+            <div className={`w-1 h-1 ${activeTheme === 'portal' ? 'bg-blue-200' : activeTheme === 'deadspace' ? 'bg-cyan-900' : 'bg-cp-yellow/20'}`} />
+            <div className={`w-1 h-1 ${activeTheme === 'portal' ? 'bg-blue-400' : activeTheme === 'deadspace' ? 'bg-cyan-600' : 'bg-cp-yellow/40'}`} />
+            <div className={`w-1 h-1 ${activeTheme === 'portal' ? 'bg-blue-600' : activeTheme === 'deadspace' ? 'bg-cyan-400' : 'bg-cp-yellow/60'}`} />
           </div>
         </div>
         {menuItems.map((item) => (
@@ -111,15 +116,26 @@ export const SideBar: React.FC<SideBarProps> = ({ activeTab, onTabChange, active
         <div className="px-10 mt-12">
           <div className="cp-diag-block">
             <div>
-              {activeTheme === 'stalker' ? 'СИГНАЛ: ОТЛИЧНЫЙ' : 'NETWORK PING: 24ms'}
+              {activeTheme === 'stalker' ? 'СИГНАЛ: ОТЛИЧНЫЙ' :
+                activeTheme === 'doom' ? 'LOCATION: HELL' :
+                  activeTheme === 'portal' ? 'ANALYSIS: COMPLETE' :
+                    activeTheme === 'deadspace' ? 'SYSTEM: READY' : 'NETWORK PING: 24ms'}
             </div>
             <div>
-              {activeTheme === 'stalker' ? 'ДАННЫЕ: ЗАГРУЖЕНЫ' : 'THREAT INDEX: MINIMAL'}
+              {activeTheme === 'stalker' ? 'ДАННЫЕ: ЗАГРУЖЕНЫ' :
+                activeTheme === 'doom' ? 'THREAT: EXTREME' :
+                  activeTheme === 'portal' ? 'TEST_STATUS: READY' :
+                    activeTheme === 'deadspace' ? 'BIOLINK: ACTIVE' : 'THREAT INDEX: MINIMAL'}
             </div>
             <div>
-              {activeTheme === 'stalker' ? 'КАНАЛ: АКТИВЕН' : 'NEURAL LINK: ACTIVE'}
+              {activeTheme === 'stalker' ? 'КАНАЛ: АКТИВЕН' :
+                activeTheme === 'doom' ? 'WEAPON: BF-G9000' :
+                  activeTheme === 'portal' ? 'NEURAL: OPTIMAL' :
+                    activeTheme === 'deadspace' ? 'LINK_ESTABLISHED' : 'NEURAL LINK: ACTIVE'}
             </div>
-            <div className="mt-2 text-[6px] opacity-30">LOAD_BUFFER: [#######---] 72%</div>
+            <div className="mt-2 text-[6px] opacity-30">
+              {activeTheme === 'deadspace' ? 'SUBJECT: ISAAC' : 'LOAD_BUFFER: [#######---] 72%'}
+            </div>
           </div>
         </div>
       </nav>
@@ -133,14 +149,14 @@ export const SideBar: React.FC<SideBarProps> = ({ activeTab, onTabChange, active
               className="cp-button flex items-center justify-center gap-2 py-3"
             >
               <Minimize2 size={12} className="relative z-10" />
-              <span className="relative z-10">СВЕРНУТЬ</span>
+              <span className="relative z-10">{activeTheme === 'portal' ? 'Sleep' : activeTheme === 'deadspace' ? 'SLEEP' : 'СВЕРНУТЬ'}</span>
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.02 }}
               className="cp-button cp-button-critical flex items-center justify-center gap-2 py-3"
             >
               <Power size={12} className="relative z-10" />
-              <span className="relative z-10">ВЫХОД</span>
+              <span className="relative z-10">{activeTheme === 'portal' ? 'Shutdown' : activeTheme === 'deadspace' ? 'OFFLINE' : 'ВЫХОД'}</span>
             </motion.button>
           </div>
 

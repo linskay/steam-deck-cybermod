@@ -99,6 +99,63 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ activeTheme = 'c
               </button>
             </div>
           </div>
+
+          {/* Doom Theme Option */}
+          <div className={`p-6 border ${activeTheme === 'doom' ? 'border-red-600 bg-red-600/10' : 'border-white/5 bg-white/[0.02]'} flex flex-col gap-4 relative group`}>
+            <div className="flex justify-between items-start">
+              <div>
+                <h4 className="font-cyber text-lg text-white uppercase tracking-tighter">DOOM // HUD</h4>
+                <p className="font-cp-mono text-[8px] text-red-500 mt-1 uppercase tracking-widest">Протокол: АГРЕССИЯ / БОЙ</p>
+              </div>
+              {activeTheme === 'doom' && <div className="px-2 py-1 bg-red-600 text-white font-cp-mono text-[8px] font-bold tracking-widest">READY</div>}
+            </div>
+            <div className="flex gap-4 mt-2">
+              <button
+                onClick={() => onThemeChange?.('doom')}
+                className="flex-1 h-10 bg-red-600/20 border border-red-600 hover:bg-red-600/40 text-red-500 font-cp-mono text-10px uppercase tracking-[0.2em] font-bold transition-none"
+              >
+                АКТИВИРОВАТЬ
+              </button>
+            </div>
+          </div>
+
+          {/* Portal Theme Option */}
+          <div className={`p-6 border ${activeTheme === 'portal' ? 'border-blue-400 bg-blue-50/10' : 'border-white/5 bg-white/[0.02]'} flex flex-col gap-4 relative group rounded-xl`}>
+            <div className="flex justify-between items-start">
+              <div>
+                <h4 className="font-sans font-light text-lg text-white">APERTURE SCIENCE</h4>
+                <p className="font-cp-mono text-[8px] text-blue-400 mt-1 uppercase tracking-widest">Протокол: ЧИСТОТА / ТЕСТ</p>
+              </div>
+              {activeTheme === 'portal' && <div className="px-2 py-1 bg-blue-500 text-white font-cp-mono text-[8px] rounded-full">READY</div>}
+            </div>
+            <div className="flex gap-4 mt-2">
+              <button
+                onClick={() => onThemeChange?.('portal')}
+                className="flex-1 h-10 bg-blue-500/10 border border-blue-500/30 hover:bg-blue-500 text-white font-sans text-xs uppercase tracking-widest rounded-lg transition-all"
+              >
+                Выбрать протокол
+              </button>
+            </div>
+          </div>
+
+          {/* Dead Space Theme Option */}
+          <div className={`p-6 border ${activeTheme === 'deadspace' ? 'border-cyan-400 bg-cyan-900/10' : 'border-white/5 bg-white/[0.02]'} flex flex-col gap-4 relative group rounded-sm`}>
+            <div className="flex justify-between items-start">
+              <div>
+                <h4 className="font-tech text-lg text-white tracking-[0.2em]">RIG // HOLO</h4>
+                <p className="font-cp-mono text-[8px] text-cyan-400 mt-1 uppercase tracking-widest">Протокол: ИММЕРСИВНОСТЬ / ВАКУУМ</p>
+              </div>
+              {activeTheme === 'deadspace' && <div className="px-2 py-1 bg-cyan-600 text-white font-cp-mono text-[8px] tracking-widest animate-pulse">ACTIVE</div>}
+            </div>
+            <div className="flex gap-4 mt-2">
+              <button
+                onClick={() => onThemeChange?.('deadspace')}
+                className="flex-1 h-10 bg-cyan-600/20 border border-cyan-400 hover:bg-cyan-400 text-black font-tech text-[10px] uppercase tracking-[0.3em] font-bold transition-all duration-500"
+              >
+                Инициализировать
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -1,4 +1,5 @@
-/* S.T.A.L.K.E.R. PDA Theme Styles */
+@import url('https://fonts.cdnfonts.com/css/amaz-stalker');
+@import url('https://fonts.googleapis.com/css2?family=Kelly+Slab&family=VT323&display=swap');
 
 .theme-stalker {
     --color-cp-yellow: #ffcc00;
@@ -13,9 +14,29 @@
     /* Dark Military Green */
     --color-cp-bg-tint: rgba(16, 20, 16, 0.98);
 
-    --font-cp-display: "JetBrains Mono", monospace;
-    --font-cp-mono: "JetBrains Mono", monospace;
-    --font-cp-body: "Inter", sans-serif;
+    --font-cp-display: 'AmazS.T.A.L.K.E.R.v.3.0', sans-serif;
+    --font-cp-mono: 'VT323', monospace;
+    --font-cp-body: 'Kelly Slab', serif;
+}
+
+.theme-stalker h1,
+.theme-stalker h2 {
+    font-family: 'AmazS.T.A.L.K.E.R.v.3.0', sans-serif !important;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px rgba(74, 222, 128, 0.5);
+}
+
+.theme-stalker h3,
+.theme-stalker .font-cyber {
+    font-family: 'Kelly Slab', serif !important;
+    text-transform: uppercase;
+}
+
+.theme-stalker .font-cp-mono,
+.theme-stalker .cp-diag-block,
+.theme-stalker [class*="text-["] {
+    font-family: 'VT323', monospace !important;
+    font-size: 1.1em;
 }
 
 /* 1. Эстетика ПДА */

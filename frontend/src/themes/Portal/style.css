@@ -1,0 +1,143 @@
+@import url('https://fonts.cdnfonts.com/css/univers-next-pro');
+
+.theme-portal {
+    --color-cp-yellow: #f1802d;
+    /* Aperture Orange */
+    --color-cp-cyan: #00a0d1;
+    /* Aperture Blue */
+    --color-cp-red: #e11d48;
+    --color-cp-black: #ffffff;
+    /* Sterile White Background */
+    --color-cp-dark: #f8fafc;
+    /* Very Light Grey */
+    --color-cp-bg-tint: rgba(255, 255, 255, 0.95);
+
+    --font-cp-display: 'Univers Next Pro', sans-serif;
+    --font-cp-mono: 'Univers Next Pro', sans-serif;
+    --font-cp-body: 'Univers Next Pro', sans-serif;
+}
+
+.theme-portal {
+    background-color: var(--color-cp-black);
+    color: #334155;
+    /* Dark Slate Gray for text */
+}
+
+/* 1. Стерильный Фон */
+.theme-portal .cp-grid-bg {
+    background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f1f5f9 100%);
+    background-image:
+        linear-gradient(rgba(0, 160, 209, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 160, 209, 0.05) 1px, transparent 1px);
+    background-size: 80px 80px;
+}
+
+.theme-portal .cp-circuit-lines {
+    display: none;
+}
+
+/* 2. Навигация Portal */
+.theme-portal .cp-nav-item {
+    background: transparent;
+    border: none;
+    margin-bottom: 4px;
+    border-radius: 12px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    clip-path: none;
+}
+
+.theme-portal .cp-nav-item:hover {
+    background: rgba(0, 160, 209, 0.05);
+    transform: scale(1.02);
+}
+
+.theme-portal .cp-nav-item.active {
+    background: #00a0d1;
+    color: white;
+}
+
+.theme-portal .cp-nav-item.active span {
+    color: white !important;
+}
+
+/* 3. Карточки Portal */
+.theme-portal .cp-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    clip-path: none;
+}
+
+.theme-portal .cp-card:hover {
+    border-color: #00a0d1;
+    box-shadow: 0 10px 15px -3px rgba(0, 160, 209, 0.1);
+}
+
+.theme-portal .cp-card::before {
+    display: none;
+    /* No top strip */
+}
+
+/* 4. Кнопки Portal */
+.theme-portal .cp-button {
+    background: #f1f5f9;
+    color: #00a0d1;
+    border: none;
+    border-radius: 9999px;
+    /* Pill shape */
+    font-weight: 500;
+    text-transform: none;
+    transition: all 0.3s ease-in-out;
+    clip-path: none !important;
+}
+
+.theme-portal .cp-button:hover {
+    background: #00a0d1;
+    color: white;
+    box-shadow: 0 4px 14px 0 rgba(0, 160, 209, 0.3);
+}
+
+.theme-portal .cp-button-critical {
+    color: #f1802d;
+    background: #fff7ed;
+}
+
+.theme-portal .cp-button-critical:hover {
+    background: #f1802d;
+    color: white;
+}
+
+/* 5. Диегетические элементы */
+.theme-portal .cp-diag-block {
+    background: #f8fafc;
+    color: #64748b;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    font-size: 8px;
+}
+
+/* 6. Анимации Portal */
+.theme-portal #root {
+    transition: background-color 0.8s ease;
+}
+
+.theme-portal .animate-scanline {
+    display: none;
+    /* No noise/lines in Aperture */
+}
+
+/* 7. Typography Overrides */
+.theme-portal h1,
+.theme-portal h2,
+.theme-portal h3,
+.theme-portal h4 {
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 300 !important;
+    letter-spacing: 0.1em !important;
+    color: #1e293b;
+}
+
+.theme-portal .selection:bg-cp-yellow {
+    background-color: var(--color-cp-yellow);
+}

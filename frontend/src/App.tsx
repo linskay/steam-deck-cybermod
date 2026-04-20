@@ -43,30 +43,49 @@ function App() {
           <div className="flex items-center gap-12">
             <div className="flex items-center gap-3">
               <span className="font-cp-mono text-[8px] text-cp-cyan/60 uppercase tracking-widest">
-                {activeTheme === 'stalker' ? 'КАНАЛ_СВЯЗИ' : 'MOD_LAYER_ID'}
+                {activeTheme === 'stalker' ? 'КАНАЛ_СВЯЗИ' :
+                  activeTheme === 'doom' ? 'BATTLE_ID' :
+                    activeTheme === 'portal' ? 'CHAMBER_ID' :
+                      activeTheme === 'deadspace' ? 'HOLO_LINK' : 'MOD_LAYER_ID'}
               </span>
-              <div className="w-10 h-5 border border-cp-cyan/30 flex items-center justify-center font-cp-mono text-[10px] text-cp-cyan bg-cp-cyan/5">15</div>
+              <div className="w-10 h-5 border border-cp-cyan/30 flex items-center justify-center font-cp-mono text-[10px] text-cp-cyan bg-cp-cyan/5">
+                {activeTheme === 'portal' ? '01' : activeTheme === 'doom' ? '666' : activeTheme === 'deadspace' ? '7B' : '15'}
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <span className="font-cp-mono text-[8px] text-cp-yellow/60 uppercase tracking-widest">
-                {activeTheme === 'stalker' ? 'ИНДЕКС_ЗОНЫ' : 'DECK_REP_INDEX'}
+                {activeTheme === 'stalker' ? 'ИНДЕКС_ЗОНЫ' :
+                  activeTheme === 'doom' ? 'THREAT_LVL' :
+                    activeTheme === 'portal' ? 'STABILITY' :
+                      activeTheme === 'deadspace' ? 'NODE_INDX' : 'DECK_REP_INDEX'}
               </span>
-              <div className="w-10 h-5 border border-cp-yellow/30 flex items-center justify-center font-cp-mono text-[10px] text-cp-yellow bg-cp-yellow/5">23</div>
+              <div className="w-10 h-5 border border-cp-yellow/30 flex items-center justify-center font-cp-mono text-[10px] text-cp-yellow bg-cp-yellow/5">
+                {activeTheme === 'portal' ? '100%' : activeTheme === 'doom' ? '99' : activeTheme === 'deadspace' ? '!!' : '23'}
+              </div>
             </div>
           </div>
 
           <div className="flex items-center gap-8 font-cp-mono text-[8px] tracking-[0.2em] text-gray-600">
             <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-green-500/50 rounded-full animate-pulse" />
-              <span className="text-green-500/60">
-                {activeTheme === 'stalker' ? 'СИГНАЛ: ЕСТЬ' : 'SYS_LINK: ACTIVE'}
+              <div className={`w-1.5 h-1.5 ${activeTheme === 'portal' ? 'bg-blue-400' : activeTheme === 'deadspace' ? 'bg-cyan-500' : 'bg-green-500'} rounded-full animate-pulse`} />
+              <span className={`${activeTheme === 'portal' ? 'text-blue-500' : activeTheme === 'doom' ? 'text-red-500' : activeTheme === 'deadspace' ? 'text-cyan-400' : 'text-green-500'} font-bold`}>
+                {activeTheme === 'stalker' ? 'СИГНАЛ: ЕСТЬ' :
+                  activeTheme === 'doom' ? 'STATUS: READY' :
+                    activeTheme === 'portal' ? 'SUBJECT_STATUS: OPTIMAL' :
+                      activeTheme === 'deadspace' ? 'HEALTH: STABLE' : 'SYS_LINK: ACTIVE'}
               </span>
             </div>
             <div className="hidden lg:flex items-center gap-4 border-l border-white/5 pl-8">
-              <span>PING: 24MS</span>
-              <span className="text-cp-yellow/40">BUFFER: [####------]</span>
+              <span>PING: {activeTheme === 'portal' ? '0MS' : activeTheme === 'deadspace' ? '--' : '24MS'}</span>
+              <span className={`${activeTheme === 'deadspace' ? 'text-cyan-400/60' : 'text-cp-yellow/40'}`}>
+                {activeTheme === 'portal' ? 'CAKE: [##########]' :
+                  activeTheme === 'deadspace' ? 'OXYGEN: [#########-]' : 'BUFFER: [####------]'}
+              </span>
               <span className="text-cp-cyan/40">
-                {activeTheme === 'stalker' ? 'ПДА_v.2.1' : 'v1.2.0_STABLE'}
+                {activeTheme === 'stalker' ? 'ПДА_v.2.1' :
+                  activeTheme === 'doom' ? 'HUD_v.6.6.6' :
+                    activeTheme === 'portal' ? 'APERTURE_v.01' :
+                      activeTheme === 'deadspace' ? 'RIG_v.2114' : 'v1.2.0_STABLE'}
               </span>
             </div>
           </div>
@@ -74,8 +93,24 @@ function App() {
 
         <div className="p-12 relative flex-1">
           {/* Background Decorative Elements - Cinematic Noise */}
-          <div className="absolute top-20 right-20 w-32 h-32 border-t border-r border-cp-yellow/10 pointer-events-none" />
-          <div className="absolute bottom-20 left-20 w-48 h-48 border-b border-l border-cp-cyan/10 pointer-events-none" />
+          {!['portal'].includes(activeTheme) && (
+            <>
+              <div className="absolute top-20 right-20 w-32 h-32 border-t border-r border-cp-yellow/10 pointer-events-none" />
+              <div className="absolute bottom-20 left-20 w-48 h-48 border-b border-l border-cp-cyan/10 pointer-events-none" />
+            </>
+          )}
+
+          {activeTheme === 'doom' && (
+            <div className="absolute inset-0 bg-red-900/5 mix-blend-overlay pointer-events-none" />
+          )}
+
+          {activeTheme === 'portal' && (
+            <div className="absolute inset-0 bg-blue-50/10 pointer-events-none" />
+          )}
+
+          {activeTheme === 'deadspace' && (
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(34,211,238,0.05)_0%,transparent_100%)] pointer-events-none" />
+          )}
 
           <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-cp-yellow/5 blur-[180px] pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cp-cyan/5 blur-[150px] pointer-events-none" />
@@ -84,34 +119,55 @@ function App() {
           <div className="max-w-7xl mx-auto relative z-10">
             <header className="mb-12">
               <div className="flex items-center gap-6 mb-3">
-                <div className="w-8 h-8 border border-cp-yellow flex items-center justify-center font-cp-mono text-sm text-cp-yellow bg-cp-yellow/5">!</div>
-                <h2 className="text-3xl font-cyber uppercase tracking-[0.4em] text-white">
-                  {activeTab === 'plugins' ? (activeTheme === 'stalker' ? 'СПИСОК_ЗАДАНИЙ' : 'ВСТРОЕННЫЕ_МОДУЛИ') :
-                    activeTab === 'decky' ? (activeTheme === 'stalker' ? 'СЕТЬ_ТОРГОВЦЕВ' : 'КАТАЛОГ_DECKY_REPO') :
-                      activeTab === 'zip' ? (activeTheme === 'stalker' ? 'ЗАГРУЗКА_ШИФРА' : 'ИМПОРТ_АРХИВА_LOCAL') :
-                        activeTab === 'settings' ? (activeTheme === 'stalker' ? 'НАСТРОЙКИ_ПДА' : 'КОНФИГУРАЦИЯ_SYSTEM') : 'АРХИВ_МОДОВ'}
+                <div className={`w-8 h-8 border ${activeTheme === 'portal' ? 'border-blue-400 rounded-full' : activeTheme === 'deadspace' ? 'border-cyan-400 rounded-sm' : 'border-cp-yellow'} flex items-center justify-center font-cp-mono text-sm theme-text-primary bg-cp-yellow/5`}>
+                  {activeTheme === 'portal' ? 'P' : activeTheme === 'deadspace' ? 'R' : '!'}
+                </div>
+                <h2 className={`text-3xl ${activeTheme === 'portal' ? 'font-sans font-light italic' : activeTheme === 'deadspace' ? 'font-tech tracking-[0.6em]' : 'font-cyber uppercase'} tracking-[0.4em] text-white theme-text-primary`}>
+                  {activeTab === 'plugins' ? (activeTheme === 'stalker' ? 'СПИСОК_ЗАДАНИЙ' : activeTheme === 'doom' ? 'ARMORY_MODULES' : activeTheme === 'portal' ? 'Module Repository' : activeTheme === 'deadspace' ? 'KINETIC_MODULES' : 'ВСТРОЕННЫЕ_МОДУЛИ') :
+                    activeTab === 'decky' ? (activeTheme === 'stalker' ? 'СЕТЬ_ТОРГОВЦЕВ' : activeTheme === 'doom' ? 'UAC_NETWORK' : activeTheme === 'portal' ? 'Database Access' : activeTheme === 'deadspace' ? 'EXT_NET_NODES' : 'КАТАЛОГ_DECKY_REPO') :
+                      activeTab === 'zip' ? (activeTheme === 'stalker' ? 'ЗАГРУЗКА_ШИФРА' : activeTheme === 'doom' ? 'IMPORT_DATA' : activeTheme === 'portal' ? 'Data Import' : activeTheme === 'deadspace' ? 'IMPORT_CHIPS' : 'ИМПОРТ_АРХИВА_LOCAL') :
+                        activeTab === 'settings' ? (activeTheme === 'stalker' ? 'НАСТРОЙКИ_ПДА' : activeTheme === 'doom' ? 'HUD_CONFIGURATION' : activeTheme === 'portal' ? 'Interface Parameters' : activeTheme === 'deadspace' ? 'RIG_CALIBRATION' : 'КОНФИГУРАЦИЯ_SYSTEM') : 'АРХИВ_МОДОВ'}
                 </h2>
               </div>
-              <div className="h-[1px] w-64 bg-gradient-to-r from-cp-yellow to-transparent" />
+              <div className={`h-[1px] w-64 ${activeTheme === 'portal' ? 'bg-blue-200' : activeTheme === 'deadspace' ? 'bg-cyan-500/30' : 'bg-gradient-to-r from-cp-yellow to-transparent'}`} />
             </header>
 
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
+                initial={{
+                  opacity: 0,
+                  scale: activeTheme === 'doom' ? 1.05 : activeTheme === 'portal' ? 0.98 : 1,
+                  y: activeTheme === 'portal' ? 20 : 0
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: activeTheme === 'portal' ? 1.02 : 1
+                }}
+                transition={{
+                  duration: activeTheme === 'doom' ? 0.05 : activeTheme === 'portal' ? 0.8 : 0.2,
+                  ease: activeTheme === 'portal' ? [0.4, 0, 0.2, 1] : "easeOut"
+                }}
                 className="grid grid-cols-1 xl:grid-cols-2 gap-x-10 gap-y-6"
               >
                 {loading ? (
-                  <div className="col-span-full h-80 border border-white/5 bg-cp-black/20 flex flex-col items-center justify-center gap-6">
-                    <div className="w-16 h-16 border-2 border-cp-yellow border-t-transparent animate-spin" />
+                  <div className={`col-span-full h-80 border ${activeTheme === 'portal' ? 'border-blue-100 bg-white rounded-3xl shadow-sm' : 'border-white/5 bg-cp-black/20'} flex flex-col items-center justify-center gap-6`}>
+                    <div className={`w-16 h-16 border-4 ${activeTheme === 'portal' ? 'border-blue-400' : 'border-cp-yellow'} border-t-transparent rounded-full animate-spin`} />
                     <div className="flex flex-col items-center gap-1">
-                      <span className="text-cp-yellow font-cp-mono uppercase text-[10px] animate-pulse tracking-widest">
-                        {activeTheme === 'stalker' ? 'ПОДКЛЮЧЕНИЕ К НООСФЕРЕ...' : 'Инициализация потока данных...'}
+                      <span className={`${activeTheme === 'portal' ? 'text-blue-500 font-sans' : 'text-cp-yellow font-cp-mono'} uppercase text-[10px] animate-pulse tracking-widest font-bold`}>
+                        {activeTheme === 'stalker' ? 'ПОДКЛЮЧЕНИЕ К НООСФЕРЕ...' :
+                          activeTheme === 'doom' ? 'LOADING COMBAT DATA...' :
+                            activeTheme === 'portal' ? 'PROCESSING TEST DATA...' : 'Инициализация потока данных...'}
                       </span>
-                      <span className="text-gray-700 font-cp-mono text-[7px] uppercase">
-                        {activeTheme === 'stalker' ? 'Дешифровка артефактов... 42%' : 'Decrypting Shards... 42%'}
+                      <span className="text-gray-400 font-cp-mono text-[7px] uppercase">
+                        {activeTheme === 'stalker' ? 'Дешифровка артефактов... 42%' :
+                          activeTheme === 'doom' ? 'SCANNING SECTOR... 666%' :
+                            activeTheme === 'portal' ? 'COMPILING RESULTS... 99%' : 'Decrypting Shards... 42%'}
                       </span>
                     </div>
                   </div>
@@ -134,16 +190,19 @@ function App() {
         </div>
 
         {/* Floating Background Noise Elements */}
-        <div className="absolute bottom-12 right-12 flex flex-col items-end opacity-20 pointer-events-none">
-          <div className="font-cp-mono text-[6px] text-cp-cyan mb-1">
-            {activeTheme === 'stalker' ? 'SIGNAL_STRENGTH // 88%' : 'DATA_STREAM_01 // SECURE'}
+        {!['portal'].includes(activeTheme) && (
+          <div className="absolute bottom-12 right-12 flex flex-col items-end opacity-20 pointer-events-none">
+            <div className={`font-cp-mono text-[6px] ${activeTheme === 'doom' ? 'text-red-500' : 'text-cp-cyan'} mb-1`}>
+              {activeTheme === 'stalker' ? 'SIGNAL_STRENGTH // 88%' :
+                activeTheme === 'doom' ? 'CORE_TEMP // CRITICAL' : 'DATA_STREAM_01 // SECURE'}
+            </div>
+            <div className="flex gap-0.5">
+              {[...Array(20)].map((_, i) => (
+                <div key={i} className={`w-1 h-3 ${activeTheme === 'doom' ? 'bg-red-600' : i % 3 === 0 ? 'bg-cp-cyan' : 'bg-white/10'}`} />
+              ))}
+            </div>
           </div>
-          <div className="flex gap-0.5">
-            {[...Array(20)].map((_, i) => (
-              <div key={i} className={`w-1 h-3 ${i % 3 === 0 ? 'bg-cp-cyan' : 'bg-white/10'}`} />
-            ))}
-          </div>
-        </div>
+        )}
       </main>
 
       {/* Global Interface Overlay Tiles */}

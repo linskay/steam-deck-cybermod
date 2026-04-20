@@ -3,6 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;700&display=swap');
 @import "./themes/Cyberpunk/style.css";
 @import "./themes/Stalker/style.css";
+@import "./themes/Doom/style.css";
+@import "./themes/Portal/style.css";
+@import "./themes/DeadSpace/style.css";
 
 @font-face {
   font-family: 'Cyberpunk';
