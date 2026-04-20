@@ -1,0 +1,167 @@
+/* Cyberpunk 2077 Premium Theme Styles */
+
+.theme-cyberpunk {
+    --color-cp-yellow: #fcee0a;
+    --color-cp-cyan: #00fbff;
+    --color-cp-red: #ff003c;
+    --color-cp-black: #050505;
+    --color-cp-dark: #121213;
+    --color-cp-bg-tint: rgba(18, 18, 19, 0.95);
+
+    --font-cp-display: "Cyberpunk", sans-serif;
+    --font-cp-mono: "JetBrains Mono", monospace;
+    --font-cp-body: "Outfit", sans-serif;
+}
+
+/* 1. Новая иерархия цветов и типографика */
+.cp-heading {
+    font-family: var(--font-cp-display);
+    color: #fff;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-left: 4px solid var(--color-cp-yellow);
+    padding-left: 15px;
+}
+
+.cp-label {
+    font-family: var(--font-cp-mono);
+    font-size: 10px;
+    color: var(--color-cp-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* 2. Улучшенное активное состояние боковой панели */
+.cp-nav-item {
+    position: relative;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+    background: rgba(252, 238, 10, 0.02);
+    border-left: 2px solid transparent;
+}
+
+.cp-nav-item:hover {
+    background: rgba(0, 251, 255, 0.08);
+    border-left-color: var(--color-cp-cyan);
+    transform: translateX(4px);
+}
+
+.cp-nav-item.active {
+    background: rgba(252, 238, 10, 0.1);
+    border-left: 4px solid var(--color-cp-yellow);
+}
+
+.cp-nav-item.active::after {
+    content: 'SELECTED';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-cp-mono);
+    font-size: 8px;
+    color: var(--color-cp-yellow);
+    letter-spacing: 1px;
+    opacity: 0.8;
+    animation: cp-scan-in 0.3s ease-out;
+}
+
+@keyframes cp-scan-in {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(10px);
+    }
+
+    to {
+        opacity: 0.8;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+/* 3. Архитектурный шум и сетки */
+.cp-grid-bg {
+    background-image:
+        linear-gradient(rgba(252, 238, 10, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(252, 238, 10, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+
+.cp-circuit-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 2px 2px, rgba(252, 238, 10, 0.05) 1px, transparent 0);
+    background-size: 20px 20px;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* 4. Карточки плагинов */
+.cp-card {
+    background: var(--color-cp-bg-tint);
+    border: 1px solid rgba(252, 238, 10, 0.1);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.cp-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--color-cp-yellow);
+    opacity: 0.3;
+}
+
+.cp-card:hover {
+    border-color: var(--color-cp-cyan);
+    box-shadow: 0 0 15px rgba(0, 251, 255, 0.1);
+}
+
+/* 5. Кнопки-панели */
+.cp-button {
+    font-family: var(--font-cp-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    background: rgba(0, 251, 255, 0.1);
+    border: 1px solid var(--color-cp-cyan);
+    color: var(--color-cp-cyan);
+    transition: all 0.2s;
+    cursor: pointer;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.cp-button:hover {
+    background: var(--color-cp-cyan);
+    color: #000;
+    box-shadow: 0 0 10px var(--color-cp-cyan);
+}
+
+.cp-button-critical {
+    border-color: var(--color-cp-red);
+    color: var(--color-cp-red);
+    background: rgba(255, 0, 60, 0.1);
+}
+
+.cp-button-critical:hover {
+    background: var(--color-cp-red);
+    color: #fff;
+    box-shadow: 0 0 10px var(--color-cp-red);
+}
+
+/* 6. Диегетические элементы */
+.cp-diag-block {
+    font-family: var(--font-cp-mono);
+    font-size: 7px;
+    color: rgba(252, 238, 10, 0.4);
+    line-height: 1.2;
+    text-transform: uppercase;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(252, 238, 10, 0.1);
+}

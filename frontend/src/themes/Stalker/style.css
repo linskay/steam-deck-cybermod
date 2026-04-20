@@ -1,0 +1,184 @@
+/* S.T.A.L.K.E.R. PDA Theme Styles */
+
+.theme-stalker {
+    --color-cp-yellow: #ffcc00;
+    /* Muddy Yellow */
+    --color-cp-cyan: #4ade80;
+    /* Acid Green */
+    --color-cp-red: #ef4444;
+    /* Soviet Red */
+    --color-cp-black: #080a08;
+    /* Almost Black Deep Green */
+    --color-cp-dark: #101410;
+    /* Dark Military Green */
+    --color-cp-bg-tint: rgba(16, 20, 16, 0.98);
+
+    --font-cp-display: "JetBrains Mono", monospace;
+    --font-cp-mono: "JetBrains Mono", monospace;
+    --font-cp-body: "Inter", sans-serif;
+}
+
+/* 1. Эстетика ПДА */
+.theme-stalker {
+    filter: sepia(0.2) contrast(1.1) brightness(0.9);
+    image-rendering: pixelated;
+}
+
+.theme-stalker .cp-grid-bg {
+    background-image:
+        linear-gradient(rgba(74, 222, 128, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74, 222, 128, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-color: var(--color-cp-black);
+    position: relative;
+}
+
+/* Эффект зернистости (Grain) */
+.theme-stalker .cp-grid-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 2. Навигация ПДА */
+.theme-stalker .cp-nav-item {
+    background: rgba(74, 222, 128, 0.02);
+    border: 1px solid rgba(74, 222, 128, 0.1);
+    margin-bottom: 4px;
+    clip-path: none;
+    /* No sleek cyberpunk cuts */
+    transition: none;
+    /* No smooth animations */
+}
+
+.theme-stalker .cp-nav-item:hover {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: var(--color-cp-cyan);
+    transform: none;
+}
+
+.theme-stalker .cp-nav-item.active {
+    background: rgba(74, 222, 128, 0.2);
+    border: 1px solid var(--color-cp-cyan);
+    box-shadow: 0 0 10px rgba(74, 222, 128, 0.1);
+}
+
+.theme-stalker .cp-nav-item.active::after {
+    content: '[СЛУШАЕТ]';
+    color: var(--color-cp-cyan);
+    font-size: 8px;
+    border: 1px solid var(--color-cp-cyan);
+    padding: 2px 4px;
+    background: var(--color-cp-black);
+    animation: stalker-flicker 4s infinite;
+}
+
+/* 3. Карточки ПДА */
+.theme-stalker .cp-card-glass {
+    background: var(--color-cp-bg-tint);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.theme-stalker .cp-card-glass::before {
+    background: var(--color-cp-cyan);
+    opacity: 0.1;
+}
+
+.theme-stalker .cp-card-glass:hover {
+    border-color: var(--color-cp-cyan);
+    background: rgba(74, 222, 128, 0.05);
+}
+
+/* 4. Кнопки ПДА (грубые прямоугольники) */
+.theme-stalker .cp-button {
+    background: #1a221a;
+    border: 1px solid #3a4a3a;
+    color: #4ade80;
+    clip-path: none;
+    transition: none;
+}
+
+.theme-stalker .cp-button:hover {
+    background: #2a3a2a;
+    border-color: #4ade80;
+    box-shadow: none;
+}
+
+.theme-stalker .cp-button-critical {
+    color: #ef4444;
+    border-color: #7f1d1d;
+}
+
+/* 5. Диегетические элементы */
+.theme-stalker .cp-diag-block {
+    background: #050705;
+    border: 1px solid #1a221a;
+    color: #4ade80;
+    font-family: var(--font-cp-mono);
+    opacity: 0.8;
+}
+
+/* 6. Анимации Stalker (flicker, noise) */
+@keyframes stalker-flicker {
+    0% {
+        opacity: 1;
+    }
+
+    5% {
+        opacity: 0.8;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    15% {
+        opacity: 0.9;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    51% {
+        opacity: 0.5;
+    }
+
+    52% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.theme-stalker .animate-pulse {
+    animation: stalker-flicker 0.2s step-end infinite;
+}
+
+.theme-stalker .animate-scanline {
+    opacity: 0.1;
+    background: rgba(74, 222, 128, 0.1);
+    height: 2px;
+}
+
+/* Убираем плавность Framer Motion в теме сталкера если возможно, 
+   но CSS не может отключить JS анимации легко. 
+   Мы можем сделать их визуально "ломаными" через фильтры. 
+*/
+.theme-stalker .motion-div {
+    transition: none !important;
+}
