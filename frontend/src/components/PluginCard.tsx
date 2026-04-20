@@ -36,7 +36,9 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
           </span>
         </div>
         <span className={`text-[6px] font-cp-mono ${activeTheme === 'portal' ? 'text-blue-300' : 'text-cp-cyan/40'}`}>
-          {activeTheme === 'portal' ? 'TEST_READY' : activeTheme === 'deadspace' ? 'HOLO_SYNC_STABLE' : 'SECURED_LINK_v2.1'}
+          {activeTheme === 'stalker' ? 'СИГНАЛ: СТАБИЛЬНЫЙ_A4' :
+            activeTheme === 'portal' ? 'TEST_READY' :
+              activeTheme === 'deadspace' ? 'HOLO_SYNC_STABLE' : 'SECURED_LINK_v2.1'}
         </span>
       </div>
 
@@ -82,13 +84,21 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
           <div className="mt-auto flex items-center justify-between pt-3">
             <div className="flex items-center gap-3">
               <div className="flex flex-col">
-                <span className="text-[5px] text-gray-600 font-cp-mono uppercase">{activeTheme === 'portal' ? 'data_fidelity' : 'link_quality'}</span>
-                <span className={`text-[7px] font-cp-mono uppercase ${activeTheme === 'portal' ? 'text-blue-500' : 'text-cp-cyan'}`}>Optimal</span>
+                <span className="text-[5px] text-gray-600 font-cp-mono uppercase">
+                  {activeTheme === 'stalker' ? 'РАДИАЦИЯ' : activeTheme === 'portal' ? 'data_fidelity' : 'link_quality'}
+                </span>
+                <span className={`text-[7px] font-cp-mono uppercase ${activeTheme === 'portal' ? 'text-blue-500' : 'text-cp-cyan'}`}>
+                  {activeTheme === 'stalker' ? '0.04 mSv' : 'Optimal'}
+                </span>
               </div>
               <div className={`h-4 w-[1px] ${activeTheme === 'portal' ? 'bg-blue-50' : 'bg-white/5'}`} />
               <div className="flex flex-col">
-                <span className="text-[5px] text-gray-600 font-cp-mono uppercase">{activeTheme === 'portal' ? 'test_index' : 'threat_level'}</span>
-                <span className={`text-[7px] font-cp-mono uppercase ${activeTheme === 'portal' ? 'text-orange-500' : 'text-cp-yellow'}`}>{activeTheme === 'portal' ? 'Alpha-01' : 'Minimal'}</span>
+                <span className="text-[5px] text-gray-600 font-cp-mono uppercase">
+                  {activeTheme === 'stalker' ? 'ИЗНОС' : activeTheme === 'portal' ? 'test_index' : 'threat_level'}
+                </span>
+                <span className={`text-[7px] font-cp-mono uppercase ${activeTheme === 'portal' ? 'text-orange-500' : 'text-cp-yellow'}`}>
+                  {activeTheme === 'stalker' ? 'МИНИМАЛЬНЫЙ' : activeTheme === 'portal' ? 'Alpha-01' : 'Minimal'}
+                </span>
               </div>
             </div>
 

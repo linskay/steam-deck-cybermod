@@ -2,183 +2,169 @@
 @import url('https://fonts.googleapis.com/css2?family=Kelly+Slab&family=VT323&display=swap');
 
 .theme-stalker {
-    --color-cp-yellow: #ffcc00;
-    /* Muddy Yellow */
+    --color-cp-yellow: #f59e0b;
+    /* Rusty Orange */
     --color-cp-cyan: #4ade80;
     /* Acid Green */
-    --color-cp-red: #ef4444;
-    /* Soviet Red */
-    --color-cp-black: #080a08;
-    /* Almost Black Deep Green */
-    --color-cp-dark: #101410;
-    /* Dark Military Green */
-    --color-cp-bg-tint: rgba(16, 20, 16, 0.98);
+    --color-cp-red: #991b1b;
+    /* Dried Blood Red */
+    --color-cp-black: #0c0e0c;
+    /* Dirty Metal Background */
+    --color-cp-dark: #1a1d1a;
+    /* Military Olive */
+    --color-cp-bg-tint: rgba(12, 14, 12, 0.98);
 
     --font-cp-display: 'AmazS.T.A.L.K.E.R.v.3.0', sans-serif;
     --font-cp-mono: 'VT323', monospace;
     --font-cp-body: 'Kelly Slab', serif;
 }
 
-.theme-stalker h1,
-.theme-stalker h2 {
-    font-family: 'AmazS.T.A.L.K.E.R.v.3.0', sans-serif !important;
-    letter-spacing: 2px;
-    text-shadow: 0 0 5px rgba(74, 222, 128, 0.5);
-}
-
-.theme-stalker h3,
-.theme-stalker .font-cyber {
-    font-family: 'Kelly Slab', serif !important;
-    text-transform: uppercase;
-}
-
-.theme-stalker .font-cp-mono,
-.theme-stalker .cp-diag-block,
-.theme-stalker [class*="text-["] {
-    font-family: 'VT323', monospace !important;
-    font-size: 1.1em;
-}
-
-/* 1. Эстетика ПДА */
+/* 1. Глобальная Эстетика ПДА (Грязь и Износ) */
 .theme-stalker {
-    filter: sepia(0.2) contrast(1.1) brightness(0.9);
-    image-rendering: pixelated;
+    filter: sepia(0.3) contrast(1.1) brightness(0.85);
+    background-color: var(--color-cp-black);
 }
 
 .theme-stalker .cp-grid-bg {
-    background-image:
-        linear-gradient(rgba(74, 222, 128, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(74, 222, 128, 0.05) 1px, transparent 1px);
-    background-size: 40px 40px;
     background-color: var(--color-cp-black);
+    background-image:
+        radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.6) 100%),
+        /* Vignette */
+        url("https://www.transparenttextures.com/patterns/natural-paper.png");
+    /* Dirty Texture */
+    background-size: cover, auto;
     position: relative;
+    overflow: hidden;
 }
 
-/* Эффект зернистости (Grain) */
+/* Шум и Помехи */
 .theme-stalker .cp-grid-bg::after {
     content: "";
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
     background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-    opacity: 0.15;
+    opacity: 0.25;
     pointer-events: none;
-    z-index: 1;
+    z-index: 5;
+    mix-blend-mode: overlay;
 }
 
-/* 2. Навигация ПДА */
+/* 2. Навигация ПДА (Грубые военные блоки) */
 .theme-stalker .cp-nav-item {
-    background: rgba(74, 222, 128, 0.02);
-    border: 1px solid rgba(74, 222, 128, 0.1);
-    margin-bottom: 4px;
+    background: #1a1d1a;
+    border: 1px solid #2d352d;
+    margin-bottom: 6px;
     clip-path: none;
-    /* No sleek cyberpunk cuts */
+    border-radius: 0;
+    box-shadow: inset 0 0 5px rgba(74, 222, 128, 0.05);
     transition: none;
-    /* No smooth animations */
 }
 
 .theme-stalker .cp-nav-item:hover {
-    background: rgba(74, 222, 128, 0.1);
+    background: #252a25;
     border-color: var(--color-cp-cyan);
-    transform: none;
+    color: var(--color-cp-cyan);
 }
 
 .theme-stalker .cp-nav-item.active {
-    background: rgba(74, 222, 128, 0.2);
-    border: 1px solid var(--color-cp-cyan);
-    box-shadow: 0 0 10px rgba(74, 222, 128, 0.1);
-}
-
-.theme-stalker .cp-nav-item.active::after {
-    content: '[СЛУШАЕТ]';
-    color: var(--color-cp-cyan);
-    font-size: 8px;
-    border: 1px solid var(--color-cp-cyan);
-    padding: 2px 4px;
-    background: var(--color-cp-black);
-    animation: stalker-flicker 4s infinite;
-}
-
-/* 3. Карточки ПДА */
-.theme-stalker .cp-card-glass {
-    background: var(--color-cp-bg-tint);
-    border: 1px solid rgba(74, 222, 128, 0.2);
-    box-shadow: none;
-    border-radius: 0;
-}
-
-.theme-stalker .cp-card-glass::before {
     background: var(--color-cp-cyan);
-    opacity: 0.1;
+    border: 1px solid var(--color-cp-cyan);
+    color: #0c0e0c !important;
 }
 
-.theme-stalker .cp-card-glass:hover {
-    border-color: var(--color-cp-cyan);
-    background: rgba(74, 222, 128, 0.05);
+.theme-stalker .cp-nav-item.active span {
+    color: #0c0e0c !important;
+    font-weight: 900;
 }
 
-/* 4. Кнопки ПДА (грубые прямоугольники) */
-.theme-stalker .cp-button {
-    background: #1a221a;
-    border: 1px solid #3a4a3a;
-    color: #4ade80;
+/* 3. Карточки ПДА (Старые экраны) */
+.theme-stalker .cp-card {
+    background: rgba(26, 29, 26, 0.95);
+    border: 1px solid #2d352d;
+    border-top: 4px solid #2d352d;
+    border-radius: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     clip-path: none;
-    transition: none;
+}
+
+.theme-stalker .cp-card:hover {
+    border-color: var(--color-cp-cyan);
+    background: #1f231f;
+}
+
+.theme-stalker .cp-card::before {
+    display: none;
+    /* No cyber strips */
+}
+
+/* 4. Кнопки ПДА (Hardware Buttons) */
+.theme-stalker .cp-button {
+    background: #2d352d;
+    border: 1px solid #3d453d;
+    color: #4ade80;
+    border-radius: 2px;
+    font-family: var(--font-cp-body);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    clip-path: none !important;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
 .theme-stalker .cp-button:hover {
-    background: #2a3a2a;
-    border-color: #4ade80;
-    box-shadow: none;
+    background: var(--color-cp-cyan);
+    color: #0c0e0c;
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+    transform: translate(1px, 1px);
 }
 
 .theme-stalker .cp-button-critical {
     color: #ef4444;
     border-color: #7f1d1d;
+    background: #3a1010;
 }
 
-/* 5. Диегетические элементы */
+/* 5. Диегетические элементы (PDA Terminal) */
 .theme-stalker .cp-diag-block {
-    background: #050705;
-    border: 1px solid #1a221a;
-    color: #4ade80;
+    background: #080a08;
+    border: 1px solid #1a1d1a;
+    color: var(--color-cp-cyan);
     font-family: var(--font-cp-mono);
-    opacity: 0.8;
+    border-radius: 0;
+    padding: 8px;
+    position: relative;
+    overflow: hidden;
 }
 
-/* 6. Анимации Stalker (flicker, noise) */
-@keyframes stalker-flicker {
+.theme-stalker .cp-diag-block::before {
+    content: "SCANNING ZONE...";
+    font-size: 6px;
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    opacity: 0.3;
+}
+
+/* 6. Анимации Stalker (flicker, scanlines) */
+@keyframes stalker-flicker-text {
     0% {
         opacity: 1;
     }
 
-    5% {
-        opacity: 0.8;
-    }
-
-    10% {
+    90% {
         opacity: 1;
     }
 
-    15% {
-        opacity: 0.9;
+    92% {
+        opacity: 0.7;
     }
 
-    20% {
+    94% {
         opacity: 1;
     }
 
-    50% {
-        opacity: 1;
-    }
-
-    51% {
+    96% {
         opacity: 0.5;
-    }
-
-    52% {
-        opacity: 1;
     }
 
     100% {
@@ -186,20 +172,38 @@
     }
 }
 
-.theme-stalker .animate-pulse {
-    animation: stalker-flicker 0.2s step-end infinite;
+.theme-stalker h1,
+.theme-stalker .font-cyber {
+    animation: stalker-flicker-text 6s infinite;
+}
+
+@keyframes stalker-scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(1000%);
+    }
 }
 
 .theme-stalker .animate-scanline {
-    opacity: 0.1;
-    background: rgba(74, 222, 128, 0.1);
-    height: 2px;
+    background: linear-gradient(to bottom, transparent, rgba(74, 222, 128, 0.05), transparent);
+    height: 100px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    animation: stalker-scanline 8s linear infinite;
+    pointer-events: none;
 }
 
-/* Убираем плавность Framer Motion в теме сталкера если возможно, 
-   но CSS не может отключить JS анимации легко. 
-   Мы можем сделать их визуально "ломаными" через фильтры. 
-*/
-.theme-stalker .motion-div {
-    transition: none !important;
+/* Убираем "чистоту" у PluginCard */
+.theme-stalker .text-cp-cyan {
+    color: #4ade80 !important;
+    text-shadow: 0 0 2px rgba(74, 222, 128, 0.3);
+}
+
+.theme-stalker .font-cp-mono {
+    color: #bbf7d0;
+    /* Soft green */
 }
