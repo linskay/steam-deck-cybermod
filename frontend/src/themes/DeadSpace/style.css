@@ -1,161 +1,169 @@
-@import url('https://fonts.cdnfonts.com/css/eurostile');
-@import url('https://fonts.cdnfonts.com/css/ds-digital');
+/* ================================================================
+   DEAD SPACE — RIG Hologram Theme
+   ALL selectors under .theme-deadspace
+   ================================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
+/* — Tokens ————————————————————————————————————————————————————— */
 .theme-deadspace {
-    --color-cp-yellow: #ffffff;
+    --color-cp-yellow: #06b6d4;
     --color-cp-cyan: #22d3ee;
-    /* RIG Cold Blue */
     --color-cp-red: #f43f5e;
-    --color-cp-black: #000000;
-    /* Void Black */
-    --color-cp-dark: #020617;
-    /* Deep Space */
-    --color-cp-bg-tint: rgba(0, 0, 0, 0.95);
+    --color-cp-black: #020408;
+    --color-cp-dark: #050d14;
+    --color-cp-bg-tint: rgba(2, 4, 8, 0.97);
 
-    --font-cp-display: 'Eurostile', sans-serif;
-    --font-cp-mono: 'DS-Digital', monospace;
-    --font-cp-body: 'Eurostile', sans-serif;
+    --font-cp-display: 'Share Tech Mono', 'JetBrains Mono', monospace;
+    --font-cp-mono: 'Share Tech Mono', 'JetBrains Mono', monospace;
+    --font-cp-body: 'Share Tech Mono', monospace;
+
+    /* Motion profile — float/holographic */
+    --motion-speed: 340ms;
+    --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.theme-deadspace {
-    background-color: var(--color-cp-black);
-    color: #e2e8f0;
-}
-
-/* 1. Голографический Фон */
+/* — Background — void + holographic lines ——————————————————— */
 .theme-deadspace .cp-grid-bg {
-    background: radial-gradient(circle at 50% 50%, #08121f 0%, #000000 100%);
-    background-image: none;
-    /* No grids in deep space */
-    position: relative;
+    background-color: var(--color-cp-black);
+    background-image:
+        radial-gradient(ellipse at 40% 30%, rgba(6, 182, 212, 0.06) 0%, transparent 60%),
+        linear-gradient(rgba(6, 182, 212, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 182, 212, 0.025) 1px, transparent 1px);
+    background-size: cover, 120px 120px, 120px 120px;
 }
 
-.theme-deadspace .cp-grid-bg::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(0deg, rgba(34, 211, 238, 0.03) 0px, transparent 1px, transparent 2px);
-    background-size: 100% 3px;
-    pointer-events: none;
-}
-
-.theme-deadspace .cp-circuit-lines {
-    display: none;
-}
-
-/* 2. Навигация Dead Space (Голограмма) */
+/* — Nav — hologram linker style ————————————————————————————— */
 .theme-deadspace .cp-nav-item {
     background: transparent;
-    border: none;
-    margin-bottom: 12px;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    clip-path: none;
-    opacity: 0.6;
-    border-left: 2px solid transparent;
+    border: 1px solid rgba(6, 182, 212, 0.08);
+    border-left: 1px solid transparent;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease),
+        opacity var(--motion-speed) var(--motion-ease);
 }
 
 .theme-deadspace .cp-nav-item:hover {
-    opacity: 1;
-    background: rgba(34, 211, 238, 0.05);
-    border-left-color: rgba(34, 211, 238, 0.5);
-    text-shadow: 0 0 10px var(--color-cp-cyan);
+    background: rgba(6, 182, 212, 0.05);
+    border-color: rgba(6, 182, 212, 0.2);
 }
 
 .theme-deadspace .cp-nav-item.active {
-    opacity: 1;
-    background: transparent;
-    border-left: 4px solid var(--color-cp-cyan);
-    transform: perspective(1000px) rotateY(-5deg) translateX(10px);
-    filter: drop-shadow(0 0 15px var(--color-cp-cyan));
+    background: rgba(6, 182, 212, 0.1);
+    border-left: 2px solid #06b6d4;
+    border-color: rgba(6, 182, 212, 0.2);
 }
 
-.theme-deadspace .cp-nav-item.active::after {
-    content: '[ LINKED ]';
-    color: var(--color-cp-cyan);
-    font-size: 7px;
-    letter-spacing: 2px;
-    opacity: 0.8;
-}
-
-/* 3. Карточки Dead Space */
+/* — Cards — hologram panels, diegetic language ———————————————— */
 .theme-deadspace .cp-card {
-    background: transparent;
-    border: 1px solid rgba(34, 211, 238, 0.1);
-    box-shadow: none;
-    clip-path: none;
-    transition: all 0.6s ease;
+    background: rgba(5, 13, 20, 0.85);
+    border: 1px solid rgba(6, 182, 212, 0.1);
+    border-top: 1px solid rgba(6, 182, 212, 0.25);
+    box-shadow: 0 0 24px rgba(6, 182, 212, 0.04), inset 0 1px 0 rgba(6, 182, 212, 0.06);
+    transition: border-color var(--motion-speed) var(--motion-ease),
+        box-shadow var(--motion-speed) var(--motion-ease);
 }
 
 .theme-deadspace .cp-card:hover {
-    border-color: rgba(34, 211, 238, 0.4);
-    background: rgba(34, 211, 238, 0.02);
-    transform: translateY(-5px);
+    border-color: rgba(6, 182, 212, 0.25);
+    box-shadow: 0 0 32px rgba(6, 182, 212, 0.1), inset 0 1px 0 rgba(6, 182, 212, 0.1);
 }
 
 .theme-deadspace .cp-card::before {
-    display: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.5), transparent);
 }
 
-/* 4. Кнопки Dead Space (парящие) */
+/* — Buttons — floating holographic ——————————————————————————— */
 .theme-deadspace .cp-button {
     background: transparent;
-    color: var(--color-cp-cyan);
-    border: 1px solid rgba(34, 211, 238, 0.2);
-    font-weight: 300;
-    letter-spacing: 0.2em;
-    padding: 10px 20px;
-    clip-path: none !important;
-    transition: all 0.4s ease;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    color: #22d3ee;
+    font-family: var(--font-cp-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    clip-path: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease),
+        box-shadow var(--motion-speed) var(--motion-ease);
 }
 
 .theme-deadspace .cp-button:hover {
-    background: var(--color-cp-cyan);
-    color: black;
-    box-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
+    background: rgba(6, 182, 212, 0.1);
+    border-color: rgba(6, 182, 212, 0.6);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
 }
 
 .theme-deadspace .cp-button-critical {
+    border-color: rgba(244, 63, 94, 0.4);
     color: #f43f5e;
-    border-color: rgba(244, 63, 94, 0.3);
-}
-
-/* 5. Диегетические элементы */
-.theme-deadspace .cp-diag-block {
     background: transparent;
-    color: #22d3ee;
-    border: none;
-    border-left: 1px solid rgba(34, 211, 238, 0.2);
+}
+
+.theme-deadspace .cp-button-critical:hover {
+    background: rgba(244, 63, 94, 0.1);
+    border-color: rgba(244, 63, 94, 0.7);
+    box-shadow: 0 0 12px rgba(244, 63, 94, 0.2);
+}
+
+/* — Diegetic block — holographic terminal ——————————————————— */
+.theme-deadspace .cp-diag-block {
+    background: rgba(2, 15, 25, 0.8);
+    border: 1px solid rgba(6, 182, 212, 0.12);
+    border-left: 2px solid rgba(6, 182, 212, 0.4);
+    color: rgba(6, 182, 212, 0.7);
     font-family: var(--font-cp-mono);
-    opacity: 0.5;
+    font-size: 8px;
+    letter-spacing: 1px;
+    padding: 10px;
+    text-transform: uppercase;
 }
 
-/* 6. Анимации Dead Space */
-@keyframes holo-glow {
-    0% {
-        filter: brightness(1);
-        opacity: 0.8;
+/* — Typography — strict, quiet ——————————————————————————————— */
+.theme-deadspace h1,
+.theme-deadspace h2,
+.theme-deadspace h3 {
+    font-family: var(--font-cp-display);
+    font-weight: 400;
+    letter-spacing: 4px;
+    color: rgba(6, 182, 212, 0.9);
+}
+
+/* Holographic fade-in on active elements */
+@keyframes holo-appear {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+        filter: brightness(2);
     }
 
-    50% {
-        filter: brightness(1.2);
+    to {
         opacity: 1;
-    }
-
-    100% {
+        transform: translateY(0);
         filter: brightness(1);
-        opacity: 0.8;
     }
 }
 
-.theme-deadspace .active {
-    animation: holo-glow 3s infinite ease-in-out;
+.theme-deadspace .cp-nav-item.active {
+    animation: holo-appear var(--motion-speed) var(--motion-ease);
 }
 
-.theme-deadspace .animate-scanline {
-    opacity: 0.05;
-    background: rgba(34, 211, 238, 0.2);
+/* — Color utilities ——————————————————————————————————————————— */
+.theme-deadspace .text-cp-yellow {
+    color: #06b6d4;
 }
 
-.theme-deadspace .motion-div {
-    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+.theme-deadspace .text-cp-cyan {
+    color: #22d3ee;
+}
+
+.theme-deadspace .bg-cp-yellow {
+    background-color: #06b6d4;
 }

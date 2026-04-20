@@ -1,73 +1,44 @@
-# React + TypeScript + Vite
+# CyberMod — Theme System Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CyberMod поддерживает 5 игровых вселенных.  
+Переключение в **Настройки → Оболочка интерфейса**.
 
-Currently, two official plugins are available:
+## Архитектура тем
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Слой | Что меняет | Где |
+|---|---|---|
+| **A — Semantic Core** | Метки навигации, кнопки, заголовки | Всегда фиксированы в компонентах |
+| **B — Theme Tokens** | Цвета, шрифт, анимация | `themes/<name>/style.css` |
+| **C — Flavor Pack** | Хинты меню, телеметрия header | `themes/themeConfig.ts` |
 
-## React Compiler
+## Как добавить тему
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Создать `src/themes/MyTheme/style.css` — все правила под `.theme-mytheme`
+2. Добавить запись в `src/themes/themeConfig.ts` (тип `ThemeConfig`)
+3. Добавить импорт в `index.css`
+4. Добавить `id` в тип `ThemeId`
 
-## Expanding the ESLint configuration
+## Правила именования
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- CSS класс темы: `.theme-{id}` (нижний регистр, без спецсимволов)
+- Все CSS-правила темы **только** под `.theme-{id} .selector`
+- Никаких глобальных overrides, `!important`, `* { ... }`
+- Motion только через `--motion-speed` и `--motion-ease` из токенов
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Motion профили
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+| Тема | Speed | Ease |
+|---|---|---|
+| Cyberpunk | 180ms | cubic-bezier sharp |
+| Stalker | 140ms | steps(2) |
+| DOOM | 80ms | steps(1) |
+| Portal | 280ms | smooth ease |
+| Dead Space | 340ms | holographic float |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Разработка
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd frontend
+npm install
+npm run dev
 ```

@@ -1,145 +1,132 @@
-/* DOOM Combat HUD Theme Styles */
+/* ================================================================
+   DOOM — Combat HUD Theme
+   ALL selectors under .theme-doom
+   ================================================================ */
 
+/* — Tokens ————————————————————————————————————————————————————— */
 .theme-doom {
-    --color-cp-yellow: #ff9900;
-    --color-cp-cyan: #ff3300;
-    /* Intense Red-Orange */
-    --color-cp-red: #ff0000;
-    /* Pure Blood Red */
+    --color-cp-yellow: #ff6600;
+    --color-cp-cyan: #ff2200;
+    --color-cp-red: #cc0000;
     --color-cp-black: #000000;
-    /* Pure Black */
-    --color-cp-dark: #110000;
-    /* Deep Dark Red/Black */
-    --color-cp-bg-tint: rgba(0, 0, 0, 0.9);
+    --color-cp-dark: #0d0000;
+    --color-cp-bg-tint: rgba(0, 0, 0, 0.95);
 
     --font-cp-display: "Cyberpunk", sans-serif;
-    /* Using bold cyberpunk for now */
     --font-cp-mono: "JetBrains Mono", monospace;
-    --font-cp-body: "Inter", sans-serif;
+    --font-cp-body: "JetBrains Mono", sans-serif;
+
+    /* Motion profile — snap/hard-cut */
+    --motion-speed: 80ms;
+    --motion-ease: steps(1);
 }
 
-.theme-doom {
-    background-color: var(--color-cp-black);
-}
-
-/* 1. Агрессивный Фон */
+/* — Background ————————————————————————————————————————————————— */
 .theme-doom .cp-grid-bg {
-    background: radial-gradient(circle at 50% 50%, #220000 0%, #000000 100%);
-    background-size: 100% 100%;
+    background: radial-gradient(ellipse at 50% 80%, #1a0000 0%, #000000 70%);
 }
 
 .theme-doom .cp-circuit-lines {
     display: none;
-    /* No tech lines for Doom */
 }
 
-/* 2. Навигация DOOM */
+/* — Nav — tactical lock style ————————————————————————————————— */
 .theme-doom .cp-nav-item {
     background: transparent;
-    border: 2px solid #330000;
-    margin-bottom: 8px;
-    clip-path: none;
-    transition: none !important;
+    border: 2px solid #2a0000;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease);
 }
 
 .theme-doom .cp-nav-item:hover {
-    background: #440000;
-    border-color: #ff0000;
-    transform: none;
+    background: #1c0000;
+    border-color: #880000;
 }
 
 .theme-doom .cp-nav-item.active {
-    background: #880000;
-    border: 4px solid #ff0000;
-    color: white;
+    background: #330000;
+    border-color: #cc0000;
+    border-left: 4px solid #ff0000;
 }
 
+/* Remove cartoon banner from active state */
 .theme-doom .cp-nav-item.active::after {
-    content: '>> ACTIVE <<';
-    font-weight: 900;
-    color: white;
-    background: #ff0000;
-    padding: 2px 8px;
-    font-size: 8px;
-    animation: doom-snap 0.1s steps(2) infinite alternate;
+    display: none;
 }
 
-/* 3. Карточки DOOM */
+/* — Cards — armored panels ——————————————————————————————————— */
 .theme-doom .cp-card {
-    background: #0a0000;
-    border: 4px solid #220000;
-    clip-path: none;
-}
-
-.theme-doom .cp-card:hover {
-    border-color: #ff0000;
-    background: #150000;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+    background: #080000;
+    border: 2px solid #1a0000;
+    border-top: 4px solid #330000;
+    transition: border-color var(--motion-speed) var(--motion-ease);
 }
 
 .theme-doom .cp-card::before {
-    height: 8px;
-    background: #ff0000;
-    opacity: 1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #cc0000;
+    opacity: 0.8;
 }
 
-/* 4. Кнопки DOOM (массивные и жесткие) */
+.theme-doom .cp-card:hover {
+    border-color: #880000;
+}
+
+/* — Buttons — mass/weight/impact ————————————————————————————— */
 .theme-doom .cp-button {
-    background: #ff0000;
-    color: white;
-    border: none;
-    font-weight: 900;
-    padding: 12px 24px;
+    background: #1a0000;
+    color: #ff3300;
+    border: 2px solid #440000;
+    font-family: var(--font-cp-mono);
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     clip-path: none;
-    transition: none !important;
-    text-shadow: 2px 2px 0 #000;
+    padding: 10px 18px;
+    cursor: pointer;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease);
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.5);
 }
 
 .theme-doom .cp-button:hover {
-    background: #cc0000;
-    transform: scale(1.05);
-    /* Quick snap scale */
+    background: #330000;
+    border-color: #cc0000;
+    color: #fff;
 }
 
 .theme-doom .cp-button-critical {
-    background: #000;
-    color: #ff0000;
-    border: 3px solid #ff0000;
+    background: #cc0000;
+    color: #fff;
+    border-color: #ff0000;
 }
 
-/* 5. Диегетические элементы */
+.theme-doom .cp-button-critical:hover {
+    background: #ff0000;
+}
+
+/* — Diegetic block ———————————————————————————————————————————— */
 .theme-doom .cp-diag-block {
-    background: #220000;
-    color: #ff0000;
-    border: 2px solid #ff0000;
-    font-weight: bold;
-    letter-spacing: 2px;
+    background: #0d0000;
+    color: #cc2200;
+    border: 1px solid #330000;
+    border-left: 3px solid #ff0000;
+    font-family: var(--font-cp-mono);
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 10px;
+    text-transform: uppercase;
 }
 
-/* 6. Анимации DOOM (Snap/Рывки) */
-@keyframes doom-snap {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    100% {
-        transform: scale(1.02);
-        opacity: 0.95;
-    }
-}
-
-.theme-doom * {
-    transition: none !important;
-    animation-duration: 0.1s !important;
-}
-
-/* 7. Interface Overlays */
-.theme-doom .fixed.border-\[15px\] {
-    border-color: rgba(255, 0, 0, 0.05);
-}
-
+/* — Scanline ——————————————————————————————— */
 .theme-doom .animate-scanline {
-    background: rgba(255, 0, 0, 0.1);
-    height: 4px;
+    background: rgba(255, 0, 0, 0.06);
+    height: 3px;
 }

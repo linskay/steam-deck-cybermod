@@ -1,143 +1,160 @@
-@import url('https://fonts.cdnfonts.com/css/univers-next-pro');
+/* ================================================================
+   PORTAL — Aperture Science Theme
+   ALL selectors under .theme-portal
+   ================================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
 
+/* — Tokens ————————————————————————————————————————————————————— */
 .theme-portal {
-    --color-cp-yellow: #f1802d;
-    /* Aperture Orange */
-    --color-cp-cyan: #00a0d1;
-    /* Aperture Blue */
-    --color-cp-red: #e11d48;
-    --color-cp-black: #ffffff;
-    /* Sterile White Background */
-    --color-cp-dark: #f8fafc;
-    /* Very Light Grey */
-    --color-cp-bg-tint: rgba(255, 255, 255, 0.95);
+    --color-cp-yellow: #f97316;
+    --color-cp-cyan: #3b82f6;
+    --color-cp-red: #ef4444;
+    --color-cp-black: #f8fafc;
+    --color-cp-dark: #f1f5f9;
+    --color-cp-bg-tint: rgba(255, 255, 255, 0.98);
 
-    --font-cp-display: 'Univers Next Pro', sans-serif;
-    --font-cp-mono: 'Univers Next Pro', sans-serif;
-    --font-cp-body: 'Univers Next Pro', sans-serif;
+    --font-cp-display: 'Inter', sans-serif;
+    --font-cp-mono: 'JetBrains Mono', monospace;
+    --font-cp-body: 'Inter', sans-serif;
+
+    /* Motion profile — clean/fluid */
+    --motion-speed: 280ms;
+    --motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.theme-portal {
-    background-color: var(--color-cp-black);
-    color: #334155;
-    /* Dark Slate Gray for text */
-}
-
-/* 1. Стерильный Фон */
+/* — Background — sterile lab ————————————————————————————————— */
 .theme-portal .cp-grid-bg {
-    background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f1f5f9 100%);
+    background-color: #f8fafc;
     background-image:
-        linear-gradient(rgba(0, 160, 209, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 160, 209, 0.05) 1px, transparent 1px);
+        linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
     background-size: 80px 80px;
 }
 
-.theme-portal .cp-circuit-lines {
-    display: none;
+/* Aperture geometric marker — corner cross */
+.theme-portal .cp-grid-bg::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 32px;
+    height: 32px;
+    border-top: 2px solid rgba(249, 115, 22, 0.3);
+    border-right: 2px solid rgba(249, 115, 22, 0.3);
+    pointer-events: none;
 }
 
-/* 2. Навигация Portal */
+/* — Nav — lab module tabs ———————————————————————————————————— */
 .theme-portal .cp-nav-item {
     background: transparent;
-    border: none;
-    margin-bottom: 4px;
-    border-radius: 12px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    clip-path: none;
+    border: 1px solid #e2e8f0;
+    border-left: 2px solid transparent;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease);
 }
 
 .theme-portal .cp-nav-item:hover {
-    background: rgba(0, 160, 209, 0.05);
-    transform: scale(1.02);
+    background: rgba(59, 130, 246, 0.05);
+    border-color: rgba(59, 130, 246, 0.3);
 }
 
 .theme-portal .cp-nav-item.active {
-    background: #00a0d1;
-    color: white;
+    background: rgba(59, 130, 246, 0.08);
+    border-left: 3px solid #3b82f6;
+    border-color: rgba(59, 130, 246, 0.2);
 }
 
-.theme-portal .cp-nav-item.active span {
-    color: white !important;
-}
-
-/* 3. Карточки Portal */
+/* — Cards — lab module panels ———————————————————————————————— */
 .theme-portal .cp-card {
-    background: white;
+    background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 24px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    clip-path: none;
+    border-top: 3px solid rgba(59, 130, 246, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: border-color var(--motion-speed) var(--motion-ease),
+        box-shadow var(--motion-speed) var(--motion-ease);
 }
 
 .theme-portal .cp-card:hover {
-    border-color: #00a0d1;
-    box-shadow: 0 10px 15px -3px rgba(0, 160, 209, 0.1);
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.1);
 }
 
 .theme-portal .cp-card::before {
     display: none;
-    /* No top strip */
 }
 
-/* 4. Кнопки Portal */
+/* Orange portal accent on hover */
+.theme-portal .cp-card:hover .cp-card-accent {
+    background: rgba(249, 115, 22, 0.15);
+}
+
+/* — Buttons — rounded flat ——————————————————————————————————— */
 .theme-portal .cp-button {
-    background: #f1f5f9;
-    color: #00a0d1;
-    border: none;
-    border-radius: 9999px;
-    /* Pill shape */
-    font-weight: 500;
+    background: transparent;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    font-family: var(--font-cp-body);
+    font-size: 11px;
     text-transform: none;
-    transition: all 0.3s ease-in-out;
-    clip-path: none !important;
+    letter-spacing: 0;
+    clip-path: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease),
+        color var(--motion-speed) var(--motion-ease);
 }
 
 .theme-portal .cp-button:hover {
-    background: #00a0d1;
-    color: white;
-    box-shadow: 0 4px 14px 0 rgba(0, 160, 209, 0.3);
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
 }
 
 .theme-portal .cp-button-critical {
-    color: #f1802d;
-    background: #fff7ed;
+    border-color: #fca5a5;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
 }
 
 .theme-portal .cp-button-critical:hover {
-    background: #f1802d;
-    color: white;
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #fff;
 }
 
-/* 5. Диегетические элементы */
+/* — Diegetic block — lab module terminal ————————————————————— */
 .theme-portal .cp-diag-block {
-    background: #f8fafc;
-    color: #64748b;
-    border-radius: 12px;
+    background: #f1f5f9;
     border: 1px solid #e2e8f0;
+    border-left: 3px solid #3b82f6;
+    color: #64748b;
+    font-family: var(--font-cp-mono);
     font-size: 8px;
+    padding: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-/* 6. Анимации Portal */
-.theme-portal #root {
-    transition: background-color 0.8s ease;
-}
-
-.theme-portal .animate-scanline {
-    display: none;
-    /* No noise/lines in Aperture */
-}
-
-/* 7. Typography Overrides */
+/* — Typography ——————————————————————————————————————————————— */
 .theme-portal h1,
 .theme-portal h2,
-.theme-portal h3,
-.theme-portal h4 {
-    font-family: 'Outfit', sans-serif !important;
-    font-weight: 300 !important;
-    letter-spacing: 0.1em !important;
-    color: #1e293b;
+.theme-portal h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.02em;
 }
 
-.theme-portal .selection:bg-cp-yellow {
-    background-color: var(--color-cp-yellow);
+/* Orange + Blue spatial cues */
+.theme-portal .text-cp-yellow {
+    color: #f97316;
+}
+
+.theme-portal .text-cp-cyan {
+    color: #3b82f6;
+}
+
+.theme-portal .border-cp-yellow {
+    border-color: rgba(249, 115, 22, 0.4);
 }

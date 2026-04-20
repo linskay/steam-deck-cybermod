@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Download, Info, Trash2, ShieldCheck } from 'lucide-react';
+import { Download, Info, Trash2 } from 'lucide-react';
+import { getTheme } from '../themes/themeConfig';
 
 export interface Plugin {
   id: string;
@@ -19,113 +19,95 @@ interface PluginCardProps {
 }
 
 export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'cyberpunk' }) => {
+  const theme = getTheme(activeTheme);
+  const isDark = activeTheme !== 'portal';
+
   return (
-    <motion.div
-      whileHover={{ scale: 1.01 }}
-      className={`cp-card flex flex-col group min-h-[160px] relative overflow-hidden`}
-    >
-      {/* Upper Info Strip */}
-      <div className={`absolute top-0 left-0 w-full px-4 py-1 flex items-center justify-between border-b ${activeTheme === 'portal' ? 'border-blue-100 bg-blue-50/50' : activeTheme === 'deadspace' ? 'border-cyan-500/10 bg-cyan-900/10' : 'border-cp-yellow/10 bg-cp-yellow/5'}`}>
-        <div className="flex items-center gap-2">
-          <ShieldCheck size={10} className={`${activeTheme === 'portal' ? 'text-blue-400' : activeTheme === 'deadspace' ? 'text-cyan-400' : 'text-cp-yellow/50'}`} />
-          <span className={`text-[6px] font-cp-mono tracking-widest uppercase ${activeTheme === 'portal' ? 'text-slate-400' : activeTheme === 'deadspace' ? 'text-cyan-400' : 'text-cp-yellow/40'}`}>
-            {activeTheme === 'stalker' ? 'ANALYST_ID' :
-              activeTheme === 'doom' ? 'BATTLE_ID' :
-                activeTheme === 'portal' ? 'CHAMBER_ID' :
-                  activeTheme === 'deadspace' ? 'NODE_ID' : 'ID'}_{plugin.id.split('-')[0] || 'SYS'}
-          </span>
-        </div>
-        <span className={`text-[6px] font-cp-mono ${activeTheme === 'portal' ? 'text-blue-300' : 'text-cp-cyan/40'}`}>
-          {activeTheme === 'stalker' ? 'СИГНАЛ: СТАБИЛЬНЫЙ_A4' :
-            activeTheme === 'portal' ? 'TEST_READY' :
-              activeTheme === 'deadspace' ? 'HOLO_SYNC_STABLE' : 'SECURED_LINK_v2.1'}
-        </span>
+    <div className={`cp-card flex flex-col group min-h-[160px] relative overflow-hidden`}>
+
+      {/* ── Top strip ─────────────────────────────────────── */}
+      <div className={`px-4 py-1.5 flex items-center justify-between border-b text-[6px] font-cp-mono uppercase tracking-widest ${isDark ? 'border-white/5 text-gray-600' : 'border-gray-100 text-gray-400'
+        }`}>
+        <span>ID_{plugin.id.split('-')[0].toUpperCase()}</span>
+        <span>{plugin.installed ? '● ACTIVE' : '○ INACTIVE'}</span>
       </div>
 
-      <div className="flex flex-1 mt-6">
-        {/* Left Side: Thumbnail with scan effect */}
-        <div className={`w-28 ${activeTheme === 'portal' ? 'bg-slate-50' : 'bg-cyber-black'} flex-shrink-0 relative overflow-hidden flex items-center justify-center border-r ${activeTheme === 'portal' ? 'border-blue-50' : 'border-white/5'}`}>
+      <div className="flex flex-1 mt-0">
+        {/* ── Thumbnail ─────────────────────────────────────── */}
+        <div className={`w-24 flex-shrink-0 relative overflow-hidden flex items-center justify-center border-r ${isDark ? 'bg-black/40 border-white/5' : 'bg-gray-50 border-gray-100'
+          }`}>
           <img
-            src={plugin.image || "https://placeholder.com/150"}
+            src={plugin.image || 'https://picsum.photos/seed/' + plugin.id + '/150/150'}
             alt={plugin.name}
-            className={`w-full h-full object-cover transition-opacity duration-700 ${activeTheme === 'portal' ? 'opacity-80 group-hover:opacity-100' : 'opacity-20 group-hover:opacity-60'}`}
+            className={`w-full h-full object-cover transition-opacity duration-500 ${isDark ? 'opacity-20 group-hover:opacity-50' : 'opacity-60 group-hover:opacity-90'
+              }`}
           />
-          {activeTheme !== 'portal' && <div className="absolute inset-0 bg-gradient-to-r from-cp-black via-transparent to-transparent opacity-80" />}
-
-          {/* Scanline effect on thumbnail */}
-          <div className="absolute inset-0 bg-cp-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            <div className={`w-full h-[1px] ${activeTheme === 'doom' ? 'bg-red-600' : 'bg-cp-cyan/20'} absolute top-0 animate-scanline`} style={{ animationDuration: '2s' }} />
-          </div>
+          {isDark && (
+            <div className="absolute inset-0 bg-gradient-to-r from-cp-black/60 via-transparent to-transparent pointer-events-none" />
+          )}
         </div>
 
-        {/* Right Side: Content */}
-        <div className="flex-1 p-5 relative flex flex-col">
-          <div className="flex justify-between items-start">
-            <div className="flex flex-col">
-              <h3 className={`text-xs tracking-widest group-hover:text-cp-yellow transition-colors truncate ${activeTheme === 'portal' ? 'font-sans font-medium text-slate-800' : activeTheme === 'deadspace' ? 'font-tech text-cyan-300' : 'font-cyber text-white'}`}>
-                {plugin.name.toUpperCase()}
+        {/* ── Content ────────────────────────────────────────── */}
+        <div className="flex-1 p-4 flex flex-col relative">
+          <div className="flex justify-between items-start gap-2">
+            <div className="flex flex-col min-w-0">
+              <h3 className={`text-[11px] font-medium tracking-wider truncate ${isDark ? 'text-white group-hover:text-cp-yellow' : 'text-slate-800'
+                } transition-colors`}>
+                {plugin.name}
               </h3>
-              <div className="flex items-center gap-2 mt-1">
-                <span className={`text-[8px] font-cp-mono uppercase ${activeTheme === 'portal' ? 'text-blue-400' : 'text-cp-cyan'}`}>v{plugin.version}</span>
-                <span className={`text-[8px] font-cp-mono uppercase ${activeTheme === 'portal' ? 'text-slate-300' : 'text-gray-600'}`}>/ {activeTheme === 'stalker' ? 'АВТОР' : activeTheme === 'portal' ? 'SUBJECT' : 'DEV'}</span>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className={`text-[8px] font-cp-mono ${isDark ? 'text-cp-cyan' : 'text-blue-500'}`}>
+                  v{plugin.version}
+                </span>
+                <span className={`text-[8px] font-cp-mono ${isDark ? 'text-gray-600' : 'text-gray-400'}`}>
+                  {plugin.author}
+                </span>
               </div>
             </div>
-            {plugin.installed && (
-              <div className={`px-1.5 py-0.5 border text-[7px] font-cp-mono animate-pulse ${activeTheme === 'portal' ? 'border-blue-400 text-blue-500 bg-blue-50' : 'border-cp-yellow text-cp-yellow bg-cp-yellow/10'}`}>
-                {activeTheme === 'portal' ? 'ACTIVE' : activeTheme === 'deadspace' ? 'SYNCED' : 'ENABLED'}
+
+            {plugin.hasUpdate && (
+              <div className={`px-1.5 py-0.5 border text-[6px] font-cp-mono flex-shrink-0 ${isDark ? 'border-cp-cyan/40 text-cp-cyan bg-cp-cyan/5' : 'border-blue-300 text-blue-500 bg-blue-50'
+                }`}>
+                UPD
               </div>
             )}
           </div>
 
-          <p className={`text-[9px] mt-3 line-clamp-2 leading-relaxed uppercase opacity-80 ${activeTheme === 'portal' ? 'font-sans text-slate-400' : 'font-cp-body text-gray-500'}`}>
-            {activeTheme === 'portal' ? `Subject protocol: ${plugin.description.toLowerCase()}` : plugin.description}
+          <p className={`text-[9px] mt-2 line-clamp-2 leading-relaxed ${isDark ? 'text-gray-500' : 'text-slate-500'
+            }`}>
+            {plugin.description}
           </p>
 
-          <div className="mt-auto flex items-center justify-between pt-3">
-            <div className="flex items-center gap-3">
-              <div className="flex flex-col">
-                <span className="text-[5px] text-gray-600 font-cp-mono uppercase">
-                  {activeTheme === 'stalker' ? 'РАДИАЦИЯ' : activeTheme === 'portal' ? 'data_fidelity' : 'link_quality'}
-                </span>
-                <span className={`text-[7px] font-cp-mono uppercase ${activeTheme === 'portal' ? 'text-blue-500' : 'text-cp-cyan'}`}>
-                  {activeTheme === 'stalker' ? '0.04 mSv' : 'Optimal'}
-                </span>
-              </div>
-              <div className={`h-4 w-[1px] ${activeTheme === 'portal' ? 'bg-blue-50' : 'bg-white/5'}`} />
-              <div className="flex flex-col">
-                <span className="text-[5px] text-gray-600 font-cp-mono uppercase">
-                  {activeTheme === 'stalker' ? 'ИЗНОС' : activeTheme === 'portal' ? 'test_index' : 'threat_level'}
-                </span>
-                <span className={`text-[7px] font-cp-mono uppercase ${activeTheme === 'portal' ? 'text-orange-500' : 'text-cp-yellow'}`}>
-                  {activeTheme === 'stalker' ? 'МИНИМАЛЬНЫЙ' : activeTheme === 'portal' ? 'Alpha-01' : 'Minimal'}
-                </span>
-              </div>
+          {/* ── Metadata row ─────────────────────────────────── */}
+          <div className={`mt-auto flex items-center justify-between pt-3 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}`}>
+            {/* Theme flavor metadata — Layer C, 1 штрих на карточку */}
+            <div className="flex items-center gap-3 text-[7px] font-cp-mono uppercase">
+              <span className={isDark ? 'text-gray-600' : 'text-gray-400'}>
+                {theme.menuHints.plugins}
+              </span>
+              <span className={isDark ? 'text-cp-yellow/60' : 'text-blue-400/60'}>
+                {plugin.installed ? 'INSTALLED' : 'AVAILABLE'}
+              </span>
             </div>
 
-            <div className="flex gap-2">
-              <button className="cp-button p-1.5 min-w-0" title="Инфо">
-                <Info size={12} />
+            {/* ── Actions — CORE, always the same ──────────── */}
+            <div className="flex gap-1.5">
+              <button className="cp-button p-1.5 min-w-0" title="Подробнее" aria-label="Подробнее">
+                <Info size={11} />
               </button>
-              <button className={`cp-button flex items-center gap-2 px-3 py-1.5 ${plugin.installed ? 'cp-button-critical' : ''}`}>
+              <button
+                className={`cp-button flex items-center gap-1.5 px-2.5 py-1.5 text-[9px] ${plugin.installed ? 'cp-button-critical' : ''}`}
+                aria-label={plugin.installed ? 'Удалить' : 'Установить'}
+              >
                 {plugin.installed ? (
                   <>
-                    <Trash2 size={10} />
-                    <span className="text-[9px]">
-                      {activeTheme === 'stalker' ? 'СБРОСИТЬ' :
-                        activeTheme === 'doom' ? 'KILL' :
-                          activeTheme === 'portal' ? 'Dispose' :
-                            activeTheme === 'deadspace' ? 'DISMANTLE' : 'УДАЛИТЬ'}
-                    </span>
+                    <Trash2 size={9} />
+                    <span>Удалить</span>
                   </>
                 ) : (
                   <>
-                    <Download size={10} />
-                    <span className="text-[9px]">
-                      {activeTheme === 'stalker' ? 'ЗАБРАТЬ' :
-                        activeTheme === 'doom' ? 'LOAD' :
-                          activeTheme === 'portal' ? 'Initiate' :
-                            activeTheme === 'deadspace' ? 'ACQUIRE' : 'УСТАНОВИТЬ'}
-                    </span>
+                    <Download size={9} />
+                    <span>Установить</span>
                   </>
                 )}
               </button>
@@ -134,8 +116,8 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
         </div>
       </div>
 
-      {/* Decorative corner accent */}
-      {activeTheme !== 'portal' && <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-white/10" />}
-    </motion.div>
+      {/* Accent corner — theme cosmetic only */}
+      <div className={`absolute bottom-0 right-0 w-3 h-3 border-b border-r ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+    </div>
   );
 };
