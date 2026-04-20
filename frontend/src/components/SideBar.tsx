@@ -60,10 +60,10 @@ interface SideBarProps {
 
 export const SideBar: React.FC<SideBarProps> = ({ activeTab, onTabChange, activeTheme = 'cyberpunk' }) => {
   const menuItems = [
-    { id: 'plugins', label: activeTheme === 'stalker' ? 'ЗАДАНИЯ' : activeTheme === 'doom' ? 'ARMORY' : activeTheme === 'portal' ? 'CHAMBERS' : activeTheme === 'deadspace' ? 'KINETICS' : 'LOCAL', sub: activeTheme === 'stalker' ? 'СПИСОК' : activeTheme === 'doom' ? 'MODULES' : activeTheme === 'portal' ? 'TEST_READY' : activeTheme === 'deadspace' ? 'MODULES' : 'PLUGINS', icon: Layers },
-    { id: 'decky', label: activeTheme === 'stalker' ? 'ТОРГОВЦЫ' : activeTheme === 'doom' ? 'NETWORK' : activeTheme === 'portal' ? 'DATABASE' : activeTheme === 'deadspace' ? 'EXTERNAL' : 'ONLINE', sub: activeTheme === 'stalker' ? 'СЕТЬ' : activeTheme === 'doom' ? 'UAC_NET' : activeTheme === 'portal' ? 'ACCESS' : activeTheme === 'deadspace' ? 'NET_NODES' : 'REPO', icon: Package },
-    { id: 'zip', label: activeTheme === 'stalker' ? 'АРХИВ' : activeTheme === 'doom' ? 'LOADING' : activeTheme === 'portal' ? 'UPLOADS' : activeTheme === 'deadspace' ? 'IMPORT' : 'MANUAL', sub: activeTheme === 'stalker' ? 'ШИФР' : activeTheme === 'doom' ? 'IMPORT' : activeTheme === 'portal' ? 'PROCESS' : activeTheme === 'deadspace' ? 'CHIP_SET' : 'INSTALL', icon: Download },
-    { id: 'settings', label: activeTheme === 'stalker' ? 'ПРИБОР' : activeTheme === 'doom' ? 'HUD' : activeTheme === 'portal' ? 'SETTINGS' : activeTheme === 'deadspace' ? 'RIG_CAL' : 'SYSTEM', sub: activeTheme === 'stalker' ? 'ПДА' : activeTheme === 'doom' ? 'CONFIG' : activeTheme === 'portal' ? 'PARAMS' : activeTheme === 'deadspace' ? 'BIOMETRIC' : 'CONFIG', icon: Settings },
+    { id: 'plugins', label: 'PLUGINS', sub: activeTheme === 'stalker' ? 'ZONE_LOG' : activeTheme === 'doom' ? 'ARMORY' : activeTheme === 'portal' ? 'CHAMBERS' : activeTheme === 'deadspace' ? 'KINETICS' : 'LOCAL', icon: Layers },
+    { id: 'decky', label: 'ONLINE', sub: activeTheme === 'stalker' ? 'ZONE_NET' : activeTheme === 'doom' ? 'UAC_NET' : activeTheme === 'portal' ? 'AP_ACCESS' : activeTheme === 'deadspace' ? 'NET_NODES' : 'REPO', icon: Package },
+    { id: 'zip', label: 'INSTALL', sub: activeTheme === 'stalker' ? 'FIELD_OPS' : activeTheme === 'doom' ? 'IMPORT' : activeTheme === 'portal' ? 'PROCESS' : activeTheme === 'deadspace' ? 'CHIP_SET' : 'MANUAL', icon: Download },
+    { id: 'settings', label: 'SETTINGS', sub: activeTheme === 'stalker' ? 'PDA_SYS' : activeTheme === 'doom' ? 'HUD_CFG' : activeTheme === 'portal' ? 'PARAMS' : activeTheme === 'deadspace' ? 'RIG_CAL' : 'CONFIG', icon: Settings },
   ];
 
   return (
@@ -76,12 +76,19 @@ export const SideBar: React.FC<SideBarProps> = ({ activeTab, onTabChange, active
           </div>
           <div>
             <h1 className={`text-2xl ${activeTheme === 'portal' ? 'font-sans font-light text-slate-800' : activeTheme === 'deadspace' ? 'font-tech text-cyan-400' : 'font-cyber text-white'} tracking-tighter`}>
-              {activeTheme === 'stalker' ? 'ПДА v3.0' :
-                activeTheme === 'doom' ? 'DOOM // HUD' :
-                  activeTheme === 'portal' ? 'APERTURE // OS' :
-                    activeTheme === 'deadspace' ? 'RIG // HOLO' : 'CYBER_MOD'}
+              CYBER_MOD
             </h1>
             <div className={`h-[2px] w-full ${activeTheme === 'doom' ? 'bg-red-600' : activeTheme === 'portal' ? 'bg-blue-400 opacity-20' : activeTheme === 'deadspace' ? 'bg-cyan-500/40' : 'bg-cp-yellow'} mt-1`} />
+            <div className={`text-[7px] font-cp-mono uppercase tracking-widest mt-1 ${activeTheme === 'stalker' ? 'text-green-500/60' :
+                activeTheme === 'doom' ? 'text-red-500/60' :
+                  activeTheme === 'portal' ? 'text-blue-400/60' :
+                    activeTheme === 'deadspace' ? 'text-cyan-400/50' : 'text-cp-yellow/40'
+              }`}>
+              {activeTheme === 'stalker' ? '[ S.T.A.L.K.E.R. ]' :
+                activeTheme === 'doom' ? '[ DOOM ]' :
+                  activeTheme === 'portal' ? '[ APERTURE SCIENCE ]' :
+                    activeTheme === 'deadspace' ? '[ DEAD SPACE ]' : '[ CYBERPUNK 2077 ]'}
+            </div>
           </div>
         </div>
 

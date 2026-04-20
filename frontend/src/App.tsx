@@ -38,6 +38,31 @@ function App() {
       <main className="flex-1 overflow-y-auto relative flex flex-col cp-grid-bg">
         <div className="cp-circuit-lines opacity-20" />
 
+        {/* Theme Artwork Background */}
+        <div
+          className="fixed pointer-events-none z-0"
+          style={{
+            right: '0',
+            bottom: '0',
+            width: '45%',
+            height: '80%',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'right bottom',
+            backgroundSize: 'contain',
+            opacity: activeTheme === 'cyberpunk' ? 0.07 :
+              activeTheme === 'stalker' ? 0.06 :
+                activeTheme === 'doom' ? 0.08 :
+                  activeTheme === 'portal' ? 0.05 :
+                    activeTheme === 'deadspace' ? 0.07 : 0.07,
+            backgroundImage:
+              activeTheme === 'cyberpunk' ? "url('https://logos-world.net/wp-content/uploads/2020/11/Cyberpunk-2077-Logo.png')" :
+                activeTheme === 'stalker' ? "url('https://upload.wikimedia.org/wikipedia/en/2/2f/Stalker_Shadow_of_Chernobyl_logo.png')" :
+                  activeTheme === 'doom' ? "url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Doom_game_logo.png/800px-Doom_game_logo.png')" :
+                    activeTheme === 'portal' ? "url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Portal2-logo.png/800px-Portal2-logo.png')" :
+                      activeTheme === 'deadspace' ? "url('https://upload.wikimedia.org/wikipedia/en/e/e5/Dead_Space_logo.png')" : 'none',
+          }}
+        />
+
         {/* Top Header Bar (Cyberpunk Dashboard Style) */}
         <header className="h-16 border-b border-white/5 bg-cp-black/90 backdrop-blur-md sticky top-0 z-20 px-12 flex items-center justify-between">
           <div className="flex items-center gap-12">
