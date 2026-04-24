@@ -1,4 +1,5 @@
 import React from 'react';
+import { ShieldCheck } from 'lucide-react';
 import { SideBar } from './components/SideBar';
 import { PluginCard, type Plugin } from './components/PluginCard';
 import { ZipUpload } from './components/ZipUpload';
@@ -21,13 +22,27 @@ function App() {
   const [activeTheme, setActiveTheme] = React.useState('cyberpunk');
   const [plugins, setPlugins] = React.useState<Plugin[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [deckyStatus, setDeckyStatus] = React.useState('UNKNOWN');
 
   const theme = getTheme(activeTheme);
   const isDark = theme.isDark;
 
   React.useEffect(() => {
+    // Fetch Decky Status once
+    PluginService.getDeckyStatus().then(setDeckyStatus);
+  }, []);
+
+  React.useEffect(() => {
     setLoading(true);
-    PluginService.getPlugins().then((data) => {
+    // Map tab name to source
+    const sourceMap: Record<string, string> = {
+      plugins: 'builtin',
+      decky: 'decky',
+      zip: 'zip'
+    };
+    const source = sourceMap[activeTab] || 'builtin';
+
+    PluginService.getPlugins(source).then((data) => {
       setPlugins(data);
       setLoading(false);
     });
@@ -135,6 +150,39 @@ function App() {
                 transition={theme.motion}
                 className="grid grid-cols-1 xl:grid-cols-2 gap-x-8 gap-y-5"
               >
+                {activeTab === 'decky' && (
+                  <div className={`col-span-full mb-6 p-6 border flex items-center justify-between transition-all ${isDark ? 'border-blue-500/30 bg-blue-500/5' : 'border-blue-200 bg-blue-50'
+                    }`}>
+                    <div className="flex items-center gap-6">
+                      <div className={`w-12 h-12 flex items-center justify-center border-2 ${isDark ? 'border-blue-500/40 text-blue-400' : 'border-blue-400 text-blue-600'}`}>
+                        <ShieldCheck size={24} />
+                      </div>
+                      <div>
+                        <h4 className={`text-xs font-bold uppercase tracking-widest mb-1 ${isDark ? 'text-white' : 'text-slate-800'}`}>Decky Loader</h4>
+                        <div className="flex items-center gap-2">
+                          <div className={`w-1.5 h-1.5 rounded-full ${deckyStatus === 'INSTALLED' ? 'bg-green-500' : 'bg-red-500 animate-pulse'}`} />
+                          <span className={`text-[10px] font-cp-mono uppercase tracking-widest ${isDark ? 'text-white/60' : 'text-slate-600'}`}>
+                            Статус: {deckyStatus === 'INSTALLED' ? 'Установлен' : 'Не установлен'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    {deckyStatus !== 'INSTALLED' && (
+                      <button
+                        onClick={() => {
+                          PluginService.installDeckyLoader().then(success => {
+                            if (success) PluginService.getDeckyStatus().then(setDeckyStatus);
+                          });
+                        }}
+                        className={`px-6 py-2 text-[10px] font-bold uppercase tracking-[0.2em] border transition-all ${isDark ? 'border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white' : 'border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
+                          }`}
+                      >
+                        Установить Decky Loader
+                      </button>
+                    )}
+                  </div>
+                )}
+
                 {loading ? (
                   <div className={`col-span-full h-72 border flex flex-col items-center justify-center gap-5 ${isDark ? 'border-white/5 bg-black/20' : 'border-gray-100 bg-white shadow-sm'
                     }`}>
@@ -151,7 +199,7 @@ function App() {
                   </div>
                 ) : (
                   plugins.map(plugin => (
-                    <PluginCard key={plugin.id} plugin={plugin} activeTheme={activeTheme} />
+                    <PluginCard key={plugin.id} plugin={plugin} activeTheme={activeTheme} deckyStatus={deckyStatus} />
                   ))
                 )}
               </motion.div>

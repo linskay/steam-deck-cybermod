@@ -12,16 +12,23 @@ export interface Plugin {
   installed: boolean;
   hasUpdate: boolean;
   source?: 'builtin' | 'decky' | 'zip';
+  tags?: string[];
+  minDeckyVersion?: string;
+  oledSupport?: boolean;
+  lcdSupport?: boolean;
 }
 
 interface PluginCardProps {
   plugin: Plugin;
   activeTheme?: string;
+  deckyStatus?: string;
 }
 
-export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'cyberpunk' }) => {
+export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'cyberpunk', deckyStatus = 'UNKNOWN' }) => {
   const theme = getTheme(activeTheme);
   const isDark = theme.isDark;
+
+  const deckyMissing = plugin.source === 'decky' && deckyStatus === 'NOT_INSTALLED';
 
   const getSourceLabel = (src?: string) => {
     switch (src) {
@@ -105,8 +112,11 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
               <button
                 className={`cp-button flex items-center gap-2 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider border transition-all ${plugin.installed
                   ? 'border-red-500/30 text-red-500 bg-red-500/5 hover:bg-red-500 hover:text-white'
-                  : isDark ? 'border-white/20 text-white bg-white/5 hover:bg-white/90 hover:text-black' : 'border-gray-200 text-slate-800 bg-white hover:bg-slate-800 hover:text-white shadow-sm'
+                  : deckyMissing
+                    ? 'border-white/5 text-white/20 bg-black/20 cursor-not-allowed'
+                    : isDark ? 'border-white/20 text-white bg-white/5 hover:bg-white/90 hover:text-black' : 'border-gray-200 text-slate-800 bg-white hover:bg-slate-800 hover:text-white shadow-sm'
                   }`}
+                disabled={deckyMissing}
               >
                 {plugin.installed ? (
                   <>
@@ -116,7 +126,7 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
                 ) : (
                   <>
                     <Download size={9} />
-                    <span>Установить</span>
+                    <span>{deckyMissing ? 'Нужен Decky' : 'Установить'}</span>
                   </>
                 )}
               </button>

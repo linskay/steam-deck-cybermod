@@ -13,7 +13,9 @@ public class App {
     private static final FileSystemService fsService = new FileSystemService();
     private static final GitHubClient githubClient = new GitHubClient();
     private static final ManifestService manifestService = new ManifestService("../catalog/manifest.json");
+    private static final DeckyService deckyService = new DeckyService();
     private static final PluginProvider cyberProvider = new CyberCatalogProvider(manifestService, githubClient, fsService);
+    private static final PluginProvider deckyProvider = new DeckyStoreProvider(githubClient, fsService);
 
     public static void main(String[] args) {
         var app = Javalin.create(config -> {
@@ -27,14 +29,38 @@ public class App {
 
         logger.info("CyberMod Backend запущен на 7070");
 
-        app.get("/api/plugins", ctx -> {
+        // --- Plugin API ---
+        app.get("/api/plugins/builtin", ctx -> {
             ctx.future(() -> cyberProvider.getPlugins().thenAccept(ctx::json));
         });
 
-        app.post("/api/install/{id}", ctx -> {
+        app.get("/api/plugins/decky", ctx -> {
+            ctx.future(() -> deckyProvider.getPlugins().thenAccept(ctx::json));
+        });
+
+        app.get("/api/plugins/zip", ctx -> {
+            // Placeholder for ZIP plugins analysis
+            ctx.json(List.of());
+        });
+
+        app.post("/api/plugins/{source}/{id}/install", ctx -> {
+            String source = ctx.pathParam("source");
             String id = ctx.pathParam("id");
-            ctx.future(() -> cyberProvider.install(id).thenAccept(v -> 
-                ctx.status(202).json(java.util.Map.of("status", "INSTALLING", "id", id))
+            PluginProvider provider = "decky".equals(source) ? deckyProvider : cyberProvider;
+            
+            ctx.future(() -> provider.install(id).thenAccept(v -> 
+                ctx.status(202).json(java.util.Map.of("status", "INSTALLING", "id", id, "source", source))
+            ));
+        });
+
+        // --- Decky Loader API ---
+        app.get("/api/decky/status", ctx -> {
+            ctx.json(java.util.Map.of("status", deckyService.getStatus()));
+        });
+
+        app.post("/api/decky/install-loader", ctx -> {
+            ctx.future(() -> deckyService.installLoader().thenAccept(success -> 
+                ctx.json(java.util.Map.of("success", success))
             ));
         });
 
@@ -60,6 +86,15 @@ public class App {
         String version,
         String image,
         boolean installed,
-        boolean hasUpdate
+        boolean hasUpdate,
+        String source,
+        String github,
+        String downloadUrl,
+        List<String> tags,
+        String minDeckyVersion,
+        boolean oledSupport,
+        boolean lcdSupport,
+        String targetPath,
+        String checksum
     ) {}
 }
