@@ -58,10 +58,23 @@ public class App {
             ctx.json(java.util.Map.of("status", deckyService.getStatus()));
         });
 
-        app.post("/api/decky/install-loader", ctx -> {
-            ctx.future(() -> deckyService.installLoader().thenAccept(success -> 
-                ctx.json(java.util.Map.of("success", success))
-            ));
+        app.post("/api/plugins/zip/upload", ctx -> {
+            var files = ctx.uploadedFiles("file");
+            if (files.isEmpty()) {
+                ctx.status(400).result("No file uploaded");
+                return;
+            }
+            var file = files.getFirst();
+            byte[] content = file.content().readAllBytes();
+            String name = file.filename().replace(".zip", "");
+            
+            ctx.future(() -> CompletableFuture.runAsync(() -> {
+                try {
+                    fsService.installPlugin(name, content, "zip");
+                } catch (java.io.IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).thenAccept(v -> ctx.json(java.util.Map.of("status", "SUCCESS", "id", name))));
         });
 
         app.get("/api/status", ctx -> {
@@ -69,13 +82,7 @@ public class App {
         });
     }
 
-    private static List<Plugin> getMockPlugins() {
-        return List.of(
-            new Plugin("vibrant-deck", "VibrantDeck", "Artia", "Улучшает цветопередачу экрана Steam Deck", "1.2.0", "", true, false),
-            new Plugin("steam-grid-db", "SGDB", "SGDB Team", "Автоматическая загрузка обложек для игр", "2.1.5", "", false, false),
-            new Plugin("decky-recorder", "Recorder", "Decky", "Запись геймплея одной кнопкой", "0.9.1", "", true, true)
-        );
-    }
+
 
     // Modern Java 21 Record for Plugin Model
     public record Plugin(

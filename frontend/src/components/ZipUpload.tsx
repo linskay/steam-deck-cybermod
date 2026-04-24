@@ -10,11 +10,36 @@ export const ZipUpload: React.FC<{ activeTheme?: string }> = ({ activeTheme = 'c
   const theme = getTheme(activeTheme);
   const isDark = theme.isDark;
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
+
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.name.endsWith('.zip')) {
+      setStatus('error');
+      return;
+    }
+
     setStatus('uploading');
-    setTimeout(() => setStatus('success'), 2000);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('http://localhost:7070/api/plugins/zip/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        setStatus('success');
+      } else {
+        setStatus('error');
+      }
+    } catch (err) {
+      console.error('Upload failed', err);
+      setStatus('error');
+    }
   };
 
   return (

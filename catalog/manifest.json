@@ -7,7 +7,8 @@
       "description": "Улучшает цветопередачу экрана Steam Deck через насыщенность и контраст.",
       "version": "1.2.0",
       "image": "https://raw.githubusercontent.com/Artia-71/vibrantDeck/main/icon.png",
-      "github": "Artia-71/vibrantDeck"
+      "github": "Artia-71/vibrantDeck",
+      "downloadUrl": "https://github.com/Artia-71/vibrantDeck/releases/latest/download/vibrantDeck.zip"
     },
     {
       "id": "steam-grid-db",

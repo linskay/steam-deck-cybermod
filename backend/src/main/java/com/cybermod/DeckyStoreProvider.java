@@ -83,7 +83,7 @@ public class DeckyStoreProvider implements PluginProvider {
 
             try {
                 // Установка в папку Decky
-                fsService.installPlugin(pluginId, zipData);
+                fsService.installPlugin(pluginId, zipData, "decky");
                 logger.info("Decky плагин {} успешно установлен", pluginId);
                 
                 // В реальной системе здесь был бы перезапуск сервиса:

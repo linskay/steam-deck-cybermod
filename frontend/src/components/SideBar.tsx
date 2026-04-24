@@ -52,12 +52,12 @@ const ControllerHint: React.FC<{ isDark: boolean }> = ({ isDark }) => (
   <div className={`flex items-center justify-center gap-3 py-2 border-y ${isDark ? 'bg-white/3 border-white/5' : 'bg-black/3 border-black/5'}`}>
     <div className="flex items-center gap-1 text-[7px] font-cp-mono text-gray-500">
       <span>(LB/RB)</span>
-      <span>NAV</span>
+      <span>НАВ</span>
     </div>
     <div className={`w-px h-3 ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
     <div className="flex items-center gap-1 text-[7px] font-cp-mono text-gray-400">
       <div className="w-3 h-3 rounded-full border border-current flex items-center justify-center text-[5px]">A</div>
-      <span>SELECT</span>
+      <span>ВЫБОР</span>
     </div>
   </div>
 );
@@ -95,7 +95,7 @@ export const SideBar: React.FC<{ activeTab: string; onTabChange: (tab: string) =
 
       {/* ── Zone 3: Navigation ───────────────────────────── */}
       <div className={`px-7 mt-6 mb-3 text-[7px] font-cp-mono uppercase tracking-[0.2em] font-bold ${isDark ? 'text-white/20' : 'text-gray-400'}`}>
-        Main Terminal
+        Главный Терминал
       </div>
 
       <nav className="flex-1 overflow-y-auto">
@@ -116,7 +116,7 @@ export const SideBar: React.FC<{ activeTab: string; onTabChange: (tab: string) =
           <div className={`cp-diag-block text-[8px] font-cp-mono leading-relaxed border p-3 ${isDark ? 'bg-white/2 border-white/5 text-white/50' : 'bg-gray-50 border-gray-100 text-gray-500'}`}>
             <div className="flex items-center gap-2 mb-2 opacity-40">
               <span className="w-1 h-1 bg-current rounded-full animate-pulse" />
-              <span className="text-[6px] tracking-widest uppercase">System Link</span>
+              <span className="text-[6px] tracking-widest uppercase">Сеть: Связь</span>
             </div>
             <div>{theme.diegeticBlock.line1}</div>
             <div>{theme.diegeticBlock.line2}</div>
@@ -136,7 +136,7 @@ export const SideBar: React.FC<{ activeTab: string; onTabChange: (tab: string) =
 
           <button className={`w-full flex items-center justify-center gap-2 py-2 text-[9px] font-cp-mono uppercase tracking-widest border transition-all opacity-40 hover:opacity-100 ${isDark ? 'border-white/5 text-white/40 hover:bg-white/5 hover:text-white' : 'border-gray-200 text-gray-400 hover:bg-gray-100 hover:text-gray-700'}`}>
             <Minimize2 size={11} />
-            <span>Minimize Overlay</span>
+            <span>Свернуть Оверлей</span>
           </button>
         </div>
       </div>

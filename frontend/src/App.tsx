@@ -23,6 +23,7 @@ function App() {
   const [plugins, setPlugins] = React.useState<Plugin[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [deckyStatus, setDeckyStatus] = React.useState('UNKNOWN');
+  const [installingDecky, setInstallingDecky] = React.useState(false);
 
   const theme = getTheme(activeTheme);
   const isDark = theme.isDark;
@@ -170,7 +171,9 @@ function App() {
                     {deckyStatus !== 'INSTALLED' && (
                       <button
                         onClick={() => {
+                          setInstallingDecky(true);
                           PluginService.installDeckyLoader().then(success => {
+                            setInstallingDecky(false);
                             if (success) PluginService.getDeckyStatus().then(setDeckyStatus);
                           });
                         }}
@@ -182,6 +185,35 @@ function App() {
                     )}
                   </div>
                 )}
+
+                {/* Installation Overlay */}
+                <AnimatePresence>
+                  {installingDecky && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-10"
+                    >
+                      <div className={`max-w-lg w-full p-10 border flex flex-col items-center text-center ${isDark ? 'bg-black border-white/20' : 'bg-white border-gray-200 shadow-2xl'}`}>
+                        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-8" />
+                        <h3 className="text-xl font-cyber uppercase tracking-widest mb-4">Установка системных компонентов</h3>
+                        <p className="font-cp-mono text-[10px] uppercase tracking-widest opacity-60 mb-8">
+                          Выполняется запуск официального скрипта установки Decky Loader. <br />
+                          Пожалуйста, не выключайте устройство.
+                        </p>
+                        <div className="w-full h-1 bg-white/10 relative overflow-hidden">
+                          <motion.div
+                            initial={{ x: '-100%' }}
+                            animate={{ x: '100%' }}
+                            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                            className="absolute inset-0 bg-blue-500"
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {loading ? (
                   <div className={`col-span-full h-72 border flex flex-col items-center justify-center gap-5 ${isDark ? 'border-white/5 bg-black/20' : 'border-gray-100 bg-white shadow-sm'

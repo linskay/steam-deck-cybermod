@@ -80,8 +80,8 @@ public class CyberCatalogProvider implements PluginProvider {
                 byte[] zipData = githubClient.downloadAsset(downloadUrl).join();
 
                 // 4. Установить
-                fsService.installPlugin(pluginId, zipData);
-                logger.info("Плагин {} успешно установлен", pluginId);
+                fsService.installPlugin(pluginId, zipData, "builtin");
+                logger.info("Плагин {} успешно установлен (builtin)", pluginId);
 
             } catch (Exception e) {
                 logger.error("Ошибка при установке плагина {}: {}", pluginId, e.getMessage());
