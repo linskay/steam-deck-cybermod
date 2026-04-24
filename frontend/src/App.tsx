@@ -11,8 +11,8 @@ import { getTheme } from './themes/themeConfig';
 const SCREEN_TITLES: Record<string, string> = {
   plugins: 'Встроенные модули',
   decky: 'Каталог Decky',
-  zip: 'Импорт архива',
-  settings: 'Настройки системы',
+  zip: 'Импорт ZIP',
+  settings: 'Система',
 };
 
 function App() {

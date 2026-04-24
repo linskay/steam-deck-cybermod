@@ -11,6 +11,7 @@ export interface Plugin {
   image: string;
   installed: boolean;
   hasUpdate: boolean;
+  source?: 'builtin' | 'decky' | 'zip';
 }
 
 interface PluginCardProps {
@@ -22,17 +23,26 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
   const theme = getTheme(activeTheme);
   const isDark = theme.isDark;
 
+  const getSourceLabel = (src?: string) => {
+    switch (src) {
+      case 'builtin': return 'ВСТРОЕННЫЙ';
+      case 'decky': return 'DECKY';
+      case 'zip': return 'ZIP';
+      default: return 'PLUG';
+    }
+  };
+
   return (
     <div className={`cp-card flex flex-col group min-h-[160px] relative overflow-hidden transition-all duration-300 border ${isDark ? 'bg-white/5 border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
 
       {/* ── Top strip: Source / State / ID ────────────────── */}
       <div className={`px-4 py-1.5 flex items-center justify-between border-b text-[6px] font-cp-mono uppercase tracking-widest ${isDark ? 'border-white/5 text-white/30' : 'border-gray-50 text-gray-400'}`}>
         <div className="flex gap-4">
-          <span>SRC_DECKY</span>
-          <span>ID_{plugin.id.split('-')[0].toUpperCase()}</span>
+          <span className={isDark ? 'text-white/60' : 'text-slate-800'}>{getSourceLabel(plugin.source)}</span>
+          <span>ID:{plugin.id.split('-')[0].toUpperCase()}</span>
         </div>
         <span className={plugin.installed ? 'text-green-500' : ''}>
-          {plugin.installed ? '● INSTALLED' : '○ AVAILABLE'}
+          {plugin.installed ? '● УСТАНОВЛЕНО' : '○ ДОСТУПНО'}
         </span>
       </div>
 
@@ -68,7 +78,7 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
 
             {plugin.hasUpdate && (
               <div className={`px-1.5 py-0.5 border text-[6px] font-cp-mono font-bold ${isDark ? 'border-orange-500/40 text-orange-500 bg-orange-500/5' : 'border-orange-300 text-orange-600 bg-orange-50'}`}>
-                UPDATE_AVAIL
+                ОБНОВЛЕНИЕ
               </div>
             )}
           </div>
@@ -80,8 +90,8 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
           {/* ── Metadata row (Stage 5) ────────────────────────── */}
           <div className={`mt-auto flex items-center justify-between pt-3 border-t ${isDark ? 'border-white/5' : 'border-gray-50'}`}>
             <div className="flex items-center gap-3 text-[7px] font-cp-mono uppercase font-bold tracking-widest text-white/20">
-              <span>{theme.menuHints.plugins}</span>
-              <span className="opacity-0 group-hover:opacity-100 transition-opacity">SYS_CHECK_OK</span>
+              <span className="opacity-40">{theme.menuHints.plugins}</span>
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity">VERIFIED</span>
             </div>
 
             {/* ── Actions Row ─────────────────────────────── */}
@@ -91,8 +101,8 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
               </button>
               <button
                 className={`cp-button flex items-center gap-2 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider border transition-all ${plugin.installed
-                    ? 'border-red-500/30 text-red-500 bg-red-500/5 hover:bg-red-500 hover:text-white'
-                    : 'border-white/20 text-white bg-white/5 hover:bg-white/90 hover:text-black'
+                  ? 'border-red-500/30 text-red-500 bg-red-500/5 hover:bg-red-500 hover:text-white'
+                  : isDark ? 'border-white/20 text-white bg-white/5 hover:bg-white/90 hover:text-black' : 'border-gray-200 text-slate-800 bg-white hover:bg-slate-800 hover:text-white shadow-sm'
                   }`}
               >
                 {plugin.installed ? (

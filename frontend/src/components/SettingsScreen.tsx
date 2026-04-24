@@ -20,7 +20,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({ themeId, isActive, onApply, isDar
       }`}>
       {isActive && (
         <div className={`absolute top-3 right-3 px-2 py-0.5 font-cp-mono text-[7px] font-bold uppercase tracking-widest ${isDark ? 'bg-white text-black' : 'bg-blue-500 text-white'}`}>
-          ACTIVE
+          Активна
         </div>
       )}
 
@@ -90,7 +90,7 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
         <header className="mb-6">
           <h3 className={`font-cyber text-[11px] tracking-[0.4em] flex items-center gap-3 uppercase ${isDark ? 'text-white' : 'text-slate-800'}`}>
             <RefreshCw size={14} className={isDark ? 'text-white/40' : 'text-blue-500'} />
-            Gallery / Shells
+            Оболочка интерфейса
           </h3>
           <div className={`h-px w-full mt-2 ${isDark ? 'bg-white/10' : 'bg-gray-200'}`} />
         </header>
@@ -114,7 +114,7 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
           <div className="w-full md:w-1/3 flex flex-col gap-4">
             <div className={`aspect-video border flex items-center justify-center overflow-hidden ${isDark ? 'border-white/10 bg-black' : 'border-gray-200 bg-gray-50'}`}>
               <img src={currentTheme.artwork.backgroundUrl} className="w-full h-full object-cover opacity-20 grayscale" alt="Preview" />
-              <span className="absolute font-cp-mono text-[8px] uppercase tracking-widest opacity-40">Artwork Preview</span>
+              <span className="absolute font-cp-mono text-[8px] uppercase tracking-widest opacity-40">Превью</span>
             </div>
             <div className="flex gap-2">
               <div className="flex-1 h-2 bg-white/10" />
@@ -124,7 +124,7 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
           </div>
 
           <div className="flex-1 flex flex-col">
-            <div className={`text-[8px] font-cp-mono uppercase tracking-[0.3em] mb-2 ${isDark ? 'text-white/20' : 'text-gray-400'}`}>Current Configuration</div>
+            <div className={`text-[8px] font-cp-mono uppercase tracking-[0.3em] mb-2 ${isDark ? 'text-white/20' : 'text-gray-400'}`}>Текущая тема</div>
             <h4 className={`text-2xl font-cyber uppercase tracking-widest mb-4 ${isDark ? 'text-white' : 'text-slate-800'}`}>{currentTheme.label}</h4>
             <ul className="space-y-3">
               {currentTheme.bullets.map((b, i) => (
@@ -143,7 +143,7 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
         <header className="mb-6">
           <h3 className={`font-cyber text-[11px] tracking-[0.4em] flex items-center gap-3 uppercase ${isDark ? 'text-white' : 'text-slate-800'}`}>
             <Activity size={14} className={isDark ? 'text-white/40' : 'text-green-500'} />
-            System Diagnostics
+            Диагностика
           </h3>
           <div className={`h-px w-full mt-2 ${isDark ? 'bg-white/10' : 'bg-gray-200'}`} />
         </header>
@@ -169,7 +169,7 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
         <header className="mb-6">
           <h3 className={`font-cyber text-[11px] tracking-[0.4em] flex items-center gap-3 uppercase ${isDark ? 'text-white' : 'text-slate-800'}`}>
             <Cpu size={14} className={isDark ? 'text-white/40' : 'text-yellow-500'} />
-            Maintenance
+            Обслуживание
           </h3>
           <div className={`h-px w-full mt-2 ${isDark ? 'bg-white/10' : 'bg-gray-200'}`} />
         </header>

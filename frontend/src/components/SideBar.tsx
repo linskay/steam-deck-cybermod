@@ -5,10 +5,9 @@ import { getTheme } from '../themes/themeConfig';
 // ─── Stage 1: Core Navigation Items ──────────────────────────────────────────
 const NAV_ITEMS = [
   { id: 'plugins', label: 'Встроенные', icon: Layers },
-  { id: 'decky', label: 'Catalog', icon: Package },
+  { id: 'decky', label: 'Decky', icon: Package },
   { id: 'zip', label: 'Импорт ZIP', icon: Download },
-  { id: 'settings', label: 'Настройки', icon: Settings },
-  { id: 'exit', label: 'Выход', icon: Power, isAction: true },
+  { id: 'settings', label: 'Система', icon: Settings },
 ] as const;
 
 interface NavItemProps {
@@ -109,7 +108,6 @@ export const SideBar: React.FC<{ activeTab: string; onTabChange: (tab: string) =
             isActive={activeTab === item.id}
             onClick={() => onTabChange(item.id)}
             isDark={isDark}
-            isAction={'isAction' in item}
           />
         ))}
 
@@ -130,8 +128,13 @@ export const SideBar: React.FC<{ activeTab: string; onTabChange: (tab: string) =
       {/* ── Zone 5: Bottom Controls ──────────────────────── */}
       <div className={`${isDark ? 'bg-black/30' : 'bg-gray-50/50'}`}>
         <ControllerHint isDark={isDark} />
-        <div className="p-4">
-          <button className={`w-full flex items-center justify-center gap-2 py-2 text-[9px] font-cp-mono uppercase tracking-widest border transition-all ${isDark ? 'border-white/5 text-white/40 hover:bg-white/5 hover:text-white' : 'border-gray-200 text-gray-400 hover:bg-gray-100 hover:text-gray-700'}`}>
+        <div className="p-4 space-y-2">
+          <button className={`w-full flex items-center justify-between px-5 py-3 text-[9px] font-cp-mono uppercase tracking-widest border transition-all ${isDark ? 'border-red-500/10 text-red-500/60 hover:bg-red-500/5 hover:text-red-500' : 'border-red-100 text-red-400 hover:bg-red-50'}`}>
+            <span className="font-bold">ВЫХОД ИЗ СИСТЕМЫ</span>
+            <Power size={12} />
+          </button>
+
+          <button className={`w-full flex items-center justify-center gap-2 py-2 text-[9px] font-cp-mono uppercase tracking-widest border transition-all opacity-40 hover:opacity-100 ${isDark ? 'border-white/5 text-white/40 hover:bg-white/5 hover:text-white' : 'border-gray-200 text-gray-400 hover:bg-gray-100 hover:text-gray-700'}`}>
             <Minimize2 size={11} />
             <span>Minimize Overlay</span>
           </button>

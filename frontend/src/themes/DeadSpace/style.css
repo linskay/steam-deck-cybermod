@@ -2,7 +2,14 @@
    DEAD SPACE — RIG Hologram Theme
    ALL selectors under .theme-deadspace
    ================================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+/* — Fonts (Point 5) ————————————————————————————————————————— */
+@font-face {
+    font-family: 'Share Tech Mono';
+    src: url('../../assets/fonts/share-tech-mono.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
 /* — Tokens ————————————————————————————————————————————————————— */
 .theme-deadspace {

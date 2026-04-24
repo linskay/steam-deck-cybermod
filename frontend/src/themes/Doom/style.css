@@ -23,19 +23,32 @@
 
 /* — Background ————————————————————————————————————————————————— */
 .theme-doom .cp-grid-bg {
-    background: radial-gradient(ellipse at 50% 80%, #1a0000 0%, #000000 70%);
+    background:
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.01) 0px, rgba(255, 255, 255, 0.01) 1px, transparent 1px, transparent 2px),
+        radial-gradient(ellipse at 50% 80%, #1a0000 0%, #000000 70%);
 }
 
 .theme-doom .cp-circuit-lines {
-    display: none;
+    display: block;
+    opacity: 0.05;
+    filter: invert(1) brightness(2);
 }
 
 /* — Nav — tactical lock style ————————————————————————————————— */
 .theme-doom .cp-nav-item {
-    background: transparent;
-    border: 2px solid #2a0000;
-    transition: background var(--motion-speed) var(--motion-ease),
-        border-color var(--motion-speed) var(--motion-ease);
+    background: linear-gradient(90deg, #0f0000 0%, transparent 100%);
+    border: 1px solid #2a0000;
+    position: relative;
+}
+
+.theme-doom .cp-nav-item::before {
+    content: 'UAC-ID';
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 5px;
+    color: #440000;
+    letter-spacing: 2px;
 }
 
 .theme-doom .cp-nav-item:hover {
@@ -49,28 +62,38 @@
     border-left: 4px solid #ff0000;
 }
 
-/* Remove cartoon banner from active state */
-.theme-doom .cp-nav-item.active::after {
-    display: none;
-}
-
 /* — Cards — armored panels ——————————————————————————————————— */
 .theme-doom .cp-card {
-    background: #080000;
-    border: 2px solid #1a0000;
-    border-top: 4px solid #330000;
-    transition: border-color var(--motion-speed) var(--motion-ease);
+    background:
+        linear-gradient(135deg, #0d0000 0%, #050000 100%);
+    border: 1px solid #220000;
+    position: relative;
 }
 
+/* UAC HUD Corners */
+.theme-doom .cp-card::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(255, 0, 0, 0.1);
+    pointer-events: none;
+    clip-path: polygon(0 0, 10px 0, 10px 1px, 1px 1px, 1px 10px, 0 10px,
+            calc(100% - 10px) 0, 100% 0, 100% 100%, 0 100%, 0 calc(100% - 10px), 1px calc(100% - 10px), 1px calc(100% - 1px), 10px calc(100% - 1px), 10px 100%, 0 100%);
+    /* Simplification for corners */
+}
+
+/* Corner brackets */
 .theme-doom .cp-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 4px;
-    background: #cc0000;
-    opacity: 0.8;
+    right: 0;
+    bottom: 0;
+    border: 1px solid #cc0000;
+    opacity: 0.1;
+    clip-path: polygon(0 0, 15px 0, 15px 2px, 2px 2px, 2px 15px, 0 15px,
+            calc(100% - 15px) 0, 100% 0, 100% 15px, calc(100% - 2px) 15px, calc(100% - 2px) 2px, calc(100% - 15px) 2px);
 }
 
 .theme-doom .cp-card:hover {

@@ -2,7 +2,7 @@
    PORTAL — Aperture Science Theme
    ALL selectors under .theme-portal
    ================================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+/* — Fonts — Unified with core Inter stack ——————— */
 
 /* — Tokens ————————————————————————————————————————————————————— */
 .theme-portal {
@@ -67,25 +67,68 @@
 /* — Cards — lab module panels ———————————————————————————————— */
 .theme-portal .cp-card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-top: 3px solid rgba(59, 130, 246, 0.2);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    transition: border-color var(--motion-speed) var(--motion-ease),
-        box-shadow var(--motion-speed) var(--motion-ease);
+    border: 1px solid #cbd5e1;
+    border-radius: 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle portal blue/orange ring accent */
+.theme-portal .cp-card::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 100px;
+    height: 100px;
+    border: 15px solid rgba(59, 130, 246, 0.03);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.theme-portal .cp-card:hover::after {
+    border-color: rgba(249, 115, 22, 0.05);
+    transform: scale(1.1);
+    transition: all 0.5s ease;
+}
+
+/* Subject ID Marker */
+.theme-portal .cp-card::before {
+    content: 'CHAMBER_PACK_0' + attr(data-id);
+    /* Fallback to constant if attr fails */
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-family: var(--font-cp-mono);
+    font-size: 5px;
+    color: #cbd5e1;
+    letter-spacing: 2px;
+    display: block;
 }
 
 .theme-portal .cp-card:hover {
-    border-color: rgba(59, 130, 246, 0.4);
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.1);
+    border-color: #3b82f6;
 }
 
-.theme-portal .cp-card::before {
-    display: none;
+/* — Diegetic block — lab module terminal ————————————————————— */
+.theme-portal .cp-diag-block {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-left: 3px solid #3b82f6;
+    color: #64748b;
+    position: relative;
 }
 
-/* Orange portal accent on hover */
-.theme-portal .cp-card:hover .cp-card-accent {
-    background: rgba(249, 115, 22, 0.15);
+.theme-portal .cp-diag-block::after {
+    content: 'APERTURE SCIENCE';
+    position: absolute;
+    top: -5px;
+    right: 5px;
+    font-size: 5px;
+    background: #ffffff;
+    padding: 0 4px;
+    letter-spacing: 1px;
 }
 
 /* — Buttons — rounded flat ——————————————————————————————————— */

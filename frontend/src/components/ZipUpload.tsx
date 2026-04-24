@@ -49,7 +49,7 @@ export const ZipUpload: React.FC<{ activeTheme?: string }> = ({ activeTheme = 'c
             className={`w-full h-56 border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${isDragging ? 'border-white/40 bg-white/5' : isDark ? 'border-white/5 hover:border-white/10' : 'border-gray-100 hover:border-gray-200'}`}
           >
             <span className={`text-[9px] font-cp-mono uppercase tracking-[0.3em] font-bold ${isDark ? 'text-white/10' : 'text-gray-300'}`}>
-              {isDragging ? 'RELEASE_TO_LINK' : 'DROP_FILE_HERE'}
+              {isDragging ? 'ОТПУСТИТЕ ДЛЯ ИМПОРТА' : 'ПЕРЕТАЩИТЕ ZIP СЮДА'}
             </span>
           </motion.div>
         )}
@@ -65,7 +65,7 @@ export const ZipUpload: React.FC<{ activeTheme?: string }> = ({ activeTheme = 'c
               />
             </div>
             <span className={`text-[8px] font-cp-mono uppercase tracking-[0.2em] animate-pulse ${isDark ? 'text-white/30' : 'text-gray-500'}`}>
-              Parsing system package...
+              Обработка архива...
             </span>
           </div>
         )}
@@ -76,8 +76,8 @@ export const ZipUpload: React.FC<{ activeTheme?: string }> = ({ activeTheme = 'c
             disabled={status === 'uploading'}
             onClick={() => setStatus('idle')}
             className={`px-12 py-3 text-[10px] uppercase font-bold tracking-widest border transition-all ${status === 'success'
-                ? 'bg-white text-black border-white hover:bg-white/90'
-                : isDark ? 'border-white/20 text-white bg-white/5 hover:bg-white/10' : 'border-gray-200 text-slate-800 bg-gray-50 hover:bg-gray-100'
+              ? 'bg-white text-black border-white hover:bg-white/90'
+              : isDark ? 'border-white/20 text-white bg-white/5 hover:bg-white/10' : 'border-gray-200 text-slate-800 bg-gray-50 hover:bg-gray-100'
               }`}
           >
             {status === 'success' ? 'Завершить' : 'Обзор файлов'}
@@ -88,12 +88,12 @@ export const ZipUpload: React.FC<{ activeTheme?: string }> = ({ activeTheme = 'c
       {/* ── Bottom Strip (Stage 6) ───────────────────────── */}
       <div className={`absolute bottom-0 left-0 right-0 p-8 border-t font-cp-mono text-[7px] flex justify-between uppercase tracking-[0.2em] ${isDark ? 'border-white/5 text-white/10' : 'border-gray-50 text-gray-400'}`}>
         <div className="flex gap-10">
-          <span>Encrypted: AES-256</span>
-          <span>Verified: MD5_SUM</span>
+          <span>{status === 'success' ? 'CHECKSUM OK' : 'AES-256 ENCRYPTED'}</span>
+          <span>{status === 'success' ? 'PACKAGE VERIFIED' : 'WAITING_FOR_UPLINK'}</span>
         </div>
         <div className="flex items-center gap-2">
           <AlertTriangle size={10} />
-          <span>Security Protocol 5</span>
+          <span>{status === 'success' ? 'LINK READY' : 'PROTOCOL_STABLE'}</span>
         </div>
       </div>
     </div>
