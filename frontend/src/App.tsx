@@ -24,18 +24,41 @@ function App() {
   const [loading, setLoading] = React.useState(true);
   const [deckyStatus, setDeckyStatus] = React.useState('UNKNOWN');
   const [installingDecky, setInstallingDecky] = React.useState(false);
+  const [installLogs, setInstallLogs] = React.useState<string[]>([]);
 
   const theme = getTheme(activeTheme);
   const isDark = theme.isDark;
 
+  // Load Initial Config
   React.useEffect(() => {
-    // Fetch Decky Status once
+    PluginService.getConfig().then(cfg => {
+      if (cfg?.activeTheme) setActiveTheme(cfg.activeTheme);
+    });
     PluginService.getDeckyStatus().then(setDeckyStatus);
   }, []);
 
+  // Persist Theme Change
+  const handleThemeChange = (newTheme: string) => {
+    setActiveTheme(newTheme);
+    PluginService.setConfig({ activeTheme: newTheme });
+  };
+
+  // Log Polling
+  React.useEffect(() => {
+    let interval: any;
+    if (installingDecky) {
+      interval = setInterval(async () => {
+        const logs = await PluginService.getInstallLogs();
+        setInstallLogs(logs);
+      }, 1000);
+    } else {
+      setInstallLogs([]);
+    }
+    return () => clearInterval(interval);
+  }, [installingDecky]);
+
   React.useEffect(() => {
     setLoading(true);
-    // Map tab name to source
     const sourceMap: Record<string, string> = {
       plugins: 'builtin',
       decky: 'decky',
@@ -193,16 +216,25 @@ function App() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-10"
+                      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-10"
                     >
-                      <div className={`max-w-lg w-full p-10 border flex flex-col items-center text-center ${isDark ? 'bg-black border-white/20' : 'bg-white border-gray-200 shadow-2xl'}`}>
-                        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-8" />
-                        <h3 className="text-xl font-cyber uppercase tracking-widest mb-4">Установка системных компонентов</h3>
-                        <p className="font-cp-mono text-[10px] uppercase tracking-widest opacity-60 mb-8">
-                          Выполняется запуск официального скрипта установки Decky Loader. <br />
-                          Пожалуйста, не выключайте устройство.
-                        </p>
-                        <div className="w-full h-1 bg-white/10 relative overflow-hidden">
+                      <div className={`max-w-2xl w-full p-8 border flex flex-col ${isDark ? 'bg-black border-white/20' : 'bg-white border-gray-200 shadow-2xl'}`}>
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                          <h3 className="text-lg font-cyber uppercase tracking-widest">Установка Decky Loader</h3>
+                        </div>
+
+                        <div className={`flex-1 min-h-[300px] max-h-[400px] overflow-y-auto mb-6 p-4 font-cp-mono text-[9px] leading-relaxed border ${isDark ? 'bg-white/5 border-white/10 text-blue-400' : 'bg-gray-50 border-gray-200 text-blue-600'}`}>
+                          {installLogs.map((log, i) => (
+                            <div key={i} className="mb-1">
+                              <span className="opacity-30 mr-2">[{i.toString().padStart(3, '0')}]</span>
+                              {log}
+                            </div>
+                          ))}
+                          <div className="animate-pulse">_</div>
+                        </div>
+
+                        <div className="w-full h-1 bg-white/10 relative overflow-hidden mb-6">
                           <motion.div
                             initial={{ x: '-100%' }}
                             animate={{ x: '100%' }}
@@ -210,6 +242,10 @@ function App() {
                             className="absolute inset-0 bg-blue-500"
                           />
                         </div>
+
+                        <p className="font-cp-mono text-[8px] uppercase tracking-widest opacity-40">
+                          Скрипт выполняется в фоновом режиме. Пожалуйста, дождитесь завершения.
+                        </p>
                       </div>
                     </motion.div>
                   )}
@@ -227,7 +263,7 @@ function App() {
                   <div className="col-span-full"><ZipUpload /></div>
                 ) : activeTab === 'settings' ? (
                   <div className="col-span-full">
-                    <SettingsScreen activeTheme={activeTheme} onThemeChange={setActiveTheme} />
+                    <SettingsScreen activeTheme={activeTheme} onThemeChange={handleThemeChange} />
                   </div>
                 ) : (
                   plugins.map(plugin => (

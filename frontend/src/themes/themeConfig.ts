@@ -17,6 +17,7 @@ export interface ThemeConfig {
     description: string;
     className: string;
     badge: string;
+    accent?: string;
     isDark: boolean;
 
     /** Motion profile for Framer Motion (Layer B) */
@@ -29,6 +30,7 @@ export interface ThemeConfig {
     artwork: {
         backgroundUrl: string;
         coverUrl: string;
+        characterUrl?: string;
         placement: 'right' | 'left' | 'center';
         opacity: number;
         scale: number;
@@ -77,10 +79,12 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
         className: 'theme-cyberpunk',
         badge: 'NIGHT_CITY_LINK',
         isDark: true,
+        accent: '#00ffcc',
         motion: { duration: 0.18, ease: 'easeOut' },
         artwork: {
             backgroundUrl: '/themes/cyberpunk/background.webp',
             coverUrl: '/themes/cyberpunk/cover.webp',
+            characterUrl: '/themes/cyberpunk/character.png',
             placement: 'right',
             opacity: 0.15,
             scale: 1,
@@ -118,10 +122,12 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
         className: 'theme-stalker',
         badge: 'ZONE_NETWORK',
         isDark: true,
+        accent: '#7fff00',
         motion: { duration: 0.15, ease: [0.2, 0.8, 0.6, 1] },
         artwork: {
             backgroundUrl: '/themes/stalker/background.webp',
             coverUrl: '/themes/stalker/cover.webp',
+            characterUrl: '/themes/stalker/character.png',
             placement: 'right',
             opacity: 0.15,
             scale: 1.05,
@@ -159,10 +165,12 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
         className: 'theme-doom',
         badge: 'UAC_TACTICAL',
         isDark: true,
+        accent: '#ff0000',
         motion: { duration: 0.06, ease: 'linear' },
         artwork: {
             backgroundUrl: '/themes/doom/background.webp',
             coverUrl: '/themes/doom/cover.webp',
+            characterUrl: '/themes/doom/character.png',
             placement: 'center',
             opacity: 0.15,
             scale: 1.2,
@@ -200,10 +208,12 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
         className: 'theme-portal',
         badge: 'TEST_SUBJECT_HUD',
         isDark: false,
+        accent: '#00bfff',
         motion: { duration: 0.70, ease: [0.4, 0, 0.2, 1] },
         artwork: {
             backgroundUrl: '/themes/portal/background.webp',
             coverUrl: '/themes/portal/cover.webp',
+            characterUrl: '/themes/portal/character.png',
             placement: 'right',
             opacity: 0.1,
             scale: 1,
@@ -241,10 +251,12 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
         className: 'theme-deadspace',
         badge: 'RIG_HOLO_LINK',
         isDark: true,
+        accent: '#ffa500',
         motion: { duration: 0.40, ease: [0.2, 0.8, 0.2, 1] },
         artwork: {
             backgroundUrl: '/themes/deadspace/background.webp',
             coverUrl: '/themes/deadspace/cover.webp',
+            characterUrl: '/themes/deadspace/character.png',
             placement: 'right',
             opacity: 0.12,
             scale: 1.1,

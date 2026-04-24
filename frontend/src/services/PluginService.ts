@@ -46,5 +46,45 @@ export const PluginService = {
     } catch (error) {
       return false;
     }
+  },
+
+  async getSystemStats(): Promise<any> {
+    try {
+      const response = await fetch(`${API_BASE}/system/stats`);
+      return await response.json();
+    } catch (error) {
+      return null;
+    }
+  },
+
+  async getConfig(): Promise<{ activeTheme: string }> {
+    try {
+      const response = await fetch(`${API_BASE}/system/config`);
+      return await response.json();
+    } catch (error) {
+      return { activeTheme: 'cyberpunk' };
+    }
+  },
+
+  async setConfig(config: { activeTheme: string }): Promise<void> {
+    try {
+      await fetch(`${API_BASE}/system/config`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(config),
+      });
+    } catch (error) {
+      console.error('Ошибка сохранения конфига:', error);
+    }
+  },
+
+  async getInstallLogs(): Promise<string[]> {
+    try {
+      const response = await fetch(`${API_BASE}/decky/logs`);
+      const data = await response.json();
+      return data.logs || [];
+    } catch (error) {
+      return [];
+    }
   }
 };

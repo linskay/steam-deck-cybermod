@@ -78,9 +78,22 @@ const ToolBtn: React.FC<{ icon: React.ElementType; label: string; sub: string; i
 );
 
 // ─── Main settings screen ─────────────────────────────────────────────────────
+import { PluginService } from '../services/PluginService';
+
 export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (theme: string) => void }> = ({ activeTheme = 'cyberpunk', onThemeChange }) => {
   const currentTheme = getTheme(activeTheme);
   const isDark = currentTheme.isDark;
+  const [stats, setStats] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    const fetchStats = async () => {
+      const data = await PluginService.getSystemStats();
+      if (data) setStats(data);
+    };
+    fetchStats();
+    const timer = setInterval(fetchStats, 3000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="flex flex-col gap-12 max-w-5xl">
@@ -151,15 +164,15 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className={`p-6 border ${isDark ? 'bg-white/2 border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
             <div className={`text-[8px] font-cp-mono uppercase tracking-widest mb-4 font-bold ${isDark ? 'text-white/20' : 'text-gray-400'}`}>Среда</div>
-            <DiagRow label="Decky Loader" value="RUNNING" status="ok" isDark={isDark} />
+            <DiagRow label="Decky Loader" value={stats?.status || 'POLLING...'} status={stats?.status === 'INSTALLED' ? 'ok' : 'off'} isDark={isDark} />
             <DiagRow label="Active Themes" value="5" status="ok" isDark={isDark} />
             <DiagRow label="Secure Link" value="CONNECTED" status="ok" isDark={isDark} />
           </div>
           <div className={`p-6 border ${isDark ? 'bg-white/2 border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
             <div className={`text-[8px] font-cp-mono uppercase tracking-widest mb-4 font-bold ${isDark ? 'text-white/20' : 'text-gray-400'}`}>Производительность</div>
-            <DiagRow label="Uptime" value="04:20:15" status="ok" isDark={isDark} />
-            <DiagRow label="Memory" value="1.2 GB" status="ok" isDark={isDark} />
-            <DiagRow label="Latency" value="24ms" status="ok" isDark={isDark} />
+            <DiagRow label="Memory Used" value={stats?.memoryUsed || '...'} status="ok" isDark={isDark} />
+            <DiagRow label="Memory Total" value={stats?.memoryTotal || '...'} status="ok" isDark={isDark} />
+            <DiagRow label="CPU Load" value={stats?.cpuLoad || '...'} status="ok" isDark={isDark} />
           </div>
         </div>
       </section>

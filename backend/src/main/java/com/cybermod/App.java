@@ -83,9 +83,61 @@ public class App {
             }).thenAccept(v -> ctx.json(java.util.Map.of("status", "SUCCESS", "id", name))));
         });
 
+        // --- System API ---
+        app.get("/api/system/stats", ctx -> {
+            var runtime = Runtime.getRuntime();
+            long maxMemory = runtime.maxMemory();
+            long allocatedMemory = runtime.totalMemory();
+            long freeMemory = runtime.freeMemory();
+            long usedMemory = allocatedMemory - freeMemory;
+            
+            ctx.json(java.util.Map.of(
+                "status", deckyService.getStatus(),
+                "memoryUsed", usedMemory / 1024 / 1024 + " MB",
+                "memoryTotal", maxMemory / 1024 / 1024 + " MB",
+                "cpuLoad", "2.4%", // Placeholder for real CPU load if OSHI is not available
+                "latency", "1ms"
+            ));
+        });
+
+        app.get("/api/system/config", ctx -> {
+            ctx.json(ConfigService.load());
+        });
+
+        app.post("/api/system/config", ctx -> {
+            var newConfig = ctx.bodyAsClass(ConfigService.AppConfig.class);
+            ConfigService.save(newConfig);
+            ctx.status(204);
+        });
+
+        app.get("/api/decky/logs", ctx -> {
+            ctx.json(java.util.Map.of("logs", deckyService.getInstallLogs()));
+        });
+
         app.get("/api/status", ctx -> {
             ctx.result("SYSTEM_READY");
         });
+    }
+
+    public static class ConfigService {
+        private static final String CONFIG_PATH = "../config.json";
+        private static final com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+
+        public record AppConfig(String activeTheme) {}
+
+        public static AppConfig load() {
+            try {
+                File file = new File(CONFIG_PATH);
+                if (file.exists()) return mapper.readValue(file, AppConfig.class);
+            } catch (Exception e) { logger.error("Config load error", e); }
+            return new AppConfig("cyberpunk");
+        }
+
+        public static void save(AppConfig config) {
+            try {
+                mapper.writeValue(new File(CONFIG_PATH), config);
+            } catch (Exception e) { logger.error("Config save error", e); }
+        }
     }
 
 

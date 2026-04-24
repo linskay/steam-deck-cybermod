@@ -78,5 +78,18 @@ public class FileSystemService {
             }
         }
         logger.info("Плагин {} успешно установлен в {}", pluginName, targetDir);
+        
+        if ("decky".equals(source)) {
+            restartDeckyService();
+        }
+    }
+
+    private void restartDeckyService() {
+        try {
+            logger.info("Перезапуск сервиса Decky Loader...");
+            Runtime.getRuntime().exec("systemctl restart plugin_loader.service");
+        } catch (IOException e) {
+            logger.warn("Не удалось перезапустить сервис Decky: {}", e.getMessage());
+        }
     }
 }

@@ -12,8 +12,18 @@ import java.util.concurrent.CompletableFuture;
 
 public class DeckyService {
     private static final Logger logger = LoggerFactory.getLogger(DeckyService.class);
-    private static final String DECKY_LOADER_PATH = System.getProperty("user.home") + "/homebrew/services/PluginLoader";
-    private static final String INSTALLER_URL = "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/install_prerelease.sh";
+    private final List<String> installLogs = new java.util.concurrent.CopyOnWriteArrayList<>();
+
+    public List<String> getInstallLogs() {
+        return installLogs;
+    }
+
+    public boolean isSteamOS() {
+        Path osRelease = Paths.get("/etc/os-release");
+        try {
+            return Files.exists(osRelease) && Files.readString(osRelease).contains("steamos");
+        } catch (Exception e) { return false; }
+    }
 
     public String getStatus() {
         // 1. Простая проверка по наличию папки/файла
@@ -22,43 +32,50 @@ public class DeckyService {
             return "INSTALLED";
         }
         
-        // 2. Проверка через systemctl (для SteamOS)
+        // 2. Проверка через systemctl
         try {
             Process process = Runtime.getRuntime().exec("systemctl is-active plugin_loader.service");
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                 String line = reader.readLine();
-                if ("active".equals(line)) {
-                    return "INSTALLED";
-                }
+                if ("active".equals(line)) return "INSTALLED";
             }
-        } catch (Exception e) {
-            // Игнорируем ошибки (например, на Windows)
-        }
+        } catch (Exception e) {}
         
         return "NOT_INSTALLED";
     }
 
     public CompletableFuture<Boolean> installLoader() {
         return CompletableFuture.supplyAsync(() -> {
-            logger.info("Запуск реальной установки Decky Loader...");
+            installLogs.clear();
+            installLogs.add("--- Инициализация установки Decky Loader ---");
+            
+            if (!isSteamOS()) {
+                installLogs.add("[WARNING] Среда не является SteamOS. Попытка установки может быть небезопасной.");
+            }
+
             try {
-                // Официальный скрипт установки Decky Loader
-                String installScript = "curl -L https://github.com/SteamDeckHomebrew/decky-loader/raw/main/dist/install.sh | sh";
+                // Используем стабильный URL
+                String scriptUrl = "https://github.com/SteamDeckHomebrew/decky-loader/raw/main/dist/install.sh";
+                installLogs.add("Скачивание скрипта: " + scriptUrl);
                 
-                ProcessBuilder pb = new ProcessBuilder("sh", "-c", installScript);
-                pb.inheritIO(); // Передаем вывод в консоль бэкенда для отладки
+                ProcessBuilder pb = new ProcessBuilder("sh", "-c", "curl -L " + scriptUrl + " | sh");
+                pb.redirectErrorStream(true);
                 Process process = pb.start();
                 
-                int exitCode = process.waitFor();
-                if (exitCode == 0) {
-                    logger.info("Decky Loader успешно установлен");
-                    return true;
-                } else {
-                    logger.error("Ошибка при установке Decky Loader, код выхода: {}", exitCode);
-                    return false;
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        installLogs.add(line);
+                        logger.info("[INSTALL] " + line);
+                    }
                 }
+                
+                int exitCode = process.waitFor();
+                boolean success = (exitCode == 0);
+                installLogs.add(success ? "--- УСТАНОВКА ЗАВЕРШЕНА УСПЕШНО ---" : "--- ОШИБКА УСТАНОВКИ (Код: " + exitCode + ") ---");
+                return success;
             } catch (Exception e) {
-                logger.error("Критическая ошибка при установке Decky Loader: {}", e.getMessage());
+                installLogs.add("[CRITICAL ERROR] " + e.getMessage());
                 return false;
             }
         });
