@@ -32,23 +32,30 @@ public class DeckyStoreProvider implements PluginProvider {
 
                     if (root.isArray()) {
                         for (JsonNode node : root) {
-                            String id = node.has("name") ? node.get("name").asText().toLowerCase().replace(" ", "-") : "unknown";
+                            String name = getSafe(node, "name");
+                            String id = node.has("name") ? name.toLowerCase().replace(" ", "-") : "unknown";
+                            String description = getSafe(node, "description");
+                            
+                            // Улучшенная детекция поддержки OLED/LCD (эвристика)
+                            boolean oled = description.toLowerCase().contains("oled") || !description.toLowerCase().contains("lcd only");
+                            boolean lcd = description.toLowerCase().contains("lcd") || !description.toLowerCase().contains("oled only");
+
                             plugins.add(new App.Plugin(
                                 id,
-                                getSafe(node, "name"),
+                                name,
                                 getSafe(node, "author"),
-                                getSafe(node, "description"),
+                                description,
                                 getSafe(node, "version"),
-                                getSafe(node, "icon_url"), // Icon field name might differ
+                                node.has("main_icon") ? node.get("main_icon").asText() : getSafe(node, "icon_url"),
                                 installedIds.contains(id),
                                 false,
                                 "decky",
                                 getSafe(node, "repo"),
-                                getSafe(node, "download_url"),
+                                node.has("download_url") ? node.get("download_url").asText() : getSafe(node, "download"),
                                 new ArrayList<>(),
                                 getSafe(node, "min_loader_version"),
-                                true, // Assume OLED support for Decky plugins
-                                true,
+                                oled,
+                                lcd,
                                 "",
                                 ""
                             ));

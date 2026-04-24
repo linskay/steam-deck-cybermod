@@ -58,6 +58,12 @@ public class App {
             ctx.json(java.util.Map.of("status", deckyService.getStatus()));
         });
 
+        app.post("/api/decky/install-loader", ctx -> {
+            ctx.future(() -> deckyService.installLoader().thenAccept(success -> 
+                ctx.json(java.util.Map.of("success", success))
+            ));
+        });
+
         app.post("/api/plugins/zip/upload", ctx -> {
             var files = ctx.uploadedFiles("file");
             if (files.isEmpty()) {
