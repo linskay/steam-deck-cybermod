@@ -83,7 +83,7 @@ const CharacterOverlay: React.FC<{ characterUrl: string; accent: string | undefi
           ]
         }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-0 -left-10 w-[140%] h-auto max-w-none opacity-40 mix-blend-screen"
+        className="absolute bottom-0 -left-10 w-[140%] h-auto max-w-none opacity-65 mix-blend-screen"
         alt="Theme character"
       />
     </motion.div>

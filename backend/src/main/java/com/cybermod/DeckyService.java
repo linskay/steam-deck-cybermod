@@ -8,11 +8,14 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DeckyService {
     private static final Logger logger = LoggerFactory.getLogger(DeckyService.class);
-    private final List<String> installLogs = new java.util.concurrent.CopyOnWriteArrayList<>();
+    private static final String DECKY_LOADER_PATH = System.getProperty("user.home") + "/homebrew/services/PluginLoader";
+    private final List<String> installLogs = new CopyOnWriteArrayList<>();
 
     public List<String> getInstallLogs() {
         return installLogs;

@@ -5,6 +5,7 @@ import io.javalin.http.staticfiles.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -120,10 +121,15 @@ public class App {
     }
 
     public static class ConfigService {
-        private static final String CONFIG_PATH = "../config.json";
+        private static final String CONFIG_DIR = System.getProperty("user.home") + "/.config/cybermod";
+        private static final String CONFIG_PATH = CONFIG_DIR + "/config.json";
         private static final com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
 
         public record AppConfig(String activeTheme) {}
+
+        private static void ensureDir() {
+            new File(CONFIG_DIR).mkdirs();
+        }
 
         public static AppConfig load() {
             try {
@@ -135,6 +141,7 @@ public class App {
 
         public static void save(AppConfig config) {
             try {
+                ensureDir();
                 mapper.writeValue(new File(CONFIG_PATH), config);
             } catch (Exception e) { logger.error("Config save error", e); }
         }

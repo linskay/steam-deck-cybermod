@@ -36,9 +36,18 @@ public class DeckyStoreProvider implements PluginProvider {
                             String id = node.has("name") ? name.toLowerCase().replace(" ", "-") : "unknown";
                             String description = getSafe(node, "description");
                             
-                            // Улучшенная детекция поддержки OLED/LCD (эвристика)
-                            boolean oled = description.toLowerCase().contains("oled") || !description.toLowerCase().contains("lcd only");
-                            boolean lcd = description.toLowerCase().contains("lcd") || !description.toLowerCase().contains("oled only");
+                            // Улучшенная детекция поддержки OLED/LCD
+                            String descLower = description.toLowerCase();
+                            boolean isDisplayPlugin = descLower.contains("display") || descLower.contains("screen") || descLower.contains("color");
+                            
+                            // Большинство плагинов работают везде, кроме специфичных для дисплея
+                            boolean oled = true;
+                            boolean lcd = true;
+                            
+                            if (isDisplayPlugin) {
+                                if (descLower.contains("oled only")) lcd = false;
+                                if (descLower.contains("lcd only")) oled = false;
+                            }
 
                             plugins.add(new App.Plugin(
                                 id,
