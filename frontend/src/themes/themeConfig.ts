@@ -60,6 +60,13 @@ export interface ThemeConfig {
 
     /** Visual bullets for Settings Gallery (Stage 7) */
     bullets: string[];
+
+    /** Layer C: ZipUpload bottom strip flavor */
+    zipFlavor: {
+        l1: string;
+        l2: string;
+        r1: string;
+    };
 }
 
 export const THEMES: Record<ThemeId, ThemeConfig> = {
@@ -97,6 +104,11 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
             line3: 'NEURAL LINK ACTIVE',
         },
         bullets: ['Неоновый интерфейс Night City', 'Острые углы, холодный неон', 'Glitch-анимации'],
+        zipFlavor: {
+            l1: 'AES-256 ENCRYPTED',
+            l2: 'MESH_NETWORK_SECURE',
+            r1: 'PROTOCOL_STABLE',
+        },
     },
 
     stalker: {
@@ -133,6 +145,11 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
             line3: 'КАНАЛ: АКТИВЕН',
         },
         bullets: ['Военный ПДА Зоны отчуждения', 'Зернистость, помехи, износ', 'Мерцание сигнала'],
+        zipFlavor: {
+            l1: 'ENCRYPTED_SIGNAL',
+            l2: 'ZONE_CHECKSUM_OK',
+            r1: 'PDA_LINK_STABLE',
+        },
     },
 
     doom: {
@@ -158,17 +175,22 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
         },
         headerFlavor: {
             leftLabel: 'THREAT',
-            leftValue: '99',
-            rightLabel: 'KILLS',
-            rightValue: '666',
-            statusText: 'STATUS: READY',
+            leftValue: 'HIGH',
+            rightLabel: 'SYSTEM',
+            rightValue: 'ARMED',
+            statusText: 'LOADOUT: READY',
         },
         diegeticBlock: {
-            line1: 'LOCATION: PHOBOS',
-            line2: 'AMMO: CRITICAL',
-            line3: 'WEAPON: READY',
+            line1: 'UAC_MAIN_LINK // ENGAGED',
+            line2: 'SECTOR: PHOBOS_BASE_7',
+            line3: 'HEALTH: 100%',
         },
         bullets: ['Боевой HUD солдата', 'Высокий контраст, красный акцент', 'Snap-анимации'],
+        zipFlavor: {
+            l1: 'UAC_SECURE_PACK',
+            l2: 'VERIFIED_BY_SARGENT',
+            r1: 'WEAPON_LINK_STABLE',
+        },
     },
 
     portal: {
@@ -205,6 +227,11 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
             line3: 'NEURAL: OPTIMAL',
         },
         bullets: ['Aperture Science лаборатория', 'Стерильная белая чистота', 'Плавные переходы'],
+        zipFlavor: {
+            l1: 'APERTURE_ENCRYPTED',
+            l2: 'CAKE_NOT_FOUND',
+            r1: 'CORE_STABLE',
+        },
     },
 
     deadspace: {
@@ -241,6 +268,11 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
             line3: 'LINK ESTABLISHED',
         },
         bullets: ['Голограмма RIG костюма', 'Холодный синий, левитирующий UI', 'Fade-in hologram'],
+        zipFlavor: {
+            l1: 'RIG_SYNC_ENCHANTED',
+            l2: 'ISHIMURA_VERIFIED',
+            r1: 'OXYGEN_STABLE',
+        },
     },
 };
 

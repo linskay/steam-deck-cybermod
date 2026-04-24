@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Upload, FileArchive, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Upload, FileText, CheckCircle, AlertTriangle, Package } from 'lucide-react';
 import { getTheme } from '../themes/themeConfig';
 
 export const ZipUpload: React.FC<{ activeTheme?: string }> = ({ activeTheme = 'cyberpunk' }) => {
@@ -22,7 +22,7 @@ export const ZipUpload: React.FC<{ activeTheme?: string }> = ({ activeTheme = 'c
 
       {/* ── Background decoration ─────────────────────────── */}
       <div className={`absolute top-0 right-0 p-8 opacity-[0.03] ${isDark ? 'text-white' : 'text-black'}`}>
-        <FileArchive size={280} />
+        <FileText size={280} />
       </div>
 
       <div className="relative z-10 w-full max-w-xl flex flex-col items-center text-center">
@@ -88,12 +88,12 @@ export const ZipUpload: React.FC<{ activeTheme?: string }> = ({ activeTheme = 'c
       {/* ── Bottom Strip (Stage 6) ───────────────────────── */}
       <div className={`absolute bottom-0 left-0 right-0 p-8 border-t font-cp-mono text-[7px] flex justify-between uppercase tracking-[0.2em] ${isDark ? 'border-white/5 text-white/10' : 'border-gray-50 text-gray-400'}`}>
         <div className="flex gap-10">
-          <span>{status === 'success' ? 'CHECKSUM OK' : 'AES-256 ENCRYPTED'}</span>
-          <span>{status === 'success' ? 'PACKAGE VERIFIED' : 'WAITING_FOR_UPLINK'}</span>
+          <span>{status === 'success' ? 'CHECKSUM_OK' : theme.zipFlavor.l1}</span>
+          <span>{status === 'success' ? 'PACKAGE_VERIFIED' : theme.zipFlavor.l2}</span>
         </div>
         <div className="flex items-center gap-2">
-          <AlertTriangle size={10} />
-          <span>{status === 'success' ? 'LINK READY' : 'PROTOCOL_STABLE'}</span>
+          {status === 'success' ? <Package size={10} /> : <AlertTriangle size={10} />}
+          <span>{status === 'success' ? 'LINK_READY' : theme.zipFlavor.r1}</span>
         </div>
       </div>
     </div>

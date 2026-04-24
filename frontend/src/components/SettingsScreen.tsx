@@ -150,13 +150,13 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className={`p-6 border ${isDark ? 'bg-white/2 border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
-            <div className={`text-[8px] font-cp-mono uppercase tracking-widest mb-4 font-bold ${isDark ? 'text-white/20' : 'text-gray-400'}`}>Environment</div>
+            <div className={`text-[8px] font-cp-mono uppercase tracking-widest mb-4 font-bold ${isDark ? 'text-white/20' : 'text-gray-400'}`}>Среда</div>
             <DiagRow label="Decky Loader" value="RUNNING" status="ok" isDark={isDark} />
             <DiagRow label="Active Themes" value="5" status="ok" isDark={isDark} />
             <DiagRow label="Secure Link" value="CONNECTED" status="ok" isDark={isDark} />
           </div>
           <div className={`p-6 border ${isDark ? 'bg-white/2 border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
-            <div className={`text-[8px] font-cp-mono uppercase tracking-widest mb-4 font-bold ${isDark ? 'text-white/20' : 'text-gray-400'}`}>Performance</div>
+            <div className={`text-[8px] font-cp-mono uppercase tracking-widest mb-4 font-bold ${isDark ? 'text-white/20' : 'text-gray-400'}`}>Производительность</div>
             <DiagRow label="Uptime" value="04:20:15" status="ok" isDark={isDark} />
             <DiagRow label="Memory" value="1.2 GB" status="ok" isDark={isDark} />
             <DiagRow label="Latency" value="24ms" status="ok" isDark={isDark} />

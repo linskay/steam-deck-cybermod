@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Info, Trash2 } from 'lucide-react';
+import { Download, Info, Trash2, ShieldCheck } from 'lucide-react';
 import { getTheme } from '../themes/themeConfig';
 
 export interface Plugin {
@@ -89,9 +89,12 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
 
           {/* ── Metadata row (Stage 5) ────────────────────────── */}
           <div className={`mt-auto flex items-center justify-between pt-3 border-t ${isDark ? 'border-white/5' : 'border-gray-50'}`}>
-            <div className="flex items-center gap-3 text-[7px] font-cp-mono uppercase font-bold tracking-widest text-white/20">
-              <span className="opacity-40">{theme.menuHints.plugins}</span>
-              <span className="opacity-0 group-hover:opacity-100 transition-opacity">VERIFIED</span>
+            <div className="flex items-center gap-2 text-[7px] font-cp-mono uppercase font-bold tracking-widest text-[#00ffcc]">
+              <ShieldCheck size={10} />
+              <span>Проверено</span>
+            </div>
+            <div className={`text-[7px] font-cp-mono uppercase tracking-[0.2em] ${isDark ? 'text-white/20' : 'text-gray-400'}`}>
+              Источник: {plugin.source === 'builtin' ? 'Встроенный' : plugin.source === 'decky' ? 'Decky' : 'ZIP'}
             </div>
 
             {/* ── Actions Row ─────────────────────────────── */}
