@@ -8,21 +8,11 @@ import { useGamepadNavigation } from './hooks/useGamepadNavigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { getTheme } from './themes/themeConfig';
 
-// Screen title map — fixed, translatable, no theme-dependency
 const SCREEN_TITLES: Record<string, string> = {
   plugins: 'Встроенные модули',
   decky: 'Каталог Decky',
   zip: 'Импорт архива',
   settings: 'Настройки системы',
-};
-
-// Motion profiles per theme (Layer B)
-const MOTION_PROFILES: Record<string, { duration: number; ease: string | number[] }> = {
-  cyberpunk: { duration: 0.18, ease: 'easeOut' },
-  stalker: { duration: 0.15, ease: [0.2, 0.8, 0.6, 1] },
-  doom: { duration: 0.06, ease: 'linear' },
-  portal: { duration: 0.70, ease: [0.4, 0, 0.2, 1] },
-  deadspace: { duration: 0.40, ease: [0.2, 0.8, 0.2, 1] },
 };
 
 function App() {
@@ -33,8 +23,7 @@ function App() {
   const [loading, setLoading] = React.useState(true);
 
   const theme = getTheme(activeTheme);
-  const motion_prof = MOTION_PROFILES[activeTheme] ?? MOTION_PROFILES.cyberpunk;
-  const isDark = activeTheme !== 'portal';
+  const isDark = theme.isDark;
 
   React.useEffect(() => {
     setLoading(true);
@@ -45,11 +34,11 @@ function App() {
   }, [activeTab]);
 
   return (
-    <div className={`flex w-full h-screen overflow-hidden ${isDark ? 'bg-cyber-black text-white' : 'bg-gray-50 text-slate-900'} theme-${activeTheme}`}>
+    <div className={`flex w-full h-screen overflow-hidden ${isDark ? 'bg-black text-white' : 'bg-gray-50 text-slate-900'} theme-${activeTheme}`}>
 
       {/* Global scanline overlay — cosmetic only */}
       <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-        <div className="w-full h-px bg-cp-cyan/5 absolute animate-scanline" />
+        <div className="w-full h-px bg-current opacity-[0.03] absolute animate-scanline" />
       </div>
 
       {/* Sidebar */}
@@ -58,54 +47,57 @@ function App() {
       {/* Main */}
       <main className="flex-1 overflow-y-auto relative flex flex-col cp-grid-bg">
 
-        {/* Theme Artwork — watermark, Layer C */}
+        {/* Theme Artwork — Watermark (Stage 8) */}
         <div
           className="fixed pointer-events-none z-0"
           style={{
-            right: 0, bottom: 0,
+            right: theme.artwork.placement === 'right' ? 0 : 'auto',
+            left: theme.artwork.placement === 'left' ? 0 : theme.artwork.placement === 'center' ? '29%' : 'auto',
+            bottom: 0,
             width: '42%', height: '75%',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'right bottom',
             backgroundSize: 'contain',
-            opacity: 0.06,
-            backgroundImage: `url('${theme.artworkUrl}')`,
+            opacity: theme.artwork.opacity,
+            backgroundImage: `url('${theme.artwork.backgroundUrl}')`,
             filter: 'grayscale(1)',
+            transform: `scale(${theme.artwork.scale})`,
           }}
         />
 
-        {/* ── Top header bar ──────────────────────────────── */}
+        {/* ── Top header bar (Stage 3) ────────────────────── */}
         <header className={`h-14 border-b sticky top-0 z-20 px-10 flex items-center justify-between ${isDark
-            ? 'bg-cp-black/90 border-white/5 backdrop-blur-md'
-            : 'bg-white/90 border-gray-100 backdrop-blur-md'
+          ? 'bg-black/90 border-white/5 backdrop-blur-md'
+          : 'bg-white/90 border-gray-100 backdrop-blur-md'
           }`}>
-          {/* Left: two flavor data-cells from themeConfig */}
-          <div className="flex items-center gap-8">
+
+          {/* Left: System Cell 1 */}
+          <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <span className={`font-cp-mono text-[7px] uppercase tracking-widest ${isDark ? 'text-cp-cyan/50' : 'text-blue-400/70'}`}>
+              <span className={`font-cp-mono text-[7px] uppercase tracking-widest ${isDark ? 'text-white/40' : 'text-slate-400'}`}>
                 {theme.headerFlavor.leftLabel}
               </span>
-              <div className={`px-2 h-5 border flex items-center font-cp-mono text-[10px] ${isDark ? 'border-cp-cyan/20 text-cp-cyan bg-cp-cyan/5' : 'border-blue-200 text-blue-500 bg-blue-50'}`}>
+              <div className={`px-2 h-5 border flex items-center font-cp-mono text-[10px] ${isDark ? 'border-white/10 text-white bg-white/5' : 'border-gray-200 text-slate-800 bg-gray-50'}`}>
                 {theme.headerFlavor.leftValue}
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className={`font-cp-mono text-[7px] uppercase tracking-widest ${isDark ? 'text-cp-yellow/50' : 'text-orange-400/70'}`}>
-                {theme.headerFlavor.rightLabel}
-              </span>
-              <div className={`px-2 h-5 border flex items-center font-cp-mono text-[10px] ${isDark ? 'border-cp-yellow/20 text-cp-yellow bg-cp-yellow/5' : 'border-orange-200 text-orange-500 bg-orange-50'}`}>
-                {theme.headerFlavor.rightValue}
               </div>
             </div>
           </div>
 
-          {/* Right: status from themeConfig */}
-          <div className="flex items-center gap-2 font-cp-mono text-[8px]">
+          {/* Center: Status / Mode */}
+          <div className="flex items-center gap-2 font-cp-mono text-[8px] absolute left-1/2 -translate-x-1/2">
             <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
             <span className={`font-bold ${isDark ? 'text-green-500' : 'text-green-600'}`}>
               {theme.headerFlavor.statusText}
             </span>
-            <span className={`hidden lg:block ml-6 ${isDark ? 'text-gray-600' : 'text-gray-400'} uppercase tracking-widest`}>
-              PING: 24MS
+          </div>
+
+          {/* Right: System Cell 2 */}
+          <div className="flex items-center gap-2">
+            <div className={`px-2 h-5 border flex items-center font-cp-mono text-[10px] ${isDark ? 'border-white/10 text-white bg-white/5' : 'border-gray-200 text-slate-800 bg-gray-50'}`}>
+              {theme.headerFlavor.rightValue}
+            </div>
+            <span className={`font-cp-mono text-[7px] uppercase tracking-widest ${isDark ? 'text-white/40' : 'text-slate-400'}`}>
+              {theme.headerFlavor.rightLabel}
             </span>
           </div>
         </header>
@@ -115,21 +107,21 @@ function App() {
           {/* Decorative corner frames */}
           {isDark && (
             <>
-              <div className="absolute top-16 right-16 w-20 h-20 border-t border-r border-cp-yellow/10 pointer-events-none" />
-              <div className="absolute bottom-16 left-16 w-28 h-28 border-b border-l border-cp-cyan/10 pointer-events-none" />
+              <div className="absolute top-16 right-16 w-20 h-20 border-t border-r border-white/5 pointer-events-none" />
+              <div className="absolute bottom-16 left-16 w-28 h-28 border-b border-l border-white/5 pointer-events-none" />
             </>
           )}
 
           <div className="max-w-6xl mx-auto relative z-10">
 
-            {/* Screen title — fixed label, no flavor */}
+            {/* Screen title — Stage 1 */}
             <header className="mb-10">
               <h2 className={`text-2xl font-cyber uppercase tracking-[0.3em] ${isDark ? 'text-white' : 'text-slate-800'}`}>
                 {SCREEN_TITLES[activeTab] ?? activeTab.toUpperCase()}
               </h2>
               <div className={`h-px w-48 mt-2 ${isDark
-                  ? 'bg-gradient-to-r from-cp-yellow/60 to-transparent'
-                  : 'bg-gradient-to-r from-blue-300/60 to-transparent'
+                ? 'bg-gradient-to-r from-white/20 to-transparent'
+                : 'bg-gradient-to-r from-gray-300 to-transparent'
                 }`} />
             </header>
 
@@ -140,15 +132,15 @@ function App() {
                 initial={{ opacity: 0, y: activeTheme === 'portal' ? 16 : 0 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={motion_prof}
+                transition={theme.motion}
                 className="grid grid-cols-1 xl:grid-cols-2 gap-x-8 gap-y-5"
               >
                 {loading ? (
-                  <div className={`col-span-full h-72 border flex flex-col items-center justify-center gap-5 ${isDark ? 'border-white/5 bg-cp-black/20' : 'border-gray-100 bg-white rounded-2xl shadow-sm'
+                  <div className={`col-span-full h-72 border flex flex-col items-center justify-center gap-5 ${isDark ? 'border-white/5 bg-black/20' : 'border-gray-100 bg-white shadow-sm'
                     }`}>
-                    <div className={`w-12 h-12 border-4 border-t-transparent rounded-full animate-spin ${isDark ? 'border-cp-yellow' : 'border-blue-400'}`} />
-                    <span className={`font-cp-mono text-[9px] uppercase tracking-widest animate-pulse ${isDark ? 'text-cp-yellow' : 'text-blue-500'}`}>
-                      Загрузка данных...
+                    <div className={`w-12 h-12 border-4 border-t-transparent rounded-full animate-spin ${isDark ? 'border-white/20' : 'border-blue-400'}`} />
+                    <span className={`font-cp-mono text-[9px] uppercase tracking-widest animate-pulse ${isDark ? 'text-white/40' : 'text-blue-500'}`}>
+                      Загрузка...
                     </span>
                   </div>
                 ) : activeTab === 'zip' ? (
@@ -169,9 +161,10 @@ function App() {
       </main>
 
       {/* Frame overlay */}
-      <div className={`fixed inset-0 pointer-events-none border-[12px] z-40 ${isDark ? 'border-cp-black/50' : 'border-gray-50/50'}`} />
+      <div className={`fixed inset-0 pointer-events-none border-[12px] z-40 ${isDark ? 'border-black/50' : 'border-gray-100/50'}`} />
     </div>
   );
 }
 
 export default App;
+
