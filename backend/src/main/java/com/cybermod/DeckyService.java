@@ -16,16 +16,25 @@ public class DeckyService {
     private static final String INSTALLER_URL = "https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/install_prerelease.sh";
 
     public String getStatus() {
-        // Проверка наличия исполняемого файла или сервиса
+        // 1. Простая проверка по наличию папки/файла
         Path path = Paths.get(DECKY_LOADER_PATH);
         if (Files.exists(path)) {
             return "INSTALLED";
         }
         
-        // Дополнительная проверка через systemctl (если на Steam Deck)
+        // 2. Проверка через systemctl (для SteamOS)
         try {
             Process process = Runtime.getRuntime().exec("systemctl is-active plugin_loader.service");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line = reader.readLine();
+                if ("active".equals(line)) {
+                    return "INSTALLED";
+                }
+            }
+        } catch (Exception e) {
+            // Игнорируем ошибки (например, на Windows)
+        }
+        
         return "NOT_INSTALLED";
     }
 
