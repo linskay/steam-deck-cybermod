@@ -7,6 +7,10 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -126,14 +130,33 @@ public class PluginRuntimeService {
                 pb.inheritIO();
                 this.process = pb.start();
 
-                // Wait briefly and verify process is still alive
-                Thread.sleep(1000);
-                if (process.isAlive()) {
+                // Robust Health Check: wait for port to be active
+                boolean success = false;
+                HttpClient client = HttpClient.newHttpClient();
+                for (int i = 0; i < 20; i++) { // 10 seconds total
+                    Thread.sleep(500);
+                    if (!process.isAlive()) break;
+
+                    try {
+                        HttpRequest request = HttpRequest.newBuilder()
+                                .uri(URI.create("http://localhost:" + port + "/api/status"))
+                                .timeout(java.time.Duration.ofMillis(500))
+                                .build();
+                        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                        if (response.statusCode() == 200 || response.statusCode() == 404) { // 404 means server is up but endpoint doesn't exist
+                            success = true;
+                            break;
+                        }
+                    } catch (Exception ignored) {}
+                }
+
+                if (success && process.isAlive()) {
                     this.status = "running";
                     logger.info("Started backend for plugin {} on port {}", manifest.id(), port);
                 } else {
                     this.status = "failed";
-                    logger.error("Backend for plugin {} exited immediately", manifest.id());
+                    logger.error("Backend for plugin {} failed health check or exited", manifest.id());
+                    stopBackend();
                 }
             } catch (IOException | InterruptedException e) {
                 logger.error("Failed to start backend for {}: {}", manifest.id(), e.getMessage());

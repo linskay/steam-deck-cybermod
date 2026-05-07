@@ -160,7 +160,7 @@ public class App {
         });
 
         // Backend Proxy API
-        app.before("/api/*", ctx -> {
+        app.addHttpHandler(io.javalin.http.HandlerType.BEFORE, "/api/*", ctx -> {
             String path = ctx.path();
             for (var instance : pluginRuntimeService.getActivePluginInstances()) {
                 var m = instance.manifest;
@@ -178,12 +178,15 @@ public class App {
                                 .uri(java.net.URI.create(targetUrl))
                                 .method(ctx.method().name(), java.net.http.HttpRequest.BodyPublishers.ofByteArray(ctx.bodyAsBytes()))
                                 .build();
-                        var response = java.net.http.HttpClient.newHttpClient()
+                        var response = java.net.http.HttpClient.newBuilder()
+                                .version(java.net.http.HttpClient.Version.HTTP_1_1)
+                                .build()
                                 .send(request, java.net.http.HttpResponse.BodyHandlers.ofByteArray());
 
                         ctx.status(response.statusCode());
                         response.headers().map().forEach((k, v) -> v.forEach(val -> ctx.header(k, val)));
                         ctx.result(response.body());
+                        ctx.skipRemainingHandlers();
                     } catch (Exception e) {
                         ctx.status(502).result("Proxy error: " + e.getMessage());
                     }
