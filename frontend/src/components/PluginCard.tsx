@@ -17,6 +17,7 @@ export interface Plugin {
   minDeckyVersion?: string;
   oledSupport?: boolean;
   lcdSupport?: boolean;
+  permissions?: string[];
 }
 
 interface PluginCardProps {
@@ -147,10 +148,11 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
             <ShieldCheck size={32} className="text-blue-500 mb-2" />
             <h4 className="text-[10px] font-bold uppercase tracking-widest mb-2">Запрос разрешений</h4>
             <div className="text-[8px] text-white/60 space-y-1 mb-4 font-cp-mono uppercase">
-                <div>• Файловая система</div>
-                <div>• Запуск процессов</div>
-                <div>• Сеть</div>
-                <div>• Локальное хранилище</div>
+                {(plugin.permissions && plugin.permissions.length > 0) ? (
+                    plugin.permissions.map((p, i) => <div key={i}>• {p}</div>)
+                ) : (
+                    <div>• Стандартные права</div>
+                )}
             </div>
             <div className="flex gap-2">
                 <button

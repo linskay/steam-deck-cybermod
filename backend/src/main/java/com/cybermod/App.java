@@ -46,11 +46,12 @@ public class App {
             String pluginId = ctx.pathParam("pluginId");
             String path = ctx.pathParam("path");
 
-            // Security: Path Traversal protection
+            // Security: Path Traversal protection (strict per-plugin)
             Path pluginsRoot = Paths.get("/home/deck/cybermod/plugins").toAbsolutePath().normalize();
-            Path targetFile = pluginsRoot.resolve(pluginId).resolve(path).normalize();
+            Path pluginRoot = pluginsRoot.resolve(pluginId).normalize();
+            Path targetFile = pluginRoot.resolve(path).normalize();
 
-            if (!targetFile.startsWith(pluginsRoot)) {
+            if (!targetFile.startsWith(pluginRoot)) {
                 ctx.status(403).result("Forbidden: Path traversal detected");
                 return;
             }
@@ -156,6 +157,39 @@ public class App {
 
         app.get("/api/status", ctx -> {
             ctx.result("SYSTEM_READY");
+        });
+
+        // Backend Proxy API
+        app.before("/api/*", ctx -> {
+            String path = ctx.path();
+            for (var instance : pluginRuntimeService.getActivePluginInstances()) {
+                var m = instance.manifest;
+                if (m.backend() != null && m.backend().proxyPath() != null && path.startsWith(m.backend().proxyPath())) {
+                    if (!"running".equals(instance.status)) {
+                        ctx.status(503).result("Plugin backend is not running");
+                        return;
+                    }
+                    String subPath = path.substring(m.backend().proxyPath().length());
+                    String targetUrl = "http://localhost:" + m.backend().port() + subPath;
+                    if (ctx.queryString() != null) targetUrl += "?" + ctx.queryString();
+
+                    try {
+                        var request = java.net.http.HttpRequest.newBuilder()
+                                .uri(java.net.URI.create(targetUrl))
+                                .method(ctx.method().name(), java.net.http.HttpRequest.BodyPublishers.ofByteArray(ctx.bodyAsBytes()))
+                                .build();
+                        var response = java.net.http.HttpClient.newHttpClient()
+                                .send(request, java.net.http.HttpResponse.BodyHandlers.ofByteArray());
+
+                        ctx.status(response.statusCode());
+                        response.headers().map().forEach((k, v) -> v.forEach(val -> ctx.header(k, val)));
+                        ctx.result(response.body());
+                    } catch (Exception e) {
+                        ctx.status(502).result("Proxy error: " + e.getMessage());
+                    }
+                    return;
+                }
+            }
         });
     }
 

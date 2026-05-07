@@ -92,7 +92,7 @@ function App() {
       </div>
 
       {/* Sidebar */}
-      <SideBar activeTab={activeTab} onTabChange={setActiveTab} activeTheme={activeTheme} />
+      <SideBar activeTab={activeTab} onTabChange={setActiveTab} activeTheme={activeTheme} extensions={extensions} />
 
       {/* Main */}
       <main className="flex-1 overflow-y-auto relative flex flex-col cp-grid-bg">

@@ -23,6 +23,7 @@ public record PluginManifest(
     public record BackendConfig(
         String type,
         String entry,
-        int port
+        int port,
+        String proxyPath
     ) {}
 }

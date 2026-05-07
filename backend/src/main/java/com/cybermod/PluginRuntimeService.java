@@ -67,6 +67,10 @@ public class PluginRuntimeService {
         activePlugins.clear();
     }
 
+    public Collection<PluginInstance> getActivePluginInstances() {
+        return activePlugins.values();
+    }
+
     public List<Map<String, Object>> getExtensions() {
         List<Map<String, Object>> extensions = new ArrayList<>();
         for (PluginInstance instance : activePlugins.values()) {
@@ -75,12 +79,13 @@ public class PluginRuntimeService {
             ext.put("id", m.id());
             ext.put("title", m.title());
             ext.put("description", m.description());
-            ext.put("icon", "/api/plugins/" + m.id() + "/" + m.icon());
+            ext.put("icon", "/plugins/" + m.id() + "/" + m.icon());
             if (m.frontend() != null) {
                 ext.put("frontendUrl", "/plugins/" + m.id() + "/" + m.frontend().entry());
             }
             if (m.backend() != null) {
                 ext.put("backendPort", m.backend().port());
+                ext.put("proxyPath", m.backend().proxyPath());
             }
             ext.put("status", instance.status);
             extensions.add(ext);
@@ -120,9 +125,17 @@ public class PluginRuntimeService {
                 ProcessBuilder pb = new ProcessBuilder("java", "-jar", jarPath, "--port=" + port);
                 pb.inheritIO();
                 this.process = pb.start();
-                this.status = "running";
-                logger.info("Started backend for plugin {} on port {}", manifest.id(), port);
-            } catch (IOException e) {
+
+                // Wait briefly and verify process is still alive
+                Thread.sleep(1000);
+                if (process.isAlive()) {
+                    this.status = "running";
+                    logger.info("Started backend for plugin {} on port {}", manifest.id(), port);
+                } else {
+                    this.status = "failed";
+                    logger.error("Backend for plugin {} exited immediately", manifest.id());
+                }
+            } catch (IOException | InterruptedException e) {
                 logger.error("Failed to start backend for {}: {}", manifest.id(), e.getMessage());
                 this.status = "failed";
             }
