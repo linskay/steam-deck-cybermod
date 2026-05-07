@@ -71,6 +71,22 @@ public class PluginRuntimeService {
         activePlugins.clear();
     }
 
+    public synchronized void stopPlugin(String id) {
+        PluginInstance instance = activePlugins.get(id);
+        if (instance != null) {
+            instance.stopBackend();
+            activePlugins.remove(id);
+        }
+    }
+
+    public synchronized void restartPlugin(String id) {
+        PluginInstance instance = activePlugins.get(id);
+        if (instance != null) {
+            instance.stopBackend();
+            instance.startBackend();
+        }
+    }
+
     public Collection<PluginInstance> getActivePluginInstances() {
         return activePlugins.values();
     }
@@ -139,7 +155,7 @@ public class PluginRuntimeService {
 
                     try {
                         HttpRequest request = HttpRequest.newBuilder()
-                                .uri(URI.create("http://localhost:" + port + "/api/status"))
+                                .uri(URI.create("http://localhost:" + port + "/status"))
                                 .timeout(java.time.Duration.ofMillis(500))
                                 .build();
                         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

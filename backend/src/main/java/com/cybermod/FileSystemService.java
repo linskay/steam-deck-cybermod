@@ -79,7 +79,9 @@ public class FileSystemService {
         }
         logger.info("Плагин {} успешно установлен в {}", pluginName, targetDir);
 
-        handlePostInstall(targetDir);
+        if (!"zip".equals(source)) {
+            handlePostInstall(targetDir);
+        }
         
         if ("decky".equals(source)) {
             restartDeckyService();
@@ -88,7 +90,7 @@ public class FileSystemService {
         }
     }
 
-    private void handlePostInstall(Path targetDir) {
+    public void handlePostInstall(Path targetDir) {
         Path postInstallScript = targetDir.resolve("scripts/postinstall.sh");
         if (Files.exists(postInstallScript)) {
             try {
