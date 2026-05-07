@@ -1,7 +1,8 @@
 import React from 'react';
-import { Layers, Package, Download, Settings, ChevronRight, Minimize2, Power, Terminal } from 'lucide-react';
+import { Layers, Package, Download, Settings, ChevronRight, Minimize2, Power, Terminal, Puzzle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getTheme } from '../themes/themeConfig';
+import { ExtensionService, type Extension } from '../services/ExtensionService';
 
 // ─── Stage 1: Core Navigation Items ──────────────────────────────────────────
 const NAV_ITEMS = [
@@ -91,6 +92,12 @@ const CharacterOverlay: React.FC<{ characterUrl: string; accent: string | undefi
 );
 
 export const SideBar: React.FC<{ activeTab: string; onTabChange: (tab: string) => void; activeTheme?: string }> = ({ activeTab, onTabChange, activeTheme = 'cyberpunk' }) => {
+  const [extensions, setExtensions] = React.useState<Extension[]>([]);
+
+  React.useEffect(() => {
+    ExtensionService.getExtensions().then(setExtensions);
+  }, []);
+
   const theme = getTheme(activeTheme);
   const isDark = theme.isDark;
 
@@ -143,6 +150,18 @@ export const SideBar: React.FC<{ activeTab: string; onTabChange: (tab: string) =
               hint={hints[item.id] ?? ''}
               isActive={activeTab === item.id}
               onClick={() => onTabChange(item.id)}
+              isDark={isDark}
+            />
+          ))}
+
+          {extensions.map((ext) => (
+            <NavItem
+              key={ext.id}
+              icon={Puzzle}
+              label={ext.title}
+              hint="Расширение"
+              isActive={activeTab === `ext-${ext.id}`}
+              onClick={() => onTabChange(`ext-${ext.id}`)}
               isDark={isDark}
             />
           ))}

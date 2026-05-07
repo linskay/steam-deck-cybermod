@@ -78,9 +78,29 @@ public class FileSystemService {
             }
         }
         logger.info("Плагин {} успешно установлен в {}", pluginName, targetDir);
+
+        handlePostInstall(targetDir);
         
         if ("decky".equals(source)) {
             restartDeckyService();
+        } else {
+            App.pluginRuntimeService.scanAndStart();
+        }
+    }
+
+    private void handlePostInstall(Path targetDir) {
+        Path postInstallScript = targetDir.resolve("scripts/postinstall.sh");
+        if (Files.exists(postInstallScript)) {
+            try {
+                logger.info("Выполнение postinstall.sh для {}", targetDir.getFileName());
+                ProcessBuilder pb = new ProcessBuilder("bash", postInstallScript.toString());
+                pb.directory(targetDir.toFile());
+                pb.inheritIO();
+                Process process = pb.start();
+                process.waitFor(5, java.util.concurrent.TimeUnit.MINUTES);
+            } catch (Exception e) {
+                logger.error("Ошибка при выполнении postinstall.sh: {}", e.getMessage());
+            }
         }
     }
 
