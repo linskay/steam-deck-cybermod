@@ -1,0 +1,142 @@
+/* ================================================================
+   CYBERPUNK 2077 — Theme Tokens + Component Overrides
+   ALL selectors under .theme-cyberpunk
+   ================================================================ */
+
+/* — Tokens ————————————————————————————————————————————————————— */
+.theme-cyberpunk {
+    --color-cp-yellow: #fcee0a;
+    --color-cp-cyan: #00fbff;
+    --color-cp-red: #ff003c;
+    --color-cp-black: #050505;
+    --color-cp-dark: #121213;
+    --color-cp-bg-tint: rgba(18, 18, 19, 0.95);
+
+    --font-cp-display: "Cyberpunk", "Outfit", sans-serif;
+    --font-cp-mono: "JetBrains Mono", monospace;
+    --font-cp-body: "Outfit", sans-serif;
+
+    /* Motion profile — sharp/glitch */
+    --motion-speed: 180ms;
+    --motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* — Background ————————————————————————————————————————————————— */
+.theme-cyberpunk .cp-grid-bg {
+    background-image:
+        linear-gradient(rgba(252, 238, 10, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(252, 238, 10, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+
+.theme-cyberpunk .cp-circuit-lines {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 2px 2px, rgba(252, 238, 10, 0.04) 1px, transparent 0);
+    background-size: 20px 20px;
+    pointer-events: none;
+}
+
+/* — Nav ———————————————————————————————————————————————————————— */
+.theme-cyberpunk .cp-nav-item {
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+    background: rgba(252, 238, 10, 0.02);
+    border-left: 2px solid transparent;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease),
+        transform var(--motion-speed) var(--motion-ease);
+}
+
+.theme-cyberpunk .cp-nav-item:hover {
+    background: rgba(0, 251, 255, 0.06);
+    border-left-color: var(--color-cp-cyan);
+    transform: translateX(3px);
+}
+
+.theme-cyberpunk .cp-nav-item.active {
+    background: rgba(252, 238, 10, 0.08);
+    border-left: 3px solid var(--color-cp-yellow);
+}
+
+/* — Cards ————————————————————————————————————————————————————— */
+.theme-cyberpunk .cp-card {
+    background: var(--color-cp-bg-tint);
+    border: 1px solid rgba(252, 238, 10, 0.1);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    transition: border-color var(--motion-speed) var(--motion-ease),
+        box-shadow var(--motion-speed) var(--motion-ease);
+}
+
+.theme-cyberpunk .cp-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--color-cp-yellow);
+    opacity: 0.25;
+}
+
+.theme-cyberpunk .cp-card:hover {
+    border-color: rgba(0, 251, 255, 0.3);
+    box-shadow: 0 0 12px rgba(0, 251, 255, 0.08);
+}
+
+/* — Buttons ——————————————————————————————————————————————————— */
+.theme-cyberpunk .cp-button {
+    font-family: var(--font-cp-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    background: rgba(0, 251, 255, 0.08);
+    border: 1px solid rgba(0, 251, 255, 0.4);
+    color: var(--color-cp-cyan);
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    transition: background var(--motion-speed) var(--motion-ease),
+        color var(--motion-speed) var(--motion-ease);
+    cursor: pointer;
+    padding: 8px 16px;
+}
+
+.theme-cyberpunk .cp-button:hover {
+    background: var(--color-cp-cyan);
+    color: #000;
+}
+
+.theme-cyberpunk .cp-button-critical {
+    border-color: rgba(255, 0, 60, 0.5);
+    color: var(--color-cp-red);
+    background: rgba(255, 0, 60, 0.08);
+}
+
+.theme-cyberpunk .cp-button-critical:hover {
+    background: var(--color-cp-red);
+    color: #fff;
+}
+
+/* — Diegetic block ———————————————————————————————————————————— */
+.theme-cyberpunk .cp-diag-block {
+    font-family: var(--font-cp-mono);
+    font-size: 7px;
+    color: rgba(252, 238, 10, 0.4);
+    line-height: 1.4;
+    text-transform: uppercase;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(252, 238, 10, 0.1);
+}
+
+@keyframes cp-scan-in {
+    from {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+
+    to {
+        opacity: 0.8;
+        transform: translateX(0);
+    }
+}

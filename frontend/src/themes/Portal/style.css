@@ -1,0 +1,203 @@
+/* ================================================================
+   PORTAL — Aperture Science Theme
+   ALL selectors under .theme-portal
+   ================================================================ */
+/* — Fonts — Unified with core Inter stack ——————— */
+
+/* — Tokens ————————————————————————————————————————————————————— */
+.theme-portal {
+    --color-cp-yellow: #f97316;
+    --color-cp-cyan: #3b82f6;
+    --color-cp-red: #ef4444;
+    --color-cp-black: #f8fafc;
+    --color-cp-dark: #f1f5f9;
+    --color-cp-bg-tint: rgba(255, 255, 255, 0.98);
+
+    --font-cp-display: 'Inter', sans-serif;
+    --font-cp-mono: 'JetBrains Mono', monospace;
+    --font-cp-body: 'Inter', sans-serif;
+
+    /* Motion profile — clean/fluid */
+    --motion-speed: 280ms;
+    --motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* — Background — sterile lab ————————————————————————————————— */
+.theme-portal .cp-grid-bg {
+    background-color: #f8fafc;
+    background-image:
+        linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+}
+
+/* Aperture geometric marker — corner cross */
+.theme-portal .cp-grid-bg::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 32px;
+    height: 32px;
+    border-top: 2px solid rgba(249, 115, 22, 0.3);
+    border-right: 2px solid rgba(249, 115, 22, 0.3);
+    pointer-events: none;
+}
+
+/* — Nav — lab module tabs ———————————————————————————————————— */
+.theme-portal .cp-nav-item {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    border-left: 2px solid transparent;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease);
+}
+
+.theme-portal .cp-nav-item:hover {
+    background: rgba(59, 130, 246, 0.05);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.theme-portal .cp-nav-item.active {
+    background: rgba(59, 130, 246, 0.08);
+    border-left: 3px solid #3b82f6;
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+/* — Cards — lab module panels ———————————————————————————————— */
+.theme-portal .cp-card {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle portal blue/orange ring accent */
+.theme-portal .cp-card::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 100px;
+    height: 100px;
+    border: 15px solid rgba(59, 130, 246, 0.03);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.theme-portal .cp-card:hover::after {
+    border-color: rgba(249, 115, 22, 0.05);
+    transform: scale(1.1);
+    transition: all 0.5s ease;
+}
+
+/* Subject ID Marker */
+.theme-portal .cp-card::before {
+    content: 'CHAMBER_PACK_0' + attr(data-id);
+    /* Fallback to constant if attr fails */
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-family: var(--font-cp-mono);
+    font-size: 5px;
+    color: #cbd5e1;
+    letter-spacing: 2px;
+    display: block;
+}
+
+.theme-portal .cp-card:hover {
+    border-color: #3b82f6;
+}
+
+/* — Diegetic block — lab module terminal ————————————————————— */
+.theme-portal .cp-diag-block {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-left: 3px solid #3b82f6;
+    color: #64748b;
+    position: relative;
+}
+
+.theme-portal .cp-diag-block::after {
+    content: 'APERTURE SCIENCE';
+    position: absolute;
+    top: -5px;
+    right: 5px;
+    font-size: 5px;
+    background: #ffffff;
+    padding: 0 4px;
+    letter-spacing: 1px;
+}
+
+/* — Buttons — rounded flat ——————————————————————————————————— */
+.theme-portal .cp-button {
+    background: transparent;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    font-family: var(--font-cp-body);
+    font-size: 11px;
+    text-transform: none;
+    letter-spacing: 0;
+    clip-path: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease),
+        color var(--motion-speed) var(--motion-ease);
+}
+
+.theme-portal .cp-button:hover {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+.theme-portal .cp-button-critical {
+    border-color: #fca5a5;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.theme-portal .cp-button-critical:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #fff;
+}
+
+/* — Diegetic block — lab module terminal ————————————————————— */
+.theme-portal .cp-diag-block {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid #3b82f6;
+    color: #64748b;
+    font-family: var(--font-cp-mono);
+    font-size: 8px;
+    padding: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* — Typography ——————————————————————————————————————————————— */
+.theme-portal h1,
+.theme-portal h2,
+.theme-portal h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+}
+
+/* Orange + Blue spatial cues */
+.theme-portal .text-cp-yellow {
+    color: #f97316;
+}
+
+.theme-portal .text-cp-cyan {
+    color: #3b82f6;
+}
+
+.theme-portal .border-cp-yellow {
+    border-color: rgba(249, 115, 22, 0.4);
+}

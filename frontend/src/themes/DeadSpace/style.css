@@ -1,0 +1,176 @@
+/* ================================================================
+   DEAD SPACE — RIG Hologram Theme
+   ALL selectors under .theme-deadspace
+   ================================================================ */
+/* — Fonts (Point 5) ————————————————————————————————————————— */
+@font-face {
+    font-family: 'Share Tech Mono';
+    src: url('../../assets/fonts/share-tech-mono.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* — Tokens ————————————————————————————————————————————————————— */
+.theme-deadspace {
+    --color-cp-yellow: #06b6d4;
+    --color-cp-cyan: #22d3ee;
+    --color-cp-red: #f43f5e;
+    --color-cp-black: #020408;
+    --color-cp-dark: #050d14;
+    --color-cp-bg-tint: rgba(2, 4, 8, 0.97);
+
+    --font-cp-display: 'Share Tech Mono', 'JetBrains Mono', monospace;
+    --font-cp-mono: 'Share Tech Mono', 'JetBrains Mono', monospace;
+    --font-cp-body: 'Share Tech Mono', monospace;
+
+    /* Motion profile — float/holographic */
+    --motion-speed: 340ms;
+    --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* — Background — void + holographic lines ——————————————————— */
+.theme-deadspace .cp-grid-bg {
+    background-color: var(--color-cp-black);
+    background-image:
+        radial-gradient(ellipse at 40% 30%, rgba(6, 182, 212, 0.06) 0%, transparent 60%),
+        linear-gradient(rgba(6, 182, 212, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 182, 212, 0.025) 1px, transparent 1px);
+    background-size: cover, 120px 120px, 120px 120px;
+}
+
+/* — Nav — hologram linker style ————————————————————————————— */
+.theme-deadspace .cp-nav-item {
+    background: transparent;
+    border: 1px solid rgba(6, 182, 212, 0.08);
+    border-left: 1px solid transparent;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease),
+        opacity var(--motion-speed) var(--motion-ease);
+}
+
+.theme-deadspace .cp-nav-item:hover {
+    background: rgba(6, 182, 212, 0.05);
+    border-color: rgba(6, 182, 212, 0.2);
+}
+
+.theme-deadspace .cp-nav-item.active {
+    background: rgba(6, 182, 212, 0.1);
+    border-left: 2px solid #06b6d4;
+    border-color: rgba(6, 182, 212, 0.2);
+}
+
+/* — Cards — hologram panels, diegetic language ———————————————— */
+.theme-deadspace .cp-card {
+    background: rgba(5, 13, 20, 0.85);
+    border: 1px solid rgba(6, 182, 212, 0.1);
+    border-top: 1px solid rgba(6, 182, 212, 0.25);
+    box-shadow: 0 0 24px rgba(6, 182, 212, 0.04), inset 0 1px 0 rgba(6, 182, 212, 0.06);
+    transition: border-color var(--motion-speed) var(--motion-ease),
+        box-shadow var(--motion-speed) var(--motion-ease);
+}
+
+.theme-deadspace .cp-card:hover {
+    border-color: rgba(6, 182, 212, 0.25);
+    box-shadow: 0 0 32px rgba(6, 182, 212, 0.1), inset 0 1px 0 rgba(6, 182, 212, 0.1);
+}
+
+.theme-deadspace .cp-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.5), transparent);
+}
+
+/* — Buttons — floating holographic ——————————————————————————— */
+.theme-deadspace .cp-button {
+    background: transparent;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    color: #22d3ee;
+    font-family: var(--font-cp-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    clip-path: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease),
+        box-shadow var(--motion-speed) var(--motion-ease);
+}
+
+.theme-deadspace .cp-button:hover {
+    background: rgba(6, 182, 212, 0.1);
+    border-color: rgba(6, 182, 212, 0.6);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+}
+
+.theme-deadspace .cp-button-critical {
+    border-color: rgba(244, 63, 94, 0.4);
+    color: #f43f5e;
+    background: transparent;
+}
+
+.theme-deadspace .cp-button-critical:hover {
+    background: rgba(244, 63, 94, 0.1);
+    border-color: rgba(244, 63, 94, 0.7);
+    box-shadow: 0 0 12px rgba(244, 63, 94, 0.2);
+}
+
+/* — Diegetic block — holographic terminal ——————————————————— */
+.theme-deadspace .cp-diag-block {
+    background: rgba(2, 15, 25, 0.8);
+    border: 1px solid rgba(6, 182, 212, 0.12);
+    border-left: 2px solid rgba(6, 182, 212, 0.4);
+    color: rgba(6, 182, 212, 0.7);
+    font-family: var(--font-cp-mono);
+    font-size: 8px;
+    letter-spacing: 1px;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+/* — Typography — strict, quiet ——————————————————————————————— */
+.theme-deadspace h1,
+.theme-deadspace h2,
+.theme-deadspace h3 {
+    font-family: var(--font-cp-display);
+    font-weight: 400;
+    letter-spacing: 4px;
+    color: rgba(6, 182, 212, 0.9);
+}
+
+/* Holographic fade-in on active elements */
+@keyframes holo-appear {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+        filter: brightness(2);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: brightness(1);
+    }
+}
+
+.theme-deadspace .cp-nav-item.active {
+    animation: holo-appear var(--motion-speed) var(--motion-ease);
+}
+
+/* — Color utilities ——————————————————————————————————————————— */
+.theme-deadspace .text-cp-yellow {
+    color: #06b6d4;
+}
+
+.theme-deadspace .text-cp-cyan {
+    color: #22d3ee;
+}
+
+.theme-deadspace .bg-cp-yellow {
+    background-color: #06b6d4;
+}

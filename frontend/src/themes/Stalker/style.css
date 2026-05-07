@@ -1,0 +1,179 @@
+/* ================================================================
+   S.T.A.L.K.E.R. — Zone PDA Theme
+   ALL selectors under .theme-stalker
+   ================================================================ */
+/* — Fonts (Point 5) ————————————————————————————————————————— */
+@font-face {
+    font-family: 'AmazS.T.A.L.K.E.R.v.3.0';
+    src: url('../../assets/fonts/stalker/amaz-stalker.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'VT323';
+    src: url('../../assets/fonts/vt323.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* — Tokens ————————————————————————————————————————————————————— */
+.theme-stalker {
+    --color-cp-yellow: #f59e0b;
+    --color-cp-cyan: #4ade80;
+    --color-cp-red: #991b1b;
+    --color-cp-black: #0a0c0a;
+    --color-cp-dark: #141714;
+    --color-cp-bg-tint: rgba(10, 12, 10, 0.97);
+
+    --font-cp-display: 'AmazS.T.A.L.K.E.R.v.3.0', 'VT323', monospace;
+    --font-cp-mono: 'VT323', 'JetBrains Mono', monospace;
+    --font-cp-body: 'JetBrains Mono', monospace;
+
+    /* Motion profile — stale/signal-loss */
+    --motion-speed: 140ms;
+    --motion-ease: steps(2);
+}
+
+/* — Background — dirty metal + vignette ————————————————————— */
+.theme-stalker .cp-grid-bg {
+    background-color: var(--color-cp-black);
+    background-image:
+        radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0, 0, 0, 0.65) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Noise overlay — CSS-only, no external texture URL */
+.theme-stalker .cp-grid-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* — Nav — military blocks ———————————————————————————————————— */
+.theme-stalker .cp-nav-item {
+    background: #141714;
+    border: 1px solid #232823;
+    border-left: 2px solid transparent;
+    transition: background var(--motion-speed) var(--motion-ease),
+        border-color var(--motion-speed) var(--motion-ease);
+}
+
+.theme-stalker .cp-nav-item:hover {
+    background: #1c221c;
+    border-color: rgba(74, 222, 128, 0.3);
+}
+
+.theme-stalker .cp-nav-item.active {
+    background: rgba(74, 222, 128, 0.1);
+    border-left: 3px solid var(--color-cp-cyan);
+    border-color: rgba(74, 222, 128, 0.2);
+}
+
+/* — Cards ———————————————————————————————————————————————————— */
+.theme-stalker .cp-card {
+    background: rgba(20, 23, 20, 0.95);
+    border: 1px solid #232823;
+    border-top: 3px solid #2d352d;
+    position: relative;
+    overflow: hidden;
+    transition: border-color var(--motion-speed) var(--motion-ease);
+}
+
+.theme-stalker .cp-card:hover {
+    border-color: rgba(74, 222, 128, 0.25);
+}
+
+.theme-stalker .cp-card::before {
+    display: none;
+}
+
+/* — Buttons — hardware blocks ——————————————————————————————— */
+.theme-stalker .cp-button {
+    background: #1c221c;
+    border: 1px solid #3d453d;
+    color: #4ade80;
+    font-family: var(--font-cp-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    clip-path: none;
+    padding: 8px 14px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+    transition: background var(--motion-speed) var(--motion-ease),
+        transform 60ms linear;
+}
+
+.theme-stalker .cp-button:hover {
+    background: var(--color-cp-cyan);
+    color: #0a0c0a;
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+.theme-stalker .cp-button-critical {
+    color: #ef4444;
+    border-color: #7f1d1d;
+    background: #1c0a0a;
+}
+
+.theme-stalker .cp-button-critical:hover {
+    background: #991b1b;
+    color: #fff;
+}
+
+/* — Diegetic block ——————————————————————————————————————————— */
+.theme-stalker .cp-diag-block {
+    background: #080a08;
+    border: 1px solid #1a1d1a;
+    border-left: 2px solid rgba(74, 222, 128, 0.4);
+    color: #4ade80;
+    font-family: var(--font-cp-mono);
+    font-size: 8px;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+/* — Rare flicker on headings — 1 per ~10s ——————————————————— */
+@keyframes stalker-flicker {
+
+    0%,
+    89% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 0.7;
+    }
+
+    91% {
+        opacity: 1;
+    }
+
+    95% {
+        opacity: 0.5;
+    }
+
+    96% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.theme-stalker h1,
+.theme-stalker h2 {
+    font-family: var(--font-cp-display);
+    letter-spacing: 2px;
+    animation: stalker-flicker 10s steps(1) infinite;
+}

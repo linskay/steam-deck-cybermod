@@ -36,13 +36,22 @@ public class ManifestService {
                 for (JsonNode node : pluginsArray) {
                     plugins.add(new App.Plugin(
                             node.get("id").asText(),
-                            node.get("name").asText(),
-                            node.get("author").asText(),
-                            node.get("description").asText(),
-                            node.get("version").asText(),
-                            node.get("image").asText(),
-                            false, // Статус установки будет проверен в App.java
-                            false
+                            getSafe(node, "name"),
+                            getSafe(node, "author"),
+                            getSafe(node, "description"),
+                            getSafe(node, "version"),
+                            getSafe(node, "image"),
+                            false,
+                            false,
+                            "builtin", // Default source
+                            getSafe(node, "github"),
+                            getSafe(node, "downloadUrl"),
+                            new ArrayList<>(), // tags
+                            getSafe(node, "minDeckyVersion"),
+                            node.has("oledSupport") && node.get("oledSupport").asBoolean(),
+                            node.has("lcdSupport") && node.get("lcdSupport").asBoolean(),
+                            getSafe(node, "targetPath"),
+                            getSafe(node, "checksum")
                     ));
                 }
             }
@@ -51,5 +60,9 @@ public class ManifestService {
         }
 
         return plugins;
+    }
+
+    private String getSafe(JsonNode node, String field) {
+        return node.has(field) ? node.get(field).asText() : "";
     }
 }

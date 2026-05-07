@@ -48,8 +48,9 @@ public class FileSystemService {
         return plugins;
     }
 
-    public void installPlugin(String pluginName, byte[] zipData) throws IOException {
-        Path targetDir = Paths.get(DECKY_PLUGINS_PATH, pluginName);
+    public void installPlugin(String pluginName, byte[] zipData, String source) throws IOException {
+        String basePath = "decky".equals(source) ? DECKY_PLUGINS_PATH : CYBER_PLUGINS_PATH;
+        Path targetDir = Paths.get(basePath, pluginName);
         
         // Очистка старой версии если есть
         if (Files.exists(targetDir)) {
@@ -61,7 +62,12 @@ public class FileSystemService {
         try (ZipInputStream zis = new ZipInputStream(new java.io.ByteArrayInputStream(zipData))) {
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
-                Path filePath = targetDir.resolve(entry.getName());
+                // Security: Zip-Slip protection
+                Path filePath = targetDir.resolve(entry.getName()).normalize();
+                if (!filePath.startsWith(targetDir)) {
+                    throw new IOException("Zip Slip detected: " + entry.getName());
+                }
+
                 if (entry.isDirectory()) {
                     Files.createDirectories(filePath);
                 } else {
@@ -72,5 +78,18 @@ public class FileSystemService {
             }
         }
         logger.info("Плагин {} успешно установлен в {}", pluginName, targetDir);
+        
+        if ("decky".equals(source)) {
+            restartDeckyService();
+        }
+    }
+
+    private void restartDeckyService() {
+        try {
+            logger.info("Перезапуск сервиса Decky Loader...");
+            Runtime.getRuntime().exec("systemctl restart plugin_loader.service");
+        } catch (IOException e) {
+            logger.warn("Не удалось перезапустить сервис Decky: {}", e.getMessage());
+        }
     }
 }
