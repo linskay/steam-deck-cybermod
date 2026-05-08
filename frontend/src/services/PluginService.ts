@@ -8,8 +8,8 @@ export const PluginService = {
       const response = await fetch(`${API_BASE}/plugins/${source}`);
       if (!response.ok) throw new Error('Ошибка сети');
       return await response.json();
-    } catch (error) {
-      console.error(`Ошибка при получении плагинов (${source}):`, error);
+    } catch (err) {
+      console.error(`Ошибка при получении плагинов (${source}):`, err);
       return [];
     }
   },
@@ -20,8 +20,8 @@ export const PluginService = {
         method: 'POST',
       });
       return response.ok;
-    } catch (error) {
-      console.error('Ошибка при установке плагина:', error);
+    } catch (err) {
+      console.error('Ошибка при установке плагина:', err);
       return false;
     }
   },
@@ -31,7 +31,7 @@ export const PluginService = {
       const response = await fetch(`${API_BASE}/decky/status`);
       const data = await response.json();
       return data.status;
-    } catch (error) {
+    } catch {
       return 'UNKNOWN';
     }
   },
@@ -43,16 +43,16 @@ export const PluginService = {
       });
       const data = await response.json();
       return data.success;
-    } catch (error) {
+    } catch {
       return false;
     }
   },
 
-  async getSystemStats(): Promise<any> {
+  async getSystemStats(): Promise<{ status: string; memoryUsed: string; memoryTotal: string; cpuLoad: string } | null> {
     try {
       const response = await fetch(`${API_BASE}/system/stats`);
       return await response.json();
-    } catch (error) {
+    } catch {
       return null;
     }
   },
@@ -61,7 +61,7 @@ export const PluginService = {
     try {
       const response = await fetch(`${API_BASE}/system/config`);
       return await response.json();
-    } catch (error) {
+    } catch {
       return { activeTheme: 'cyberpunk' };
     }
   },
@@ -73,8 +73,8 @@ export const PluginService = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(config),
       });
-    } catch (error) {
-      console.error('Ошибка сохранения конфига:', error);
+    } catch (err) {
+      console.error('Ошибка сохранения конфига:', err);
     }
   },
 
@@ -83,7 +83,7 @@ export const PluginService = {
       const response = await fetch(`${API_BASE}/decky/logs`);
       const data = await response.json();
       return data.logs || [];
-    } catch (error) {
+    } catch {
       return [];
     }
   }

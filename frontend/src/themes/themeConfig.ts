@@ -23,7 +23,7 @@ export interface ThemeConfig {
     /** Motion profile for Framer Motion (Layer B) */
     motion: {
         duration: number;
-        ease: any;
+        ease: string | number[];
     };
 
     /** Artwork & Background (Stage 8) */

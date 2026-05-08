@@ -49,7 +49,7 @@ function App() {
 
   // Log Polling
   React.useEffect(() => {
-    let interval: any;
+    let interval: ReturnType<typeof setInterval> | undefined;
     if (installingDecky) {
       interval = setInterval(async () => {
         const logs = await PluginService.getInstallLogs();
