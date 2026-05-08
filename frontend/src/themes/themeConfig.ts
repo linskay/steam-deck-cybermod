@@ -23,7 +23,8 @@ export interface ThemeConfig {
     /** Motion profile for Framer Motion (Layer B) */
     motion: {
         duration: number;
-        ease: string | number[];
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+        ease: any;
     };
 
     /** Artwork & Background (Stage 8) */

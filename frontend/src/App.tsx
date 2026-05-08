@@ -182,7 +182,8 @@ function App() {
                 initial={{ opacity: 0, y: activeTheme === 'portal' ? 16 : 0 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={theme.motion}
+                /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+                transition={theme.motion as any}
                 className="grid grid-cols-1 xl:grid-cols-2 gap-x-8 gap-y-5"
               >
                 {activeTab === 'decky' && (
