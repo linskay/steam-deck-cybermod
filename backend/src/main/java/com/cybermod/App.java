@@ -54,6 +54,11 @@ public class App {
             ctx.status(202);
         });
 
+        app.get("/api/extensions/{id}/logs", ctx -> {
+            String id = ctx.pathParam("id");
+            ctx.json(java.util.Map.of("logs", pluginRuntimeService.getPluginLogs(id)));
+        });
+
         app.get("/plugins/{pluginId}/<path>", ctx -> {
             String pluginId = ctx.pathParam("pluginId");
             String path = ctx.pathParam("path");
@@ -171,49 +176,7 @@ public class App {
             ctx.result("SYSTEM_READY");
         });
 
-        registerProxy(app, pluginRuntimeService);
-    }
-
-    private static void registerProxy(Javalin app, PluginRuntimeService runtimeService) {
-        app.addHttpHandler(io.javalin.http.HandlerType.BEFORE, "/api/*", ctx -> {
-            String path = ctx.path();
-            for (var instance : runtimeService.getActivePluginInstances()) {
-                var m = instance.manifest;
-                if (m.backend() != null && m.backend().proxyPath() != null && path.startsWith(m.backend().proxyPath())) {
-                    proxyRequest(ctx, instance);
-                    return;
-                }
-            }
-        });
-    }
-
-    private static void proxyRequest(io.javalin.http.Context ctx, PluginRuntimeService.PluginInstance instance) {
-        if (!"running".equals(instance.status)) {
-            ctx.status(503).result("Plugin backend is not running");
-            return;
-        }
-        var m = instance.manifest;
-        String subPath = ctx.path().substring(m.backend().proxyPath().length());
-        String targetUrl = "http://localhost:" + m.backend().port() + subPath;
-        if (ctx.queryString() != null) targetUrl += "?" + ctx.queryString();
-
-        try {
-            var request = java.net.http.HttpRequest.newBuilder()
-                    .uri(java.net.URI.create(targetUrl))
-                    .method(ctx.method().name(), java.net.http.HttpRequest.BodyPublishers.ofByteArray(ctx.bodyAsBytes()))
-                    .build();
-            var response = java.net.http.HttpClient.newBuilder()
-                    .version(java.net.http.HttpClient.Version.HTTP_1_1)
-                    .build()
-                    .send(request, java.net.http.HttpResponse.BodyHandlers.ofByteArray());
-
-            ctx.status(response.statusCode());
-            response.headers().map().forEach((k, v) -> v.forEach(val -> ctx.header(k, val)));
-            ctx.result(response.body());
-            ctx.skipRemainingHandlers();
-        } catch (Exception e) {
-            ctx.status(502).result("Proxy error: " + e.getMessage());
-        }
+        PluginProxyService.register(app, pluginRuntimeService);
     }
 
     public static class ConfigService {

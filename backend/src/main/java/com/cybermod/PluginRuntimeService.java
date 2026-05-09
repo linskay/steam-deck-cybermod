@@ -91,6 +91,11 @@ public class PluginRuntimeService {
         return activePlugins.values();
     }
 
+    public List<String> getPluginLogs(String id) {
+        PluginInstance instance = activePlugins.get(id);
+        return instance != null ? instance.getLogs() : List.of("Plugin not found or not running");
+    }
+
     public List<Map<String, Object>> getExtensions() {
         List<Map<String, Object>> extensions = new ArrayList<>();
         for (PluginInstance instance : activePlugins.values()) {
@@ -118,10 +123,15 @@ public class PluginRuntimeService {
         final String path;
         String status = "not_started";
         Process process;
+        private final List<String> logs = Collections.synchronizedList(new ArrayList<>());
 
         PluginInstance(PluginManifest manifest, String path) {
             this.manifest = manifest;
             this.path = path;
+        }
+
+        public List<String> getLogs() {
+            return new ArrayList<>(logs);
         }
 
         void setStatus(String status) {
@@ -143,8 +153,21 @@ public class PluginRuntimeService {
 
             try {
                 ProcessBuilder pb = new ProcessBuilder("java", "-jar", jarPath, "--port=" + port);
-                pb.inheritIO();
                 this.process = pb.start();
+
+                // Capture logs in a separate thread
+                new Thread(() -> {
+                    try (var reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getInputStream()))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            logs.add(line);
+                            if (logs.size() > 100) logs.remove(0);
+                            logger.info("[{}] {}", manifest.id(), line);
+                        }
+                    } catch (IOException e) {
+                        logger.error("Error reading logs for {}: {}", manifest.id(), e.getMessage());
+                    }
+                }).start();
 
                 // Robust Health Check: wait for port to be active
                 boolean success = false;
