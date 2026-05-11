@@ -153,9 +153,11 @@ public class PluginRuntimeService {
 
             try {
                 ProcessBuilder pb = new ProcessBuilder("java", "-jar", jarPath, "--port=" + port);
+                pb.directory(new File(path));
+                pb.redirectErrorStream(true);
                 this.process = pb.start();
 
-                // Capture logs in a separate thread
+                // Capture logs (stdout + stderr) in a separate thread
                 new Thread(() -> {
                     try (var reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getInputStream()))) {
                         String line;

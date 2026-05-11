@@ -45,6 +45,17 @@ public class App {
         app.delete("/api/extensions/{id}", ctx -> {
             String id = ctx.pathParam("id");
             pluginRuntimeService.stopPlugin(id);
+            // Real delete directory
+            File pluginDir = new File("/home/deck/cybermod/plugins/" + id);
+            if (pluginDir.exists()) {
+                org.apache.commons.io.FileUtils.deleteQuietly(pluginDir);
+            }
+            ctx.status(204);
+        });
+
+        app.post("/api/extensions/{id}/stop", ctx -> {
+            String id = ctx.pathParam("id");
+            pluginRuntimeService.stopPlugin(id);
             ctx.status(204);
         });
 
