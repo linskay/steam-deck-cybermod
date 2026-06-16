@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Upload, FileText, CheckCircle, AlertTriangle, Package } from 'lucide-react';
+import { Upload, FileText, CircleCheck as CheckCircle, TriangleAlert as AlertTriangle, Package } from 'lucide-react';
 import { getTheme } from '../themes/themeConfig';
+import { PluginService } from '../services/PluginService';
 
 export const ZipUpload: React.FC<{ activeTheme?: string }> = ({ activeTheme = 'cyberpunk' }) => {
   const [isDragging, setIsDragging] = React.useState(false);
@@ -26,7 +27,7 @@ export const ZipUpload: React.FC<{ activeTheme?: string }> = ({ activeTheme = 'c
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:7070/api/plugins/zip/upload', {
+      const response = await fetch(PluginService.getApiBase() + '/plugins/zip/upload', {
         method: 'POST',
         body: formData,
       });

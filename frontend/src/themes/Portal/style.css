@@ -111,26 +111,6 @@
     border-color: #3b82f6;
 }
 
-/* — Diegetic block — lab module terminal ————————————————————— */
-.theme-portal .cp-diag-block {
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-left: 3px solid #3b82f6;
-    color: #64748b;
-    position: relative;
-}
-
-.theme-portal .cp-diag-block::after {
-    content: 'APERTURE SCIENCE';
-    position: absolute;
-    top: -5px;
-    right: 5px;
-    font-size: 5px;
-    background: #ffffff;
-    padding: 0 4px;
-    letter-spacing: 1px;
-}
-
 /* — Buttons — rounded flat ——————————————————————————————————— */
 .theme-portal .cp-button {
     background: transparent;

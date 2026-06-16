@@ -84,6 +84,22 @@ public class FileSystemService {
         }
     }
 
+    public void uninstallPlugin(String pluginName, String source) throws IOException {
+        String basePath = "decky".equals(source) ? DECKY_PLUGINS_PATH : CYBER_PLUGINS_PATH;
+        Path targetDir = Paths.get(basePath, pluginName);
+
+        if (!Files.exists(targetDir)) {
+            throw new IOException("Плагин не найден: " + pluginName);
+        }
+
+        FileUtils.deleteDirectory(targetDir.toFile());
+        logger.info("Плагин {} удалён из {}", pluginName, targetDir);
+
+        if ("decky".equals(source)) {
+            restartDeckyService();
+        }
+    }
+
     private void restartDeckyService() {
         try {
             logger.info("Перезапуск сервиса Decky Loader...");

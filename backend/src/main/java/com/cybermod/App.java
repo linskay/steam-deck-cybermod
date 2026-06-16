@@ -48,10 +48,21 @@ public class App {
             String source = ctx.pathParam("source");
             String id = ctx.pathParam("id");
             PluginProvider provider = "decky".equals(source) ? deckyProvider : cyberProvider;
-            
-            ctx.future(() -> provider.install(id).thenAccept(v -> 
+
+            ctx.future(() -> provider.install(id).thenAccept(v ->
                 ctx.status(202).json(java.util.Map.of("status", "INSTALLING", "id", id, "source", source))
             ));
+        });
+
+        app.delete("/api/plugins/{source}/{id}", ctx -> {
+            String source = ctx.pathParam("source");
+            String id = ctx.pathParam("id");
+            try {
+                fsService.uninstallPlugin(id, source);
+                ctx.json(java.util.Map.of("status", "REMOVED", "id", id, "source", source));
+            } catch (java.io.IOException e) {
+                ctx.status(404).json(java.util.Map.of("error", e.getMessage()));
+            }
         });
 
         // --- Decky Loader API ---

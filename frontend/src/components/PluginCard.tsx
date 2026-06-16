@@ -1,6 +1,7 @@
 import React from 'react';
 import { Download, Info, Trash2, ShieldCheck } from 'lucide-react';
 import { getTheme } from '../themes/themeConfig';
+import { PluginService } from '../services/PluginService';
 
 export interface Plugin {
   id: string;
@@ -22,9 +23,10 @@ interface PluginCardProps {
   plugin: Plugin;
   activeTheme?: string;
   deckyStatus?: string;
+  onAction?: () => void;
 }
 
-export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'cyberpunk', deckyStatus = 'UNKNOWN' }) => {
+export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'cyberpunk', deckyStatus = 'UNKNOWN', onAction }) => {
   const theme = getTheme(activeTheme);
   const isDark = theme.isDark;
 
@@ -110,6 +112,16 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
                 <Info size={11} />
               </button>
               <button
+                onClick={async () => {
+                  const source = plugin.source || 'builtin';
+                  if (plugin.installed) {
+                    const ok = await PluginService.uninstallPlugin(plugin.id, source);
+                    if (ok) onAction?.();
+                  } else {
+                    const ok = await PluginService.installPlugin(plugin.id, source);
+                    if (ok) onAction?.();
+                  }
+                }}
                 className={`cp-button flex items-center gap-2 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider border transition-all ${plugin.installed
                   ? 'border-red-500/30 text-red-500 bg-red-500/5 hover:bg-red-500 hover:text-white'
                   : deckyMissing

@@ -74,5 +74,10 @@ CyberMod — это мощное автономное приложение дл�
 - **Red/Magenta**: `#ff003c` — Опасность, ошибки, удаление.
 - **Cyber Black**: `#050505` — Глубокий фон.
 
+## Repo Activity
+
+![Repobeats](https://repobeats.axiom.co/api/embed/da39a3ee5e6b4b0d3255bfef95601890afd80709.svg)
+
 ---
+
 Разработано специально для использования в Game Mode на Steam Deck.

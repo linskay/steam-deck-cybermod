@@ -6,29 +6,8 @@
 @import "./themes/DeadSpace/style.css";
 
 /* ── Typography (Stage 9) ────────────────────────────────────────── */
-@font-face {
-  font-family: 'Inter';
-  src: url('./assets/fonts/inter.woff2') format('woff2');
-  font-weight: 400 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Outfit';
-  src: url('./assets/fonts/outfit.woff2') format('woff2');
-  font-weight: 400 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('./assets/fonts/jetbrains-mono.woff2') format('woff2');
-  font-weight: 400 700;
-  font-style: normal;
-  font-display: swap;
-}
+/* Inter, Outfit loaded via Google Fonts in index.html */
+/* JetBrains Mono loaded via Google Fonts — add to index.html if needed */
 
 @font-face {
   font-family: 'Cyberpunk';

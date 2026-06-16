@@ -3,6 +3,7 @@ import { type Plugin } from '../components/PluginCard';
 const API_BASE = 'http://localhost:7070/api';
 
 export const PluginService = {
+  getApiBase: () => API_BASE,
   async getPlugins(source: string = 'builtin'): Promise<Plugin[]> {
     try {
       const response = await fetch(`${API_BASE}/plugins/${source}`);
@@ -22,6 +23,18 @@ export const PluginService = {
       return response.ok;
     } catch (error) {
       console.error('Ошибка при установке плагина:', error);
+      return false;
+    }
+  },
+
+  async uninstallPlugin(id: string, source: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${API_BASE}/plugins/${source}/${id}`, {
+        method: 'DELETE',
+      });
+      return response.ok;
+    } catch (error) {
+      console.error('Ошибка при удалении плагина:', error);
       return false;
     }
   },

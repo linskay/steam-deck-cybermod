@@ -37,6 +37,21 @@ function App() {
     PluginService.getDeckyStatus().then(setDeckyStatus);
   }, []);
 
+  const refreshPlugins = React.useCallback(() => {
+    setLoading(true);
+    const sourceMap: Record<string, string> = {
+      plugins: 'builtin',
+      decky: 'decky',
+      zip: 'zip'
+    };
+    const source = sourceMap[activeTab] || 'builtin';
+
+    PluginService.getPlugins(source).then((data) => {
+      setPlugins(data);
+      setLoading(false);
+    });
+  }, [activeTab]);
+
   // Persist Theme Change
   const handleThemeChange = (newTheme: string) => {
     setActiveTheme(newTheme);
@@ -58,19 +73,8 @@ function App() {
   }, [installingDecky]);
 
   React.useEffect(() => {
-    setLoading(true);
-    const sourceMap: Record<string, string> = {
-      plugins: 'builtin',
-      decky: 'decky',
-      zip: 'zip'
-    };
-    const source = sourceMap[activeTab] || 'builtin';
-
-    PluginService.getPlugins(source).then((data) => {
-      setPlugins(data);
-      setLoading(false);
-    });
-  }, [activeTab]);
+    refreshPlugins();
+  }, [activeTab, refreshPlugins]);
 
   return (
     <div className={`flex w-full h-screen overflow-hidden ${isDark ? 'bg-black text-white' : 'bg-gray-50 text-slate-900'} theme-${activeTheme}`}>
@@ -267,7 +271,7 @@ function App() {
                   </div>
                 ) : (
                   plugins.map(plugin => (
-                    <PluginCard key={plugin.id} plugin={plugin} activeTheme={activeTheme} deckyStatus={deckyStatus} />
+                    <PluginCard key={plugin.id} plugin={plugin} activeTheme={activeTheme} deckyStatus={deckyStatus} onAction={refreshPlugins} />
                   ))
                 )}
               </motion.div>

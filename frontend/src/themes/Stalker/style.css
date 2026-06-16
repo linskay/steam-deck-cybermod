@@ -2,22 +2,7 @@
    S.T.A.L.K.E.R. — Zone PDA Theme
    ALL selectors under .theme-stalker
    ================================================================ */
-/* — Fonts (Point 5) ————————————————————————————————————————— */
-@font-face {
-    font-family: 'AmazS.T.A.L.K.E.R.v.3.0';
-    src: url('../../assets/fonts/stalker/amaz-stalker.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'VT323';
-    src: url('../../assets/fonts/vt323.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
+/* — Fonts — VT323 loaded via Google Fonts in index.html — */
 
 /* — Tokens ————————————————————————————————————————————————————— */
 .theme-stalker {
