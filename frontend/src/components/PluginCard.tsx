@@ -1,6 +1,7 @@
 import React from 'react';
 import { Download, Info, Trash2, ShieldCheck } from 'lucide-react';
 import { getTheme } from '../themes/themeConfig';
+import { PluginService } from '../services/PluginService';
 
 export interface Plugin {
   id: string;
@@ -16,6 +17,7 @@ export interface Plugin {
   minDeckyVersion?: string;
   oledSupport?: boolean;
   lcdSupport?: boolean;
+  permissions?: string[];
 }
 
 interface PluginCardProps {
@@ -27,6 +29,7 @@ interface PluginCardProps {
 export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'cyberpunk', deckyStatus = 'UNKNOWN' }) => {
   const theme = getTheme(activeTheme);
   const isDark = theme.isDark;
+  const [showPermissions, setShowPermissions] = React.useState(false);
 
   const deckyMissing = plugin.source === 'decky' && deckyStatus === 'NOT_INSTALLED';
 
@@ -110,6 +113,10 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
                 <Info size={11} />
               </button>
               <button
+                onClick={() => {
+                    if (plugin.installed) return; // Add delete logic if needed
+                    setShowPermissions(true);
+                }}
                 className={`cp-button flex items-center gap-2 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider border transition-all ${plugin.installed
                   ? 'border-red-500/30 text-red-500 bg-red-500/5 hover:bg-red-500 hover:text-white'
                   : deckyMissing
@@ -134,6 +141,38 @@ export const PluginCard: React.FC<PluginCardProps> = ({ plugin, activeTheme = 'c
           </div>
         </div>
       </div>
+
+      {/* Permissions Overlay */}
+      {showPermissions && (
+        <div className="absolute inset-0 z-50 bg-black/90 backdrop-blur-md p-4 flex flex-col items-center justify-center text-center">
+            <ShieldCheck size={32} className="text-blue-500 mb-2" />
+            <h4 className="text-[10px] font-bold uppercase tracking-widest mb-2">Запрос разрешений</h4>
+            <div className="text-[8px] text-white/60 space-y-1 mb-4 font-cp-mono uppercase">
+                {(plugin.permissions && plugin.permissions.length > 0) ? (
+                    plugin.permissions.map((p, i) => <div key={i}>• {p}</div>)
+                ) : (
+                    <div>• Стандартные права</div>
+                )}
+            </div>
+            <div className="flex gap-2">
+                <button
+                    onClick={() => setShowPermissions(false)}
+                    className="px-4 py-1.5 border border-white/20 text-[8px] font-bold uppercase tracking-widest hover:bg-white/10"
+                >
+                    Отмена
+                </button>
+                <button
+                    onClick={() => {
+                        setShowPermissions(false);
+                        PluginService.installPlugin(plugin.id, plugin.source || 'builtin');
+                    }}
+                    className="px-4 py-1.5 bg-blue-600 text-white text-[8px] font-bold uppercase tracking-widest hover:bg-blue-500"
+                >
+                    Разрешить
+                </button>
+            </div>
+        </div>
+      )}
 
       {/* Subtle state accent (Stage 5) */}
       <div className={`absolute bottom-0 right-0 w-4 h-4 border-b border-r transition-colors ${plugin.installed ? 'border-green-500/40' : 'border-white/5'}`}

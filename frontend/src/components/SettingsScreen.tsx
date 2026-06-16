@@ -80,10 +80,17 @@ const ToolBtn: React.FC<{ icon: React.ElementType; label: string; sub: string; i
 // ─── Main settings screen ─────────────────────────────────────────────────────
 import { PluginService } from '../services/PluginService';
 
+interface SystemStats {
+  status: string;
+  memoryUsed: string;
+  memoryTotal: string;
+  cpuLoad: string;
+}
+
 export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (theme: string) => void }> = ({ activeTheme = 'cyberpunk', onThemeChange }) => {
   const currentTheme = getTheme(activeTheme);
   const isDark = currentTheme.isDark;
-  const [stats, setStats] = React.useState<any>(null);
+  const [stats, setStats] = React.useState<SystemStats | null>(null);
 
   React.useEffect(() => {
     const fetchStats = async () => {
@@ -201,7 +208,7 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
         <AlertTriangle size={14} className="text-yellow-600 mt-0.5 flex-shrink-0" />
         <p className={`font-cp-mono text-[8px] uppercase tracking-wider leading-relaxed ${isDark ? 'text-white/20' : 'text-gray-500'}`}>
           Изменение параметров ядра может дестабилизировать систему. <br />
-          Build v1.2.0-stable session_id: {Math.random().toString(16).slice(2, 10).toUpperCase()}
+          Build v1.2.0-stable
         </p>
       </footer>
     </div>
