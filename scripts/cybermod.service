@@ -1,0 +1,14 @@
+[Unit]
+Description=CyberMod Backend Service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/deck/cybermod/backend
+ExecStart=/home/deck/cybermod/cybermod.sh
+Restart=on-failure
+RestartSec=5
+Environment=CYBERMOD_VERSION=1.2.0
+
+[Install]
+WantedBy=default.target

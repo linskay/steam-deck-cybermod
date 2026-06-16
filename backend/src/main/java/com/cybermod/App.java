@@ -17,6 +17,7 @@ public class App {
     private static final DeckyService deckyService = new DeckyService();
     private static final PluginProvider cyberProvider = new CyberCatalogProvider(manifestService, githubClient, fsService);
     private static final PluginProvider deckyProvider = new DeckyStoreProvider(githubClient, fsService);
+    private static final UpdateService updateService = new UpdateService(githubClient);
 
     public static void main(String[] args) {
         var app = Javalin.create(config -> {
@@ -128,6 +129,17 @@ public class App {
 
         app.get("/api/status", ctx -> {
             ctx.result("SYSTEM_READY");
+        });
+
+        // --- Update API ---
+        app.get("/api/system/update/check", ctx -> {
+            ctx.future(() -> updateService.checkForUpdate().thenAccept(ctx::json));
+        });
+
+        app.post("/api/system/update/apply", ctx -> {
+            ctx.future(() -> updateService.performUpdate().thenAccept(success ->
+                ctx.json(java.util.Map.of("success", success))
+            ));
         });
     }
 

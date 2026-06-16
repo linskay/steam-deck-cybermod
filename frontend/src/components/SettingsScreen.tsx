@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Database, RefreshCw, Cpu, Activity, AlertTriangle, Check } from 'lucide-react';
+import { Shield, Database, RefreshCw, Cpu, Activity, TriangleAlert as AlertTriangle, Check, CloudDownload as DownloadCloud } from 'lucide-react';
 import { THEMES, getTheme, type ThemeId } from '../themes/themeConfig';
 
 // ─── Theme preview card (Stage 7) ─────────────────────────────────────────────
@@ -84,6 +84,8 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
   const currentTheme = getTheme(activeTheme);
   const isDark = currentTheme.isDark;
   const [stats, setStats] = React.useState<any>(null);
+  const [updateInfo, setUpdateInfo] = React.useState<{ hasUpdate: boolean; currentVersion: string; latestVersion: string } | null>(null);
+  const [updating, setUpdating] = React.useState(false);
 
   React.useEffect(() => {
     const fetchStats = async () => {
@@ -92,6 +94,11 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
     };
     fetchStats();
     const timer = setInterval(fetchStats, 3000);
+
+    PluginService.checkForUpdate().then(info => {
+      if (info) setUpdateInfo(info);
+    });
+
     return () => clearInterval(timer);
   }, []);
 
@@ -167,6 +174,12 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
             <DiagRow label="Decky Loader" value={stats?.status || 'POLLING...'} status={stats?.status === 'INSTALLED' ? 'ok' : 'off'} isDark={isDark} />
             <DiagRow label="Active Themes" value="5" status="ok" isDark={isDark} />
             <DiagRow label="Secure Link" value="CONNECTED" status="ok" isDark={isDark} />
+            <DiagRow
+              label="App Version"
+              value={updateInfo ? `${updateInfo.currentVersion}${updateInfo.hasUpdate ? ` -> ${updateInfo.latestVersion}` : ''}` : '...'}
+              status={updateInfo?.hasUpdate ? 'warn' : 'ok'}
+              isDark={isDark}
+            />
           </div>
           <div className={`p-6 border ${isDark ? 'bg-white/2 border-white/5' : 'bg-white border-gray-100 shadow-sm'}`}>
             <div className={`text-[8px] font-cp-mono uppercase tracking-widest mb-4 font-bold ${isDark ? 'text-white/20' : 'text-gray-400'}`}>Производительность</div>
@@ -192,7 +205,31 @@ export const SettingsScreen: React.FC<{ activeTheme?: string, onThemeChange?: (t
           <ToolBtn icon={Database} label="Кэш" sub="PURGE" isDark={isDark} />
           <ToolBtn icon={Shield} label="Dev Mode" sub="LVL_5" isDark={isDark} />
           <ToolBtn icon={Cpu} label="Оптим." sub="KERNEL" isDark={isDark} />
-          <ToolBtn icon={Activity} label="Логи" sub="STREAM" isDark={isDark} />
+          <button
+            onClick={async () => {
+              if (updateInfo?.hasUpdate) {
+                setUpdating(true);
+                await PluginService.applyUpdate();
+                setUpdating(false);
+              } else {
+                const info = await PluginService.checkForUpdate();
+                if (info) setUpdateInfo(info);
+              }
+            }}
+            className="flex flex-col items-center gap-2 group p-4 border transition-all"
+          >
+            <div className={`p-3 border transition-all ${updateInfo?.hasUpdate ? 'border-yellow-500/40 text-yellow-500 animate-pulse' : isDark ? 'border-white/10 text-white/30 group-hover:text-white group-hover:border-white/30' : 'border-gray-200 text-gray-400 group-hover:text-slate-800 group-hover:border-gray-300'}`}>
+              <DownloadCloud size={20} />
+            </div>
+            <div className="text-center">
+              <div className={`font-cp-mono text-[9px] uppercase tracking-widest ${updateInfo?.hasUpdate ? 'text-yellow-500' : isDark ? 'text-white/40 group-hover:text-white' : 'text-slate-600 group-hover:text-slate-900'}`}>
+                {updating ? 'Обновление...' : updateInfo?.hasUpdate ? 'Обновить' : 'Обновл.'}
+              </div>
+              <div className={`font-cp-mono text-[7px] mt-0.5 ${isDark ? 'text-white/10' : 'text-gray-400'}`}>
+                {updateInfo?.hasUpdate ? updateInfo.latestVersion : 'CHECK'}
+              </div>
+            </div>
+          </button>
         </div>
       </section>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, CloudDownload as DownloadCloud, X } from 'lucide-react';
 import { SideBar } from './components/SideBar';
 import { PluginCard, type Plugin } from './components/PluginCard';
 import { ZipUpload } from './components/ZipUpload';
@@ -25,6 +25,9 @@ function App() {
   const [deckyStatus, setDeckyStatus] = React.useState('UNKNOWN');
   const [installingDecky, setInstallingDecky] = React.useState(false);
   const [installLogs, setInstallLogs] = React.useState<string[]>([]);
+  const [updateInfo, setUpdateInfo] = React.useState<{ hasUpdate: boolean; currentVersion: string; latestVersion: string; releaseUrl: string } | null>(null);
+  const [updateDismissed, setUpdateDismissed] = React.useState(false);
+  const [updating, setUpdating] = React.useState(false);
 
   const theme = getTheme(activeTheme);
   const isDark = theme.isDark;
@@ -35,6 +38,9 @@ function App() {
       if (cfg?.activeTheme) setActiveTheme(cfg.activeTheme);
     });
     PluginService.getDeckyStatus().then(setDeckyStatus);
+    PluginService.checkForUpdate().then(info => {
+      if (info?.hasUpdate) setUpdateInfo(info);
+    });
   }, []);
 
   const refreshPlugins = React.useCallback(() => {
@@ -169,6 +175,48 @@ function App() {
             </header>
 
             {/* Tab content */}
+            <AnimatePresence>
+              {updateInfo && !updateDismissed && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className={`col-span-full mb-4 p-4 border flex items-center justify-between transition-all ${isDark ? 'border-yellow-500/30 bg-yellow-500/5' : 'border-yellow-300 bg-yellow-50'}`}
+                >
+                  <div className="flex items-center gap-4">
+                    <DownloadCloud size={20} className={isDark ? 'text-yellow-400' : 'text-yellow-600'} />
+                    <div>
+                      <span className={`text-[10px] font-bold uppercase tracking-widest ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                        Доступно обновление: {updateInfo.latestVersion}
+                      </span>
+                      <span className={`text-[8px] font-cp-mono ml-3 ${isDark ? 'text-white/30' : 'text-gray-500'}`}>
+                        (текущая: {updateInfo.currentVersion})
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      disabled={updating}
+                      onClick={async () => {
+                        setUpdating(true);
+                        const ok = await PluginService.applyUpdate();
+                        setUpdating(false);
+                        if (ok) setUpdateInfo(null);
+                      }}
+                      className={`px-5 py-2 text-[9px] font-bold uppercase tracking-[0.2em] border transition-all ${updating
+                        ? 'opacity-50 cursor-wait'
+                        : isDark ? 'border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black' : 'border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white'
+                        }`}
+                    >
+                      {updating ? 'Обновление...' : 'Обновить'}
+                    </button>
+                    <button onClick={() => setUpdateDismissed(true)} className={`p-1 ${isDark ? 'text-white/30 hover:text-white' : 'text-gray-400 hover:text-slate-800'}`}>
+                      <X size={14} />
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}

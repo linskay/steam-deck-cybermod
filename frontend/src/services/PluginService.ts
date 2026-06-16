@@ -99,5 +99,25 @@ export const PluginService = {
     } catch (error) {
       return [];
     }
+  },
+
+  async checkForUpdate(): Promise<{ hasUpdate: boolean; currentVersion: string; latestVersion: string; releaseUrl: string } | null> {
+    try {
+      const response = await fetch(`${API_BASE}/system/update/check`);
+      if (!response.ok) return null;
+      return await response.json();
+    } catch (error) {
+      return null;
+    }
+  },
+
+  async applyUpdate(): Promise<boolean> {
+    try {
+      const response = await fetch(`${API_BASE}/system/update/apply`, { method: 'POST' });
+      const data = await response.json();
+      return data.success === true;
+    } catch (error) {
+      return false;
+    }
   }
 };

@@ -38,6 +38,7 @@ CyberMod — это мощное автономное приложение дл�
 - ⚡ **Java 21 Power**: Высокопроизводительный бэкенд на Java 21 с использованием Virtual Threads.
 - 🛠 **Hybrid Catalog**: Поддержка собственных плагинов и интеграция с оригинальным каталогом Decky.
 - 📦 **ZIP Installer**: Простая установка плагинов из локальных архивов.
+- 🔄 **Auto-Update**: Автоматическая проверка обновлений через GitHub Releases с обновлением в один клик.
 
 ## Структура проекта
 - `/frontend/src/themes`: Все визуальные стили и ресурсы тем.
@@ -46,7 +47,18 @@ CyberMod — это мощное автономное приложение дл�
 
 ## Быстрый старт
 
-### Требования
+### Установка на Steam Deck (release)
+```bash
+# Загрузите последнюю версию из Releases и установите одной командой:
+curl -L https://github.com/YOUR_REPO/releases/latest/download/cybermod-latest-steamdeck.tar.gz | tar xz
+chmod +x install.sh && ./install.sh
+```
+После установки CyberMod работает как systemd-сервис и запускается автоматически.
+
+### Автообновление
+CyberMod проверяет наличие обновлений при запуске. Если доступна новая версия — в интерфейсе появится баннер с кнопкой «Обновить». Обновление скачивается из GitHub Releases и применяется автоматически.
+
+### Требования (для разработки)
 - JDK 21
 - Node.js 18+
 
@@ -76,7 +88,7 @@ CyberMod — это мощное автономное приложение дл�
 
 ## Repo Activity
 
-![Repobeats](https://repobeats.axiom.co/api/embed/da39a3ee5e6b4b0d3255bfef95601890afd80709.svg)
+![Alt](https://repobeats.axiom.co/api/embed/ef63a24c6c15bcff41f9e1a0e9dc16a49c8c151f.svg "Repobeats analytics image")
 
 ---
 
