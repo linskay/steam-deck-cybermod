@@ -17,7 +17,7 @@ public class App {
     private static final GitHubClient githubClient = new GitHubClient();
     private static final ManifestService manifestService = new ManifestService("../catalog/manifest.json");
     private static final DeckyService deckyService = new DeckyService();
-    private static final PluginRuntimeService pluginRuntimeService = new PluginRuntimeService();
+    static final PluginRuntimeService pluginRuntimeService = new PluginRuntimeService();
     private static final PluginProvider cyberProvider = new CyberCatalogProvider(manifestService, githubClient, fsService);
     private static final PluginProvider deckyProvider = new DeckyStoreProvider(githubClient, fsService);
     private static final UpdateService updateService = new UpdateService(githubClient);

@@ -9,8 +9,7 @@ export const PluginService = {
       const response = await fetch(`${API_BASE}/plugins/${source}`);
       if (!response.ok) throw new Error('Ошибка сети');
       return await response.json();
-    } catch (error) {
-      console.error(`Ошибка при получении плагинов (${source}):`, error);
+    } catch {
       return [];
     }
   },
@@ -21,8 +20,7 @@ export const PluginService = {
         method: 'POST',
       });
       return response.ok;
-    } catch (error) {
-      console.error('Ошибка при установке плагина:', error);
+    } catch {
       return false;
     }
   },
@@ -33,8 +31,7 @@ export const PluginService = {
         method: 'DELETE',
       });
       return response.ok;
-    } catch (error) {
-      console.error('Ошибка при удалении плагина:', error);
+    } catch {
       return false;
     }
   },
@@ -44,7 +41,7 @@ export const PluginService = {
       const response = await fetch(`${API_BASE}/decky/status`);
       const data = await response.json();
       return data.status;
-    } catch (error) {
+    } catch {
       return 'UNKNOWN';
     }
   },
@@ -56,16 +53,16 @@ export const PluginService = {
       });
       const data = await response.json();
       return data.success;
-    } catch (error) {
+    } catch {
       return false;
     }
   },
 
-  async getSystemStats(): Promise<any> {
+  async getSystemStats(): Promise<{ status: string; memoryUsed: string; memoryTotal: string; cpuLoad: string } | null> {
     try {
       const response = await fetch(`${API_BASE}/system/stats`);
       return await response.json();
-    } catch (error) {
+    } catch {
       return null;
     }
   },
@@ -74,7 +71,7 @@ export const PluginService = {
     try {
       const response = await fetch(`${API_BASE}/system/config`);
       return await response.json();
-    } catch (error) {
+    } catch {
       return { activeTheme: 'cyberpunk' };
     }
   },
@@ -86,8 +83,8 @@ export const PluginService = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(config),
       });
-    } catch (error) {
-      console.error('Ошибка сохранения конфига:', error);
+    } catch {
+      // ignore config save errors
     }
   },
 
@@ -96,7 +93,7 @@ export const PluginService = {
       const response = await fetch(`${API_BASE}/decky/logs`);
       const data = await response.json();
       return data.logs || [];
-    } catch (error) {
+    } catch {
       return [];
     }
   },
@@ -106,7 +103,7 @@ export const PluginService = {
       const response = await fetch(`${API_BASE}/system/update/check`);
       if (!response.ok) return null;
       return await response.json();
-    } catch (error) {
+    } catch {
       return null;
     }
   },
@@ -116,7 +113,7 @@ export const PluginService = {
       const response = await fetch(`${API_BASE}/system/update/apply`, { method: 'POST' });
       const data = await response.json();
       return data.success === true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }
