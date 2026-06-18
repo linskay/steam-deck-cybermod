@@ -5,6 +5,8 @@ import { PluginCard, type Plugin } from './components/PluginCard';
 import { ZipUpload } from './components/ZipUpload';
 import { SettingsScreen } from './components/SettingsScreen';
 import { PluginService } from './services/PluginService';
+import { ExtensionService, type Extension } from './services/ExtensionService';
+import { ExtensionHost } from './components/ExtensionHost';
 import { useGamepadNavigation } from './hooks/useGamepadNavigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { getTheme } from './themes/themeConfig';
@@ -21,6 +23,7 @@ function App() {
   const [activeTab, setActiveTab] = React.useState('plugins');
   const [activeTheme, setActiveTheme] = React.useState('cyberpunk');
   const [plugins, setPlugins] = React.useState<Plugin[]>([]);
+  const [extensions, setExtensions] = React.useState<Extension[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [deckyStatus, setDeckyStatus] = React.useState('UNKNOWN');
   const [installingDecky, setInstallingDecky] = React.useState(false);
@@ -31,6 +34,7 @@ function App() {
 
   const theme = getTheme(activeTheme);
   const isDark = theme.isDark;
+  const activeExtension = extensions.find(e => `ext-${e.id}` === activeTab);
 
   // Load Initial Config
   React.useEffect(() => {
@@ -38,6 +42,7 @@ function App() {
       if (cfg?.activeTheme) setActiveTheme(cfg.activeTheme);
     });
     PluginService.getDeckyStatus().then(setDeckyStatus);
+    ExtensionService.getExtensions().then(setExtensions);
     PluginService.checkForUpdate().then(info => {
       if (info?.hasUpdate) setUpdateInfo(info);
     });
@@ -51,6 +56,11 @@ function App() {
       zip: 'zip'
     };
     const source = sourceMap[activeTab] || 'builtin';
+
+    if (activeTab.startsWith('ext-')) {
+      setLoading(false);
+      return;
+    }
 
     PluginService.getPlugins(source).then((data) => {
       setPlugins(data);
@@ -91,7 +101,7 @@ function App() {
       </div>
 
       {/* Sidebar */}
-      <SideBar activeTab={activeTab} onTabChange={setActiveTab} activeTheme={activeTheme} />
+      <SideBar activeTab={activeTab} onTabChange={setActiveTab} activeTheme={activeTheme} extensions={extensions} />
 
       {/* Main */}
       <main className="flex-1 overflow-y-auto relative flex flex-col cp-grid-bg">
@@ -166,7 +176,7 @@ function App() {
             {/* Screen title — Stage 1 */}
             <header className="mb-10">
               <h2 className={`text-2xl font-cyber uppercase tracking-[0.3em] ${isDark ? 'text-white' : 'text-slate-800'}`}>
-                {SCREEN_TITLES[activeTab] ?? activeTab.toUpperCase()}
+                {activeExtension ? activeExtension.title : (SCREEN_TITLES[activeTab] ?? activeTab.toUpperCase())}
               </h2>
               <div className={`h-px w-48 mt-2 ${isDark
                 ? 'bg-gradient-to-r from-white/20 to-transparent'
@@ -316,6 +326,10 @@ function App() {
                 ) : activeTab === 'settings' ? (
                   <div className="col-span-full">
                     <SettingsScreen activeTheme={activeTheme} onThemeChange={handleThemeChange} />
+                  </div>
+                ) : activeExtension ? (
+                  <div className="col-span-full h-[600px]">
+                    <ExtensionHost frontendUrl={activeExtension.frontendUrl || ''} />
                   </div>
                 ) : (
                   plugins.map(plugin => (

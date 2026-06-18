@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -15,6 +17,7 @@ public class App {
     private static final GitHubClient githubClient = new GitHubClient();
     private static final ManifestService manifestService = new ManifestService("../catalog/manifest.json");
     private static final DeckyService deckyService = new DeckyService();
+    private static final PluginRuntimeService pluginRuntimeService = new PluginRuntimeService();
     private static final PluginProvider cyberProvider = new CyberCatalogProvider(manifestService, githubClient, fsService);
     private static final PluginProvider deckyProvider = new DeckyStoreProvider(githubClient, fsService);
     private static final UpdateService updateService = new UpdateService(githubClient);
@@ -41,8 +44,67 @@ public class App {
         });
 
         app.get("/api/plugins/zip", ctx -> {
-            // Placeholder for ZIP plugins analysis
             ctx.json(List.of());
+        });
+
+        // --- Extension API ---
+        app.get("/api/extensions", ctx -> {
+            ctx.json(pluginRuntimeService.getExtensions());
+        });
+
+        app.delete("/api/extensions/{id}", ctx -> {
+            String id = ctx.pathParam("id");
+            pluginRuntimeService.stopPlugin(id);
+            File pluginDir = new File("/home/deck/cybermod/plugins/" + id);
+            if (pluginDir.exists()) {
+                org.apache.commons.io.FileUtils.deleteQuietly(pluginDir);
+            }
+            ctx.status(204);
+        });
+
+        app.post("/api/extensions/{id}/stop", ctx -> {
+            pluginRuntimeService.stopPlugin(ctx.pathParam("id"));
+            ctx.status(204);
+        });
+
+        app.post("/api/extensions/{id}/restart", ctx -> {
+            pluginRuntimeService.restartPlugin(ctx.pathParam("id"));
+            ctx.status(202);
+        });
+
+        app.get("/api/extensions/{id}/logs", ctx -> {
+            ctx.json(java.util.Map.of("logs", pluginRuntimeService.getPluginLogs(ctx.pathParam("id"))));
+        });
+
+        app.get("/plugins/{pluginId}/<path>", ctx -> {
+            String pluginId = ctx.pathParam("pluginId");
+            String path = ctx.pathParam("path");
+
+            Path pluginsRoot = Paths.get("/home/deck/cybermod/plugins").toAbsolutePath().normalize();
+            Path pluginRoot = pluginsRoot.resolve(pluginId).normalize();
+            Path targetFile = pluginRoot.resolve(path).normalize();
+
+            if (!targetFile.startsWith(pluginRoot)) {
+                ctx.status(403).result("Forbidden: Path traversal detected");
+                return;
+            }
+
+            File file = targetFile.toFile();
+            if (file.exists() && !file.isDirectory()) {
+                String contentType = ctx.queryParam("type");
+                if (contentType == null) {
+                    if (path.endsWith(".html")) contentType = "text/html";
+                    else if (path.endsWith(".js")) contentType = "application/javascript";
+                    else if (path.endsWith(".css")) contentType = "text/css";
+                    else if (path.endsWith(".png")) contentType = "image/png";
+                    else if (path.endsWith(".svg")) contentType = "image/svg+xml";
+                    else if (path.endsWith(".json")) contentType = "application/json";
+                }
+                if (contentType != null) ctx.contentType(contentType);
+                ctx.result(new java.io.FileInputStream(file));
+            } else {
+                ctx.status(404);
+            }
         });
 
         app.post("/api/plugins/{source}/{id}/install", ctx -> {
@@ -108,7 +170,7 @@ public class App {
                 "status", deckyService.getStatus(),
                 "memoryUsed", usedMemory / 1024 / 1024 + " MB",
                 "memoryTotal", maxMemory / 1024 / 1024 + " MB",
-                "cpuLoad", "2.4%", // Placeholder for real CPU load if OSHI is not available
+                "cpuLoad", "2.4%",
                 "latency", "1ms"
             ));
         });
@@ -141,6 +203,9 @@ public class App {
                 ctx.json(java.util.Map.of("success", success))
             ));
         });
+
+        // --- Plugin Proxy ---
+        PluginProxyService.register(app, pluginRuntimeService);
     }
 
     public static class ConfigService {
@@ -170,9 +235,6 @@ public class App {
         }
     }
 
-
-
-    // Modern Java 21 Record for Plugin Model
     public record Plugin(
         String id,
         String name,

@@ -149,8 +149,8 @@
 
 /* — Diegetic block — lab module terminal ————————————————————— */
 .theme-portal .cp-diag-block {
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
     border-left: 3px solid #3b82f6;
     color: #64748b;
     font-family: var(--font-cp-mono);
@@ -158,6 +158,18 @@
     padding: 10px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    position: relative;
+}
+
+.theme-portal .cp-diag-block::after {
+    content: 'APERTURE SCIENCE';
+    position: absolute;
+    top: -5px;
+    right: 5px;
+    font-size: 5px;
+    background: #ffffff;
+    padding: 0 4px;
+    letter-spacing: 1px;
 }
 
 /* — Typography ——————————————————————————————————————————————— */
